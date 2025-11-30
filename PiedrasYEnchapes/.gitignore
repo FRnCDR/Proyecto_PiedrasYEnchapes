@@ -1,0 +1,20 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# IIS Express
+applicationhost.config
+
+# NuGet
+packages/
+*.nupkg
+
+# Logs & cache
+*.log
+*.cache
+*.tmp
