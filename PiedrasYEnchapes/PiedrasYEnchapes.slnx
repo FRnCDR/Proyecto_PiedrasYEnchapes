@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="WebApplication1/WebApplication1.csproj" />
+  <Folder Name="/Elementos de la solución/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="WebApplication1/WebApplication1.csproj" Id="b347646d-dc42-4ba9-8d6a-3c00aeb5daf1" />
 </Solution>
