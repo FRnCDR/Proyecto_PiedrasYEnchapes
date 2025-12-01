@@ -1,23 +1,32 @@
-﻿<!DOCTYPE html>
-<html lang="es">
+﻿@* Views/Shared/_LayoutExterno.cshtml *@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>@ViewBag.Title - Sitio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Connect Plus</title>
 
-    <!-- Aquí puedes poner tus CSS del login/registro -->
-
-
-    @RenderSection("Styles", required: false)
+    <!-- plugins:css -->
+    <link href="~/StaticFiles/cssEx/flag-icon.min.css" rel="stylesheet" />
+    <link href="~/StaticFiles/cssEx/vendor.bundle.base.css" rel="stylesheet" />
+    <link href="~/StaticFiles/cssEx/style.css" rel="stylesheet" />
+    <!-- End layout styles -->
 </head>
 <body>
-
-    <div class="container">
-        @RenderBody()
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth">
+                <div class="row flex-grow">
+                    @* AQUÍ se inserta el contenido específico de cada vista *@
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
     </div>
 
-
-
-    @RenderSection("Scripts", required: false)
+    <script src="~/StaticFiles/jsEx/vendor.bundle.base.js"></script>
+    <script src="~/StaticFiles/jsEx/off-canvas.js"></script>
+    <script src="~/StaticFiles/jsEx/hoverable-collapse.js"></script>
+    <script src="~/StaticFiles/jsEx/misc.js"></script>
 </body>
 </html>
