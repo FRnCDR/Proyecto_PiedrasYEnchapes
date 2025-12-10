@@ -13,7 +13,10 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-
+        public ActionResult Productos()
+        {
+            return View();
+        }
 
         public ActionResult Login()
         {

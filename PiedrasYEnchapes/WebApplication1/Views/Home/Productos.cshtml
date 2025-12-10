@@ -2,9 +2,9 @@
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
 
-<div class="hero_area">
+<div class="hero_general">
     <div class="bg-box">
-        <img src="~/StaticFiles/images/imagenFondo.jpg" />
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
     <!-- header section strats -->
     <header class="header_section">
@@ -23,10 +23,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="~/Views/Home/Index.cshtml">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="~/Views/Home/Productos.cshtml">Productos</a>
+                            <a class="nav-link" href="menu.html">Productos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">Nosotros</a>
@@ -106,94 +106,6 @@
             </nav>
         </div>
     </header>
-    <!-- end header section -->
-    <!-- slider section -->
-    <section class="slider_section ">
-        <div id="customCarousel1" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="container ">
-                        <div class="row">
-                            <div class="col-md-7 col-lg-6 ">
-                                <div class="detail-box">
-                                    <h1>
-                                        Los mejores proveedores de piedras decorativas
-                                    </h1>
-                                    <p>
-                                        Ofrecemos productos de la más alta calidad para su negocio, seleccionados y fabricados con estándares profesionales que garantizan 
-                                        durabilidad, eficiencia y excelente presentación. Nuestra línea de productos está diseñada para brindar soluciones confiables que 
-                                        impulsen el crecimiento y la imagen de su empresa.
-                                    </p>
-                                    <div class="btn-box">
-                                        <a href="" class="btn1">
-                                            ¡Cotiza ya!
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item ">
-                    <div class="container ">
-                        <div class="row">
-                            <div class="col-md-7 col-lg-6 ">
-                                <div class="detail-box">
-                                    <h1>
-                                        Decoracion natural para tu hogar 
-                                    </h1>
-                                    <p>
-                                        Dale un toque natural y moderno a tu hogar con nuestras opciones de decoración en piedra. 
-                                        Cada diseño resalta la belleza y textura auténtica del material, creando ambientes cálidos, elegantes y llenos de personalidad. 
-                                        Transformá paredes, fachadas y rincones especiales con acabados que combinan estilo contemporáneo y la esencia natural de la piedra.
-                                    </p>
-                                    <div class="btn-box">
-                                        <a href="" class="btn1">
-                                            ¡Cotiza ya!
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="container ">
-                        <div class="row">
-                            <div class="col-md-7 col-lg-6 ">
-                                <div class="detail-box">
-                                    <h1>
-                                        Ofrecemos gran variedad de productos 
-                                    </h1>
-                                    <p>
-                                        Ofrecemos una amplia variedad de piedras decorativas, 
-                                        cuidadosamente seleccionadas para adaptarse a distintos estilos, 
-                                        proyectos y necesidades. Cada pieza destaca por su durabilidad, textura y belleza natural, 
-                                        permitiendo transformar espacios interiores y exteriores con un acabado único y elegante.
-                                    </p>
-                                    <div class="btn-box">
-                                        <a href="" class="btn1">
-                                            ¡Cotiza ya!
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <ol class="carousel-indicators">
-                    <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
-                    <li data-target="#customCarousel1" data-slide-to="1"></li>
-                    <li data-target="#customCarousel1" data-slide-to="2"></li>
-                </ol>
-            </div>
-        </div>
-
-
-
-    </section>
 </div>
 
 <!-- productos section -->
@@ -202,17 +114,17 @@
     <div class="container">
         <div class="heading_container heading_center">
             <h2>
-                Algunos de nuestros productos
+                Productos
             </h2>
-        </div>
 
-        <ul class="filters_menu">
-            <li class="active" data-filter="*">All</li>
-            <li data-filter=".enchapes">Enchapes</li>
-            <li data-filter=".piedraRoja">Piedra Roja</li>
-            <li data-filter=".piedraAmarilla">Piedra Amarilla</li>
-            <li data-filter=".piedraBlanca">Piedra Blanca</li>
-        </ul>
+            <ul class="filters_menu">
+                <li class="active" data-filter="*">All</li>
+                <li data-filter=".enchapes">Enchapes</li>
+                <li data-filter=".piedraRoja">Piedra Roja</li>
+                <li data-filter=".piedraAmarilla">Piedra Amarilla</li>
+                <li data-filter=".piedraBlanca">Piedra Blanca</li>
+            </ul>
+        </div>
 
         <div class="filters-content">
             <div class="row grid">
@@ -919,88 +831,4 @@
 </section>
 
 <!-- end food section -->
-<!-- about section -->
 
-<section class="about_section layout_padding">
-    <div class="container  ">
-
-        <div class="row">
-            <div class="col-md-6 ">
-                <div class="img-box">
-                    <img src="/StaticFiles/images/logoPiedras.jpg" alt="Logo" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="detail-box">
-                    <div class="heading_container">
-                        <h2>
-                            Somos Gustavo Fallas Piedras Enchapes y Mas 
-                        </h2>
-                    </div>
-                    <p>
-                        Somos un empresa dedicada  a la venta de piedras decorativas, enchapes y mas. 
-                        Contamos con una amplia variedad de productos para satisfacer las necesidades de nuestros clientes. 
-                        Nuestro compromiso es brindar productos de alta calidad y un excelente servicio al cliente.
-                    </p>
-                    <a href="">
-                        Leer Mas 
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<section class="client_section layout_padding-bottom">
-    <div class="container">
-        <div class="heading_container heading_center psudo_white_primary mb_45">
-            <h2>
-                Opiniones de nuestros clientes
-            </h2>
-        </div>
-        <div class="carousel-wrap row ">
-            <div class="owl-carousel client_owl-carousel">
-                <div class="item">
-                    <div class="box">
-                        <div class="detail-box">
-                            <p>
-                                Excelente servicio de parte de la empresa fueron de mucha ayuda en el acesoramiento a la hora de comprar los materiales 
-                            </p>
-                            <h6>
-                                Christina Fernandez
-                            </h6>
-                            <p>
-                                Excelente servicio
-                            </p>
-                        </div>
-                        <div class="img-box">
-
-                            <img src="~/StaticFiles/images/client1.jpg" class="box-img" />
-
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="box">
-                        <div class="detail-box">
-                            <p>
-                                Los productos que compre son de la mejor calidad 
-                            </p>
-                            <h6>
-                                Pedro Fernandez
-                            </h6>
-                            <p>
-                                Productos de calidad 
-                            </p>
-                        </div>
-                        <div class="img-box">
-                            <img src="~/StaticFiles/images/client2.jpg" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>

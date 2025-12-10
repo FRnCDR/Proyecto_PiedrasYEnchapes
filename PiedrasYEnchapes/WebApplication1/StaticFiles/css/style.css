@@ -108,6 +108,16 @@ a:focus {
     margin: 0 calc(50% - 50vw);
 }
 
+.hero_general {
+    position: relative;
+    min-height: 100vh;
+    width: 100vw; /* ocupa todo el ancho visible */
+    display: flex;
+    flex-direction: column;
+    /* TRUCO PARA ROMPER EL CONTAINER Y LLEGAR A LOS BORDES */
+    margin: 0 calc(50% - 50vw);
+}
+
 .bg-box {
     position: absolute;
     top: 0;
