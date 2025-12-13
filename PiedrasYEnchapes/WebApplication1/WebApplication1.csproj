@@ -146,6 +146,7 @@
     <Content Include="StaticFiles\images\epa.jpg" />
     <Content Include="StaticFiles\images\f9.png" />
     <Content Include="StaticFiles\images\favicon.png" />
+    <Content Include="StaticFiles\images\fondoImagen.png" />
     <Content Include="StaticFiles\images\fondoLogin.png" />
     <Content Include="StaticFiles\images\imagenFondo.jpg" />
     <Content Include="StaticFiles\images\lagar.jpg" />
