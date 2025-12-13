@@ -142,10 +142,13 @@
     <Content Include="StaticFiles\images\cuartaMixta.jpg" />
     <Content Include="StaticFiles\images\cuartaRoja.jpg" />
     <Content Include="StaticFiles\images\de.jpg" />
+    <Content Include="StaticFiles\images\distribuidor.jpg" />
+    <Content Include="StaticFiles\images\epa.jpg" />
     <Content Include="StaticFiles\images\f9.png" />
     <Content Include="StaticFiles\images\favicon.png" />
     <Content Include="StaticFiles\images\fondoLogin.png" />
     <Content Include="StaticFiles\images\imagenFondo.jpg" />
+    <Content Include="StaticFiles\images\lagar.jpg" />
     <Content Include="StaticFiles\images\lajaGrisIrregularSemiRustica.jpg" />
     <Content Include="StaticFiles\images\logoPiedras.jpg" />
     <Content Include="StaticFiles\images\hero-bg.jpg" />
@@ -185,6 +188,8 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Registro.cshtml" />
     <Content Include="Views\Home\Productos.cshtml" />
+    <Content Include="Views\Home\Proveedores.cshtml" />
+    <Content Include="Views\Home\Inventario.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

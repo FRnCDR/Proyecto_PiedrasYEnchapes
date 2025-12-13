@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap");
 
 html,
 body {
@@ -110,13 +110,16 @@ a:focus {
 
 .hero_general {
     position: relative;
-    min-height: 100vh;
-    width: 100vw; /* ocupa todo el ancho visible */
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    /* TRUCO PARA ROMPER EL CONTAINER Y LLEGAR A LOS BORDES */
     margin: 0 calc(50% - 50vw);
+    padding-bottom: 20px; /* solo aire visual */
 }
+
+    .hero_general .bg-box {
+        z-index: -1;
+    }
 
 .bg-box {
     position: absolute;
@@ -1020,3 +1023,22 @@ a:focus {
             .footer_section .footer-info p a {
                 color: inherit;
             }
+
+
+
+/* Navbar: independiente del hero */
+.header_section {
+    position: relative;
+    z-index: 10;
+    min-height: 90px;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+}
+
+
+.border-redondos {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #dee2e6
+}

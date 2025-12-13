@@ -18,6 +18,16 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        public ActionResult Proveedores()
+        {
+            return View();
+        }
+
+        public ActionResult Inventario()
+        {
+            return View();
+        }
+
         public ActionResult Login()
         {
              return View();

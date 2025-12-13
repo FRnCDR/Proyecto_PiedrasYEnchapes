@@ -1,0 +1,168 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<!-- HERO + NAVBAR -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+
+    <header class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+                <a class="navbar-brand" href="@Url.Action("Index","Home")">
+                    <span>Piedras decorativas</span>
+                </a>
+
+                <div class="collapse navbar-collapse show">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index","Home")">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Productos","Home")">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Proveedores","Home")">Proveedores</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="@Url.Action("Inventario", "Home")">Inventario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">Nosotros</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="book.html">Book Table</a>
+                        </li>
+                    </ul>
+
+                    <div class="user_option">
+                        <a href="@Url.Action("Login","Home")" class="user_link">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+                        <form class="form-inline">
+                            <button class="btn my-2 nav_search-btn" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                        <a href="#" class="order_online">Cotizar</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+</div>
+
+<section class="layout_padding">
+    <div class="container">
+
+        <div class="heading_container heading_center mb-4">
+            <h2>Inventario</h2>
+            <p>Control y monitoreo de existencias y movimientos</p>
+        </div>
+
+        <div class="row text-center mb-5">
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h5>Total Productos</h5>
+                    <h3>42</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h5>Stock Bajo</h5>
+                    <h3 class="text-warning">6</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h5>Movimientos Hoy</h5>
+                    <h3>12</h3>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <h5>Alertas</h5>
+                    <h3 class="text-danger">3</h3>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Buscar producto por nombre..." />
+            </div>
+            <div class="col-md-3">
+                <select class="form-control">
+                    <option>Filtrar por estado</option>
+                    <option>Stock Normal</option>
+                    <option>Stock Bajo</option>
+                    <option>Crítico</option>
+                </select>
+            </div>
+            <div class="col-md-3 text-right">
+                <button class="btn btn-dark">Registrar Movimiento</button>
+            </div>
+        </div>
+
+        <!-- TABLA INVENTARIO -->
+        <div class="table-responsive shadow-sm">
+            <table class= "border-redondos table table-bordered table-hover text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Stock Actual</th>
+                        <th>Último Movimiento</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>Mollejón</td>
+                        <td>Enchape</td>
+                        <td>120</td>
+                        <td>Entrada +50</td>
+                        <td><span class="badge badge-success">Normal</span></td>
+                        <td>
+                            <button class="btn btn-sm text-light btn-warning">Historial</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Piedra Roja</td>
+                        <td>Decorativa</td>
+                        <td>15</td>
+                        <td>Salida -30</td>
+                        <td><span class="badge badge-warning">Bajo</span></td>
+                        <td>
+                            <button class="btn btn-sm text-light btn-warning">Historial</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Piedra Blanca</td>
+                        <td>Decorativa</td>
+                        <td>5</td>
+                        <td>Salida -10</td>
+                        <td><span class="badge badge-danger">Crítico</span></td>
+                        <td>
+                            <button class="btn btn-sm text-light btn-warning">Historial</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>

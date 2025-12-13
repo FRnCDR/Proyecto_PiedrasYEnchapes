@@ -1,0 +1,151 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+
+    <header class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <span>Piedras decorativas</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                    <span class=""> </span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Productos", "Home")">Productos</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="@Url.Action("Proveedores", "Home")">
+                                Proveedores <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Inventario", "Home")">Inventario</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">Nosotros</a>
+                        </li>
+
+
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Book Table</a>
+                        </li>
+                    </ul>
+
+                    <div class="user_option">
+                        <a href="@Url.Action("Login","Home")" class="user_link">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+                        <form class="form-inline">
+                            <button class="btn my-2 nav_search-btn" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                        <a href="#" class="order_online">Cotizar</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+</div>
+
+<!-- proveedores section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>Proveedores</h2>
+            <p>Listado general de proveedores registrados en el sistema</p>
+        </div>
+
+        <div class="table-responsive mt-4">
+            <table class="border-redondos table table-striped table-bordered text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- PROVEEDOR 1 -->
+                    <tr>
+                        <td>
+                            <img src="~/StaticFiles/images/lagar.jpg" width="70" style="border-radius:8px;" />
+                        </td>
+                        <td>El Lagar</td>
+                        <td>1234-5678</td>
+                        <td>contacto@ellagar.com</td>
+                        <td>Nacional</td>
+                        <td>
+                            <span class="badge badge-success">Activo</span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-dark">Detalles</a>
+                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                        </td>
+                    </tr>
+
+                    <!-- PROVEEDOR 2 -->
+                    <tr>
+                        <td>
+                            <img src="~/StaticFiles/images/epa.jpg" width="70" style="border-radius:8px;" />
+                        </td>
+                        <td>EPA</td>
+                        <td>8765-4321</td>
+                        <td>info@epa.com</td>
+                        <td>Internacional</td>
+                        <td>
+                            <span class="badge badge-success">Activo</span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-dark">Detalles</a>
+                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                        </td>
+                    </tr>
+
+                    <!-- PROVEEDOR 3 -->
+                    <tr>
+                        <td>
+                            <img src="~/StaticFiles/images/distribuidor.jpg" width="70" style="border-radius:8px;" />
+                        </td>
+                        <td>Charlie's Piedras</td>
+                        <td>1122-3344</td>
+                        <td>ventas@charlie.com</td>
+                        <td>Nacional</td>
+                        <td>
+                            <span class="badge badge-danger">Inactivo</span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-dark">Detalles</a>
+                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btn-box">
+            <a href="#" class="btn btn-dark px-4 py-2 mt-3">Agregar Proveedor</a>
+        </div>
+    </div>
+</section>
+<!-- end proveedores section -->

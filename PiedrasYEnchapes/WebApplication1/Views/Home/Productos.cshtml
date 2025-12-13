@@ -10,7 +10,7 @@
     <header class="header_section">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href=@Url.Action("Index", "Home")>
                     <span>
                         Piedras decorativas
                     </span>
@@ -22,11 +22,17 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="@Url.Action("Productos", "Home")">Productos <span class="sr-only">(current)</span> </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="menu.html">Productos</a>
+                            <a class="nav-link" href="@Url.Action("Proveedores", "Home")">Proveedores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Inventario", "Home")">Inventario</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">Nosotros</a>
@@ -36,7 +42,7 @@
                         </li>
                     </ul>
                     <div class="user_option">
-                        <a href="" class="user_link">
+                        <a href="@Url.Action("Login", "Home")" class="user_link">
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
                         <a class="cart_link" href="#">
@@ -99,7 +105,7 @@
                             </button>
                         </form>
                         <a href="" class="order_online">
-                            Cotizar 
+                            Cotizar
                         </a>
                     </div>
                 </div>
@@ -139,7 +145,7 @@
                                     Mollejón
                                 </h5>
                                 <p>
-                                    Mollejón amarillo semi rústico irregular 
+                                    Mollejón amarillo semi rústico irregular
                                 </p>
                                 <div class="options">
                                     <h6>
@@ -215,7 +221,7 @@
                                     Piedra Roja
                                 </h5>
                                 <p>
-                                    Piedra roja de cuarta 
+                                    Piedra roja de cuarta
                                 </p>
                                 <div class="options">
                                     <h6>
@@ -824,11 +830,10 @@
         </div>
         <div class="btn-box">
             <a href="">
-                Ver más 
+                Ver más
             </a>
         </div>
     </div>
 </section>
 
 <!-- end food section -->
-

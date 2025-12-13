@@ -10,7 +10,7 @@
     <header class="header_section">
         <div class="container">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href=@Url.Action("Index", "Home")>
                     <span>
                         Piedras decorativas
                     </span>
@@ -23,10 +23,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  mx-auto ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="~/Views/Home/Index.cshtml">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="~/Views/Home/Productos.cshtml">Productos</a>
+                            <a class="nav-link" href="@Url.Action("Productos", "Home")">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Proveedores", "Home")">Proveedores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Inventario", "Home")">Inventario</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="about.html">Nosotros</a>
@@ -36,7 +42,7 @@
                         </li>
                     </ul>
                     <div class="user_option">
-                        <a href="" class="user_link">
+                        <a class="user_link" href="@Url.Action("Login", "Home")">
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
                         <a class="cart_link" href="#">
@@ -99,7 +105,7 @@
                             </button>
                         </form>
                         <a href="" class="order_online">
-                            Cotizar 
+                            Cotizar
                         </a>
                     </div>
                 </div>
@@ -120,8 +126,8 @@
                                         Los mejores proveedores de piedras decorativas
                                     </h1>
                                     <p>
-                                        Ofrecemos productos de la más alta calidad para su negocio, seleccionados y fabricados con estándares profesionales que garantizan 
-                                        durabilidad, eficiencia y excelente presentación. Nuestra línea de productos está diseñada para brindar soluciones confiables que 
+                                        Ofrecemos productos de la más alta calidad para su negocio, seleccionados y fabricados con estándares profesionales que garantizan
+                                        durabilidad, eficiencia y excelente presentación. Nuestra línea de productos está diseñada para brindar soluciones confiables que
                                         impulsen el crecimiento y la imagen de su empresa.
                                     </p>
                                     <div class="btn-box">
@@ -140,11 +146,11 @@
                             <div class="col-md-7 col-lg-6 ">
                                 <div class="detail-box">
                                     <h1>
-                                        Decoracion natural para tu hogar 
+                                        Decoracion natural para tu hogar
                                     </h1>
                                     <p>
-                                        Dale un toque natural y moderno a tu hogar con nuestras opciones de decoración en piedra. 
-                                        Cada diseño resalta la belleza y textura auténtica del material, creando ambientes cálidos, elegantes y llenos de personalidad. 
+                                        Dale un toque natural y moderno a tu hogar con nuestras opciones de decoración en piedra.
+                                        Cada diseño resalta la belleza y textura auténtica del material, creando ambientes cálidos, elegantes y llenos de personalidad.
                                         Transformá paredes, fachadas y rincones especiales con acabados que combinan estilo contemporáneo y la esencia natural de la piedra.
                                     </p>
                                     <div class="btn-box">
@@ -163,12 +169,12 @@
                             <div class="col-md-7 col-lg-6 ">
                                 <div class="detail-box">
                                     <h1>
-                                        Ofrecemos gran variedad de productos 
+                                        Ofrecemos gran variedad de productos
                                     </h1>
                                     <p>
-                                        Ofrecemos una amplia variedad de piedras decorativas, 
-                                        cuidadosamente seleccionadas para adaptarse a distintos estilos, 
-                                        proyectos y necesidades. Cada pieza destaca por su durabilidad, textura y belleza natural, 
+                                        Ofrecemos una amplia variedad de piedras decorativas,
+                                        cuidadosamente seleccionadas para adaptarse a distintos estilos,
+                                        proyectos y necesidades. Cada pieza destaca por su durabilidad, textura y belleza natural,
                                         permitiendo transformar espacios interiores y exteriores con un acabado único y elegante.
                                     </p>
                                     <div class="btn-box">
@@ -227,7 +233,7 @@
                                     Mollejón
                                 </h5>
                                 <p>
-                                    Mollejón amarillo semi rústico irregular 
+                                    Mollejón amarillo semi rústico irregular
                                 </p>
                                 <div class="options">
                                     <h6>
@@ -303,7 +309,7 @@
                                     Piedra Roja
                                 </h5>
                                 <p>
-                                    Piedra roja de cuarta 
+                                    Piedra roja de cuarta
                                 </p>
                                 <div class="options">
                                     <h6>
@@ -912,7 +918,7 @@
         </div>
         <div class="btn-box">
             <a href="">
-                Ver más 
+                Ver más
             </a>
         </div>
     </div>
@@ -934,16 +940,16 @@
                 <div class="detail-box">
                     <div class="heading_container">
                         <h2>
-                            Somos Gustavo Fallas Piedras Enchapes y Mas 
+                            Somos Gustavo Fallas Piedras Enchapes y Mas
                         </h2>
                     </div>
                     <p>
-                        Somos un empresa dedicada  a la venta de piedras decorativas, enchapes y mas. 
-                        Contamos con una amplia variedad de productos para satisfacer las necesidades de nuestros clientes. 
+                        Somos un empresa dedicada  a la venta de piedras decorativas, enchapes y mas.
+                        Contamos con una amplia variedad de productos para satisfacer las necesidades de nuestros clientes.
                         Nuestro compromiso es brindar productos de alta calidad y un excelente servicio al cliente.
                     </p>
                     <a href="">
-                        Leer Mas 
+                        Leer Mas
                     </a>
                 </div>
             </div>
@@ -966,7 +972,7 @@
                     <div class="box">
                         <div class="detail-box">
                             <p>
-                                Excelente servicio de parte de la empresa fueron de mucha ayuda en el acesoramiento a la hora de comprar los materiales 
+                                Excelente servicio de parte de la empresa fueron de mucha ayuda en el acesoramiento a la hora de comprar los materiales
                             </p>
                             <h6>
                                 Christina Fernandez
@@ -986,13 +992,13 @@
                     <div class="box">
                         <div class="detail-box">
                             <p>
-                                Los productos que compre son de la mejor calidad 
+                                Los productos que compre son de la mejor calidad
                             </p>
                             <h6>
                                 Pedro Fernandez
                             </h6>
                             <p>
-                                Productos de calidad 
+                                Productos de calidad
                             </p>
                         </div>
                         <div class="img-box">
@@ -1004,3 +1010,5 @@
         </div>
     </div>
 </section>
+
+
