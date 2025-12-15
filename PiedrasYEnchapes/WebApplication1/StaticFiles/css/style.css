@@ -1042,3 +1042,131 @@ a:focus {
     overflow: hidden;
     border: 1px solid #dee2e6
 }
+
+.hero-about {
+    position: relative;
+    height: 380px; /* más alto */
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-text {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+}
+
+    .hero-text h1 {
+        font-size: 3rem;
+        font-weight: 700;
+    }
+
+    .hero-text p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+.about-text p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+    .about-text p + p {
+        margin-top: 1rem;
+    }
+
+/* ===== SOBRE NOSOTROS ===== */
+
+.about_section {
+    color: #333;
+}
+
+    .about_section .heading_container h2 {
+        color: #222;
+    }
+
+    .about_section .heading_container p {
+        color: #666;
+    }
+
+.about-text p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+
+.hero-about {
+    position: relative;
+    height: 360px; /* puedes subir a 420px si quieres */
+}
+
+    .hero-about .hero-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .hero-about .hero-text {
+        position: relative;
+        z-index: 2;
+        padding-top: 120px;
+        color: #111;
+    }
+
+        .hero-about .hero-text h1 {
+            font-weight: 700;
+        }
+
+        .hero-about .hero-text p {
+            color: #444;
+        }
+
+.layout_padding.bg-light h5 {
+    font-weight: 600;
+}
+
+.layout_padding.bg-light p {
+    color: #666;
+}
+
+hr {
+    border-top: 2px solid #ddd;
+}
+
+.login_link {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    .login_link:hover {
+        color: #f1c40f;
+    }
+
+.login_link {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    color: #ffffff;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+    .login_link:hover {
+        color: #f1c40f;
+    }

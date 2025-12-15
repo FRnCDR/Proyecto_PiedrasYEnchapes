@@ -38,5 +38,18 @@ namespace WebApplication1.Controllers
             return View();
 
         }
+
+        public ActionResult Nosotros()
+        {
+            return View();
+
+        }
+
+        public ActionResult Empleados()
+        {
+            return View();
+
+        }
+
     }
 }

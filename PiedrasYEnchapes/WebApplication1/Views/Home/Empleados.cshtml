@@ -1,46 +1,47 @@
 ﻿@{
+    ViewBag.Title = "Empleados";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
 
+<!-- HERO GENERAL -->
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
-    
 </div>
 
-<!-- proveedores section -->
+<!-- empleados section -->
 <section class="food_section layout_padding-bottom layout_padding-top">
     <div class="container">
         <div class="heading_container heading_center">
-            <h2>Proveedores</h2>
-            <p>Listado general de proveedores registrados en el sistema</p>
+            <h2>Empleados</h2>
+            <p>Listado general de empleados registrados en el sistema</p>
         </div>
 
         <div class="table-responsive mt-4">
             <table class="border-redondos table table-striped table-bordered text-center">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Imagen</th>
+                        <th>Foto</th>
                         <th>Nombre</th>
+                        <th>Puesto</th>
                         <th>Teléfono</th>
                         <th>Email</th>
-                        <th>Tipo</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <!-- PROVEEDOR 1 -->
+                    <!-- EMPLEADO 1 -->
                     <tr>
                         <td>
-                            <img src="~/StaticFiles/images/lagar.jpg" width="70" style="border-radius:8px;" />
+                            <img src="~/StaticFiles/images/team1.jpg" width="70" style="border-radius:50%;" />
                         </td>
-                        <td>El Lagar</td>
-                        <td>1234-5678</td>
-                        <td>contacto@ellagar.com</td>
-                        <td>Nacional</td>
+                        <td>Juan Pérez</td>
+                        <td>Gerente</td>
+                        <td>8888-9999</td>
+                        <td>juan@empresa.com</td>
                         <td>
                             <span class="badge badge-success">Activo</span>
                         </td>
@@ -50,15 +51,15 @@
                         </td>
                     </tr>
 
-                    <!-- PROVEEDOR 2 -->
+                    <!-- EMPLEADO 2 -->
                     <tr>
                         <td>
-                            <img src="~/StaticFiles/images/epa.jpg" width="70" style="border-radius:8px;" />
+                            <img src="~/StaticFiles/images/team2.jpg" width="70" style="border-radius:50%;" />
                         </td>
-                        <td>EPA</td>
-                        <td>8765-4321</td>
-                        <td>info@epa.com</td>
-                        <td>Internacional</td>
+                        <td>María López</td>
+                        <td>Ventas</td>
+                        <td>8777-6655</td>
+                        <td>maria@empresa.com</td>
                         <td>
                             <span class="badge badge-success">Activo</span>
                         </td>
@@ -68,15 +69,15 @@
                         </td>
                     </tr>
 
-                    <!-- PROVEEDOR 3 -->
+                    <!-- EMPLEADO 3 -->
                     <tr>
                         <td>
-                            <img src="~/StaticFiles/images/distribuidor.jpg" width="70" style="border-radius:8px;" />
+                            <img src="~/StaticFiles/images/team3.jpg" width="70" style="border-radius:50%;" />
                         </td>
-                        <td>Charlie's Piedras</td>
-                        <td>1122-3344</td>
-                        <td>ventas@charlie.com</td>
-                        <td>Nacional</td>
+                        <td>Carlos Ramírez</td>
+                        <td>Logística</td>
+                        <td>8666-5544</td>
+                        <td>carlos@empresa.com</td>
                         <td>
                             <span class="badge badge-danger">Inactivo</span>
                         </td>
@@ -90,8 +91,8 @@
         </div>
 
         <div class="btn-box">
-            <a href="#" class="btn btn-dark px-4 py-2 mt-3">Agregar Proveedor</a>
+            <a href="#" class="btn btn-dark px-4 py-2 mt-3">Agregar Empleado</a>
         </div>
     </div>
 </section>
-<!-- end proveedores section -->
+<!-- end empleados section -->

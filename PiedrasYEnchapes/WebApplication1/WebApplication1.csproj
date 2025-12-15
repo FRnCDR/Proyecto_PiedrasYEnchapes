@@ -191,6 +191,9 @@
     <Content Include="Views\Home\Productos.cshtml" />
     <Content Include="Views\Home\Proveedores.cshtml" />
     <Content Include="Views\Home\Inventario.cshtml" />
+    <Content Include="Views\Home\Nosotros.cshtml" />
+    <Content Include="Views\Home\Empleados.cshtml" />
+    <Content Include="Views\Shared\_LayoutLoginRegistro.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
