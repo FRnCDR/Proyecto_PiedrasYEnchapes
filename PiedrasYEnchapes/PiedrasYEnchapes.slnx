@@ -2,5 +2,7 @@
   <Folder Name="/Elementos de la solución/">
     <File Path=".gitignore" />
   </Folder>
-  <Project Path="WebApplication1/WebApplication1.csproj" Id="b347646d-dc42-4ba9-8d6a-3c00aeb5daf1" />
+  <Project Path="PiedrasYEnchapes.DA/PiedrasYEnchapes.DA.csproj" Id="eae0ab35-017f-49b6-815d-1459e091a831" />
+  <Project Path="PiedrasYEnchapes.UI.Identity/PiedrasYEnchapes.UI.Identity.csproj" Id="9e50521e-e39d-435b-b6ab-9f8035a84b8b" />
+  <Project Path="PiedrasYEnchapes.UI/PiedrasYEnchapes.UI.csproj" Id="b347646d-dc42-4ba9-8d6a-3c00aeb5daf1" />
 </Solution>
