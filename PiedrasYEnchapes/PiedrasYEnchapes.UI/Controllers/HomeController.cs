@@ -18,11 +18,13 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrador,Empleado")]
         public ActionResult Proveedores()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrador,Empleado")]
         public ActionResult Inventario()
         {
             return View();
@@ -45,6 +47,7 @@ namespace WebApplication1.Controllers
 
         }
 
+        [Authorize(Roles = "Administrador,Empleado")]
         public ActionResult Empleados()
         {
             return View();

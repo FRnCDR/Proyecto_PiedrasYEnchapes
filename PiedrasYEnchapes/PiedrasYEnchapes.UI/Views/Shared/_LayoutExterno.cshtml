@@ -1,4 +1,4 @@
-﻿@* Views/Shared/_LayoutExterno.cshtml *@
+﻿@* Views/Shared/_LayoutExterno.cshtml *@}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +12,8 @@
     <link href="~/StaticFiles/cssEx/style.css" rel="stylesheet" />
     <!-- End layout styles -->
 </head>
-<body>
+<body class="@(ViewBag.BodyClass ?? "")">
+
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-center auth">
@@ -28,5 +29,7 @@
     <script src="~/StaticFiles/jsEx/off-canvas.js"></script>
     <script src="~/StaticFiles/jsEx/hoverable-collapse.js"></script>
     <script src="~/StaticFiles/jsEx/misc.js"></script>
+    @RenderSection("Scripts", required: false)
+
 </body>
 </html>

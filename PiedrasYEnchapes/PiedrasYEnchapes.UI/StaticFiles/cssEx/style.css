@@ -39,6 +39,9 @@
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
 
+
+
+
 @-webkit-keyframes flash {
   0% {
     opacity: 1; }
@@ -14260,3 +14263,56 @@ dl {
     color: #b1b1b1; }
 
 /*# sourceMappingURL=style.css.map */
+
+/* ========== AUTH PAGES (Login/Register) ========== */
+body.auth-bg {
+    margin: 0 !important;
+    background: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.60)), url('/StaticFiles/images/fondoLogin.png') center center / cover no-repeat !important;
+}
+
+    /* Quita fondos/paddings del template que dañan el full-screen */
+    body.auth-bg .container-scroller,
+    body.auth-bg .container-fluid.page-body-wrapper,
+    body.auth-bg .content-wrapper,
+    body.auth-bg .row.flex-grow {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        min-height: 100vh !important;
+    }
+
+    /* El template pone align-items-center pero el row flex-grow estorba.
+   Esto fuerza centrado real y evita que el card se estire */
+    body.auth-bg .content-wrapper {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* El row del layout se vuelve un simple contenedor, no flex */
+    body.auth-bg .row.flex-grow {
+        display: block !important;
+    }
+
+    /* Wrapper del card */
+    body.auth-bg .auth-card-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px; /* margen en móvil */
+        box-sizing: border-box;
+    }
+
+    /* El card ya no se estira: ancho bonito fijo */
+    body.auth-bg .auth-card {
+        width: 100%;
+        max-width: 520px;
+        border-radius: 18px;
+    }
+
+/* Evita scroll raro en auth (opcional) */
+body.auth-bg {
+    overflow-x: hidden;
+}
