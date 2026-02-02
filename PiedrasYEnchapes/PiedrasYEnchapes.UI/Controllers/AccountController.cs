@@ -202,25 +202,39 @@ namespace PiedrasYEnchapes.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // No revelar que el usuario no existe o que no está confirmado
-                    return View("ForgotPasswordConfirmation");
-                }
-
-                // Para obtener más información sobre cómo habilitar la confirmación de cuentas y el restablecimiento de contraseña, visite https://go.microsoft.com/fwlink/?LinkID=320771
-                // Enviar un correo electrónico con este vínculo
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Para restablecer la contraseña, haga clic <a href=\"" + callbackUrl + "\">aquí</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                return View(model);
             }
 
-            // Si llegamos a este punto, es que se ha producido un error y volvemos a mostrar el formulario
-            return View(model);
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // No revelar si el usuario existe o no
+                return View("ForgotPasswordConfirmation");
+            }
+
+            string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+
+            var callbackUrl = Url.Action(
+                "ResetPassword",
+                "Account",
+                new { userId = user.Id, code = code },
+                protocol: Request.Url.Scheme
+            );
+
+            await UserManager.SendEmailAsync(
+                user.Id,
+                "Restablecer contraseña - Piedras Decorativas",
+                $"Hola,<br/><br/>" +
+                $"Recibimos una solicitud para restablecer tu contraseña.<br/><br/>" +
+                $"Haz clic en el siguiente enlace para continuar:<br/>" +
+                $"<a href=\"{callbackUrl}\">Restablecer contraseña</a><br/><br/>" +
+                $"Si no solicitaste este cambio, puedes ignorar este correo.<br/><br/>" +
+                $"— Equipo de Soporte de Piedras Y Enchapes"
+            );
+
+            return RedirectToAction("ForgotPasswordConfirmation");
         }
 
         //

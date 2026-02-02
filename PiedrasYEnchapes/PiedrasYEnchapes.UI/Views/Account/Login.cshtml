@@ -25,6 +25,8 @@
             {
                 @Html.AntiForgeryToken()
 
+
+
                 <!-- Email -->
                 <div class="mb-3">
                     <label class="form-label">Correo electrónico</label>
@@ -70,6 +72,18 @@
                     <span class="text-muted">¿No tienes cuenta?</span>
                     <a href="@Url.Action("Register","Account")" class="fw-bold">
                         Registrarse
+                    </a>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="@Url.Action("ForgotPassword","Account")" class="text-light fw-bold">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="@Url.Action("Index","Home")" class="fw-bold">
+                        Volver al menú principal
                     </a>
                 </div>
             }
