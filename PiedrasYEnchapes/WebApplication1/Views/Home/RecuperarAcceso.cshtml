@@ -1,5 +1,4 @@
 ﻿@{
-    ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_LayoutExterno.cshtml";
 }
 
@@ -14,11 +13,12 @@
 
             <div class="login-brand">
                 <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Logo" class="login-logo" />
-                <h1 class="login-title">Bienvenido</h1>
-                <p class="login-subtitle">Inicia sesión para continuar</p>
+                <h1 class="login-title">Recuperar acceso</h1>
+                <p class="login-subtitle">Ingresá tu correo y te enviaremos un código de verificación</p>
             </div>
 
-            <form action="/Login" method="post" class="login-form">
+            <!-- Ajustá el action a tu ruta real si no es /RecuperarAcceso -->
+            <form action="/RecuperarAcceso" method="post" class="login-form">
 
                 <div class="input-group-modern">
                     <span class="input-icon">
@@ -27,37 +27,21 @@
                     <input type="email"
                            class="form-control input-modern"
                            name="correo"
-                           placeholder="Correo"
-                           required />
-                </div>
-
-                <div class="input-group-modern">
-                    <span class="input-icon">
-                        <i class="fa fa-lock"></i>
-                    </span>
-                    <input type="password"
-                           class="form-control input-modern"
-                           name="password"
-                           placeholder="Contraseña"
+                           placeholder="Correo electrónico"
                            required />
                 </div>
 
                 <button type="submit" class="btn login-btn w-100">
-                    Iniciar sesión
+                    Enviar código
                 </button>
-
-                <div class="login-row">
-                    <a href="@Url.Action("RecuperarAcceso", "Home")" class="forgot">¿Olvidó su contraseña?</a>
-
-                </div>
 
                 <div class="login-divider">
                     <span>o</span>
                 </div>
 
                 <div class="login-footer">
-                    <span>¿No tienes cuenta?</span>
-                    <a href="@Url.Action("Registro", "Home")" class="signup">Crear cuenta</a>
+                    <span>¿Ya recordaste tu contraseña?</span>
+                    <a href="@Url.Action("Login", "Home")" class="signup">Volver a iniciar sesión</a>
                 </div>
 
             </form>

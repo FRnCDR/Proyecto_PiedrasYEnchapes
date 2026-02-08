@@ -8,48 +8,32 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Productos()
-        {
-            return View();
-        }
 
-        public ActionResult Proveedores()
-        {
-            return View();
-        }
-
-        public ActionResult Inventario()
-        {
-            return View();
-        }
-
+        [HttpGet]
         public ActionResult Login()
         {
              return View();
         }
 
+
+        [HttpGet]
         public ActionResult Registro()
         {
             return View();
 
         }
 
-        public ActionResult Nosotros()
+        [HttpGet]
+        public ActionResult RecuperarAcceso()
         {
             return View();
 
         }
-
-        public ActionResult Empleados()
-        {
-            return View();
-
-        }
-
     }
 }

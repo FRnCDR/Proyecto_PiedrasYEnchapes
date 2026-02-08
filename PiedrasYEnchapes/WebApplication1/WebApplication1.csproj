@@ -117,7 +117,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventarioController.cs" />
+    <Compile Include="Controllers\ProductosController.cs" />
+    <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\SobreNosotrosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -132,6 +137,7 @@
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
     <Content Include="StaticFiles\css\font-awesome.min.css" />
+    <Content Include="StaticFiles\css\login.css" />
     <Content Include="StaticFiles\css\responsive.css" />
     <Content Include="StaticFiles\css\style.css" />
     <Content Include="StaticFiles\images\about-img.png" />
@@ -183,17 +189,18 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="StaticFiles\fonts\" />
+    <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Registro.cshtml" />
-    <Content Include="Views\Home\Productos.cshtml" />
-    <Content Include="Views\Home\Proveedores.cshtml" />
-    <Content Include="Views\Home\Inventario.cshtml" />
-    <Content Include="Views\Home\Nosotros.cshtml" />
-    <Content Include="Views\Home\Empleados.cshtml" />
-    <Content Include="Views\Shared\_LayoutLoginRegistro.cshtml" />
+    <Content Include="Views\Proveedor\VerProveedores.cshtml" />
+    <Content Include="Views\Inventario\VerInventario.cshtml" />
+    <Content Include="Views\Productos\VerProductos.cshtml" />
+    <Content Include="Views\SobreNosotros\VerNosotros.cshtml" />
+    <Content Include="Views\Empleado\VerEmpleados.cshtml" />
+    <Content Include="Views\Home\RecuperarAcceso.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
