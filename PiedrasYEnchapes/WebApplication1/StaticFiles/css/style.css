@@ -1170,3 +1170,106 @@ hr {
     .login_link:hover {
         color: #f1c40f;
     }
+
+
+
+
+
+
+
+/* ===== NAVBAR CLEAN (FIX) ===== */
+.navbar-clean {
+    padding: 12px 0;
+}
+
+.brand-clean span {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff !important;
+    letter-spacing: .4px;
+}
+
+/* UL en una sola fila */
+.nav-row {
+    display: flex;
+    align-items: center;
+    gap: 14px; /* separación pareja */
+    margin: 0;
+    padding: 0;
+}
+
+    /* Links */
+    .nav-row .nav-link {
+        color: rgba(255,255,255,.92) !important;
+        font-weight: 700;
+        padding: 8px 10px !important;
+        white-space: nowrap; /* evita que "Sobre Nosotros" se parta */
+    }
+
+        .nav-row .nav-link:hover {
+            color: #ffc107 !important;
+        }
+
+/* Botón cotizar */
+.btn-cta {
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: #ffc107;
+    border: 0;
+    color: #111 !important;
+    font-weight: 900;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
+    .btn-cta:hover {
+        filter: brightness(.95);
+    }
+
+/* Iconos redondos */
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: #fff !important;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.14);
+    text-decoration: none !important;
+}
+
+    .icon-btn:hover {
+        background: rgba(255,255,255,.18);
+    }
+
+/* Login */
+.login-cta {
+    color: #fff !important;
+    font-weight: 800;
+    padding: 8px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    text-decoration: none !important;
+}
+
+    .login-cta:hover {
+        background: rgba(255,255,255,.12);
+    }
+
+/* Dropdown más bonito */
+.dropdown-menu {
+    border-radius: 14px;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 14px 35px rgba(0,0,0,.22);
+}
+
+.dropdown-item {
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+
+

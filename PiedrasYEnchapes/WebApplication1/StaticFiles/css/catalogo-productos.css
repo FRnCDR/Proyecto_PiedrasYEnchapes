@@ -1,0 +1,329 @@
+﻿/* ===============================
+   RESET BÁSICO
+================================ */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===============================
+   FIX NAVBAR → HERO (DEFINITIVO)
+================================ */
+
+/* Evita que el navbar empuje contenido */
+nav.navbar {
+    margin-bottom: 0 !important;
+}
+
+/* ESTE hero viene del layout y genera el espacio */
+.hero_general {
+    display: none !important;
+}
+
+/* Asegurar que el hero del catálogo inicie pegado */
+.catalog-hero {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* ===============================
+   CATALOG HERO (CEREZA 🍒)
+================================ */
+.catalog-hero {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+}
+
+.catalog-hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Overlay elegante */
+.catalog-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient( to right, rgba(0,0,0,0.65), rgba(0,0,0,0.15) );
+}
+
+.catalog-hero-content {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%);
+    max-width: 520px;
+    color: #fff;
+}
+
+.catalog-hero-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+.catalog-hero-content h1 {
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.catalog-hero-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.95;
+}
+
+/* ===============================
+   SECCIÓN CATÁLOGO
+================================ */
+.catalog_section {
+    padding: 80px 0;
+    background: #fafafa;
+}
+
+/* ===============================
+   HEADER CATÁLOGO
+================================ */
+.catalog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.catalog-title {
+    font-size: 34px;
+    font-weight: 600;
+}
+
+.catalog-subtitle {
+    font-size: 15px;
+    color: #777;
+    margin-top: 6px;
+}
+
+/* ===============================
+   BUSCADOR (ESTÉTICO)
+================================ */
+.catalog-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+    .catalog-search input {
+        border: none;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .catalog-search i {
+        color: #999;
+    }
+
+/* Ocultar buscador en móvil */
+@media (max-width: 768px) {
+    .catalog-search {
+        display: none;
+    }
+}
+
+/* ===============================
+   FILTROS MINIMAL
+================================ */
+.filters_menu.filters-minimal {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+    .filters_menu.filters-minimal li {
+        list-style: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        background: #eee;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all .3s ease;
+    }
+
+        .filters_menu.filters-minimal li.active,
+        .filters_menu.filters-minimal li:hover {
+            background: #222;
+            color: #fff;
+        }
+
+/* ===============================
+   CARDS CATÁLOGO (MINIMAL PREMIUM)
+================================ */
+.catalog-card {
+    background: #fff;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    transition: transform .4s ease, box-shadow .4s ease;
+    height: 100%;
+}
+
+    .catalog-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+    }
+
+/* Imagen cuadrada */
+.catalog-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+    .catalog-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .5s ease;
+    }
+
+.catalog-card:hover .catalog-img img {
+    transform: scale(1.06);
+}
+
+/* ===============================
+   CUERPO CARD
+================================ */
+.catalog-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.catalog-topline {
+    display: flex;
+    gap: 16px;
+}
+
+.catalog-num {
+    font-size: 22px;
+    font-weight: 600;
+    color: #bbb;
+    min-width: 32px;
+}
+
+.catalog-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.catalog-desc {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.4;
+}
+
+/* ===============================
+   FOOTER CARD
+================================ */
+.catalog-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+    padding-top: 14px;
+}
+
+.catalog-price {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.catalog-link {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap .3s ease;
+}
+
+    .catalog-link:hover {
+        gap: 10px;
+    }
+
+    .catalog-link .arrow {
+        transition: transform .3s ease;
+    }
+
+    .catalog-link:hover .arrow {
+        transform: translateX(4px);
+    }
+
+/* ===============================
+   CTA FINAL
+================================ */
+.catalog-cta {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.catalog-more {
+    padding: 14px 40px;
+    border-radius: 30px;
+    background: #222;
+    color: #fff;
+    font-size: 14px;
+    transition: background .3s ease;
+}
+
+    .catalog-more:hover {
+        background: #000;
+    }
+
+/* ===============================
+   RESPONSIVE HERO
+================================ */
+@media (max-width: 768px) {
+    .catalog-hero {
+        height: 320px;
+    }
+
+    .catalog-hero-content {
+        left: 6%;
+        right: 6%;
+    }
+
+        .catalog-hero-content h1 {
+            font-size: 30px;
+        }
+}

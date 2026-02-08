@@ -136,7 +136,11 @@
     <Content Include="StaticFiles\cssEx\style.css" />
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
+    <Content Include="StaticFiles\css\catalogo-minimal.css" />
+    <Content Include="StaticFiles\css\catalogo-productos.css" />
     <Content Include="StaticFiles\css\font-awesome.min.css" />
+    <Content Include="StaticFiles\css\index-moderno.css" />
+    <Content Include="StaticFiles\css\layout-modern.css" />
     <Content Include="StaticFiles\css\login.css" />
     <Content Include="StaticFiles\css\responsive.css" />
     <Content Include="StaticFiles\css\style.css" />

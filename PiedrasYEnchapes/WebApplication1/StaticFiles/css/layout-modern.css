@@ -1,0 +1,214 @@
+﻿/* ===============================
+   FOOTER MODERNO
+================================ */
+.footer_modern {
+    background: #0b0b0c;
+    color: rgba(255,255,255,0.85);
+    padding: 70px 0 25px;
+    position: relative;
+}
+
+    /* Glow suave arriba */
+    .footer_modern::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.18), transparent);
+    }
+
+.footer_top {
+    padding-bottom: 35px;
+}
+
+.footer_block {
+    margin-bottom: 30px;
+}
+
+.footer_title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+    letter-spacing: 0.3px;
+}
+
+/* Contact items */
+.footer_links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer_item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.82);
+    transition: transform .2s ease, color .2s ease;
+}
+
+    .footer_item:hover {
+        transform: translateX(3px);
+        color: #fff;
+    }
+
+.footer_icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #ffc107;
+}
+
+/* Center brand */
+.footer_center {
+    text-align: center;
+}
+
+.footer_brand {
+    display: inline-block;
+    font-weight: 800;
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 12px;
+    letter-spacing: 0.4px;
+}
+
+.footer_text {
+    color: rgba(255,255,255,0.70);
+    line-height: 1.7;
+    max-width: 360px;
+    margin: 0 auto 16px;
+}
+
+/* Social chips */
+.footer_social_modern {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.social_chip {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.85);
+    transition: transform .2s ease, background .2s ease, border .2s ease;
+}
+
+    .social_chip:hover {
+        transform: translateY(-3px);
+        background: rgba(255,193,7,0.12);
+        border-color: rgba(255,193,7,0.35);
+        color: #ffc107;
+    }
+
+/* Hours */
+.footer_hours {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+
+.hours_row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.hours_day {
+    color: rgba(255,255,255,0.78);
+}
+
+.hours_time {
+    color: #fff;
+}
+
+/* CTA */
+.footer_cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #ffc107;
+    color: #111 !important;
+    font-weight: 800;
+    transition: transform .2s ease;
+}
+
+    .footer_cta:hover {
+        transform: translateY(-2px);
+    }
+
+.cta_arrow {
+    transition: transform .2s ease;
+}
+
+.footer_cta:hover .cta_arrow {
+    transform: translateX(3px);
+}
+
+/* Bottom bar */
+.footer_bottom {
+    border-top: 1px solid rgba(255,255,255,0.10);
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+}
+
+.footer_bottom_right a {
+    color: rgba(255,255,255,0.65);
+    transition: color .2s ease;
+}
+
+    .footer_bottom_right a:hover {
+        color: #fff;
+    }
+
+.footer_bottom_right .dot {
+    margin: 0 8px;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer_center {
+        text-align: left;
+    }
+
+    .footer_text {
+        margin: 0 0 16px;
+        max-width: 100%;
+    }
+
+    .footer_social_modern {
+        justify-content: flex-start;
+    }
+
+    .hours_row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
