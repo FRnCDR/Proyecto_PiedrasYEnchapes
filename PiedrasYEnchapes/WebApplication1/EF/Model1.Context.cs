@@ -51,7 +51,7 @@ namespace WebApplication1.EF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CrearUsuarios", identificacionParameter, nombreParameter, correoElectronicoParameter, contrasennaParameter);
         }
     
-        public virtual ObjectResult<LoginUsuario_Result> LoginUsuario(string correoElectronico, string contrasenna)
+        public virtual ObjectResult<Nullable<int>> LoginUsuario(string correoElectronico, string contrasenna)
         {
             var correoElectronicoParameter = correoElectronico != null ?
                 new ObjectParameter("CorreoElectronico", correoElectronico) :
@@ -61,7 +61,7 @@ namespace WebApplication1.EF
                 new ObjectParameter("Contrasenna", contrasenna) :
                 new ObjectParameter("Contrasenna", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<LoginUsuario_Result>("LoginUsuario", correoElectronicoParameter, contrasennaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("LoginUsuario", correoElectronicoParameter, contrasennaParameter);
         }
     }
 }

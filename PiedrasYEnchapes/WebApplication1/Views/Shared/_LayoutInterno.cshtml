@@ -68,11 +68,34 @@
                             </a>
                         </li>
 
-                        <!-- Usuario -->
-                        <li class="nav-item">
-                            <a class="icon-btn" href="@Url.Action("Usuario", "Home")" title="Mi cuenta">
+                        <!-- Usuario (dropdown) -->
+                        <li class="nav-item dropdown">
+                            <a class="icon-btn dropdown-toggle"
+                               href="#"
+                               id="userDropdown"
+                               role="button"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false"
+                               title="Mi cuenta">
                                 <i class="fa fa-user"></i>
                             </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="@Url.Action("Perfil", "Home")">
+                                    <i class="fa fa-user-circle mr-2"></i> Mi perfil
+                                </a>
+
+                                <a class="dropdown-item" href="@Url.Action("MisCotizaciones", "Home")">
+                                    <i class="fa fa-file-text-o mr-2"></i> Mis cotizaciones
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item" href="@Url.Action("CerrarSesion","Home")">
+                                    <i class="fa fa-sign-out mr-2"></i> Cerrar sesión
+                                </a>
+                            </div>
                         </li>
 
                         <!-- Administración -->
@@ -96,12 +119,6 @@
 
 
 
-                        <!-- Iniciar sesión -->
-                        <li class="nav-item">
-                            <a class="login-cta" href="@Url.Action("Login", "Home")">
-                                <i class="fa fa-sign-in mr-1"></i> Iniciar sesión
-                            </a>
-                        </li>
 
                     </ul>
                 </div>
@@ -110,12 +127,10 @@
 
         </div>
     </header>
-    <!-- end header section -->
-    <!-- CONTENIDO DE CADA VISTA -->
+  
     @RenderBody()
 
-    <!-- FOOTER -->
-    <!-- FOOTER (MODERNO) -->
+    
     <footer class="footer_modern">
         <div class="container">
 
@@ -157,7 +172,6 @@
                             <a href="#" class="social_chip" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
                             <a href="#" class="social_chip" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
                             <a href="#" class="social_chip" aria-label="WhatsApp"><i class="fa fa-whatsapp"></i></a>
-                            <a href="#" class="social_chip" aria-label="LinkedIn"><i class="fa fa-linkedin"></i></a>
                         </div>
                     </div>
 

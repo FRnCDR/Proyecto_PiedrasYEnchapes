@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.EF;
@@ -22,12 +25,30 @@ namespace WebApplication1.Controllers
         {
              return View();
         }
-
         [HttpPost]
         public ActionResult Login(Usuario usuario)
         {
-            return View();
+            using (var context = new DATABASE_PYEEntities())
+            {
+                int resultado = context.LoginUsuario(
+                    usuario.CorreoElectronico,
+                    usuario.Contrasenna
+                ).FirstOrDefault() ?? 0; 
+
+                if (resultado == 1)
+                {
+                    Session["UsuarioCorreo"] = usuario.CorreoElectronico;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ViewBag.Mensaje = "Correo o contraseña incorrectos.";
+                return View(usuario);
+            }
         }
+
+
+
+
 
 
         [HttpGet]
@@ -73,6 +94,42 @@ namespace WebApplication1.Controllers
         public ActionResult RecuperarAcceso(Usuario usuario)
         {
             return View();
+        }
+
+
+
+
+
+
+
+
+        // ----------------- CONSULTA CÉDULA  -----------------
+        [HttpGet]
+        public async Task<ActionResult> ConsultarCedula(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return Json(new { ok = false, mensaje = "Cédula vacía" }, JsonRequestBehavior.AllowGet);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            using (var http = new HttpClient())
+            {
+                var resp = await http.GetAsync("https://apis.gometa.org/cedulas/" + id);
+                if (!resp.IsSuccessStatusCode)
+                    return Json(new { ok = false, mensaje = "No se pudo consultar la cédula" }, JsonRequestBehavior.AllowGet);
+
+                var json = await resp.Content.ReadAsStringAsync();
+                return Content(json, "application/json");
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("Login", "Home");
+
         }
     }
 }

@@ -105,17 +105,11 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="LoginUsuario" ReturnType="Collection(DATABASE_PYEModel.LoginUsuario_Result)">
+          <FunctionImport Name="LoginUsuario" ReturnType="Collection(Int32)">
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="LoginUsuario_Result">
-          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="CorreoElectronico" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Perfil" Nullable="false" MaxLength="100" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -144,16 +138,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CrearUsuarios" FunctionName="DATABASE_PYEModel.Store.CrearUsuarios" />
-          <FunctionImportMapping FunctionImportName="LoginUsuario" FunctionName="DATABASE_PYEModel.Store.LoginUsuario">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DATABASE_PYEModel.LoginUsuario_Result">
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="LoginUsuario" FunctionName="DATABASE_PYEModel.Store.LoginUsuario" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
