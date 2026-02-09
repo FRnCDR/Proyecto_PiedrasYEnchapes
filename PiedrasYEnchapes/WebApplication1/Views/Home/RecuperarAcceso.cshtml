@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WebApplication1.Models.Usuario
+
+@{
     Layout = "~/Views/Shared/_LayoutExterno.cshtml";
 }
 
@@ -17,24 +19,24 @@
                 <p class="login-subtitle">Ingresá tu correo y te enviaremos un código de verificación</p>
             </div>
 
-            <!-- Ajustá el action a tu ruta real si no es /RecuperarAcceso -->
-            <form action="/RecuperarAcceso" method="post" class="login-form">
+
+            @using (Html.BeginForm("RecuperarAcceso", "Home", FormMethod.Post, new { @class = "forget-form" }))
+            {
+
+            
 
                 <div class="input-group-modern">
                     <span class="input-icon">
                         <i class="fa fa-envelope"></i>
                     </span>
-                    <input type="email"
-                           class="form-control input-modern"
-                           name="correo"
-                           placeholder="Correo electrónico"
-                           required />
+                    @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control input-modern", 
+                     placeholder = "Correo electrónico" })
                 </div>
 
                 <button type="submit" class="btn login-btn w-100">
                     Enviar código
                 </button>
-
+            }
                 <div class="login-divider">
                     <span>o</span>
                 </div>
@@ -44,7 +46,6 @@
                     <a href="@Url.Action("Login", "Home")" class="signup">Volver a iniciar sesión</a>
                 </div>
 
-            </form>
         </div>
     </section>
 </div>

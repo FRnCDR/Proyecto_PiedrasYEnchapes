@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.EF;
+using WebApplication1.Services;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -81,19 +82,48 @@ namespace WebApplication1.Controllers
 
 
 
-
         [HttpGet]
         public ActionResult RecuperarAcceso()
         {
             return View();
-
         }
-
 
         [HttpPost]
         public ActionResult RecuperarAcceso(Usuario usuario)
         {
-            return View();
+            using (var context = new DATABASE_PYEEntities())
+            {
+                // buscar usuario por correo (tbUsuario del EF)
+                var userDb = context.tbUsuario
+                    .FirstOrDefault(u => u.CorreoElectronico == usuario.CorreoElectronico);
+
+                if (userDb != null)
+                {
+                    // 1) generar contraseña temporal
+                    var passTemp = RecuperacionService.GenerarContrasenna();
+
+                    // 2) actualizar en BD (texto plano como tu guía)
+                    userDb.Contrasenna = passTemp;
+
+                    var filas = context.SaveChanges();
+
+                    if (filas > 0)
+                    {
+                        // 3) enviar correo
+                        RecuperacionService.EnviarCorreoRecuperacion(
+                            "Recuperación de acceso - Piedras Decorativas",
+                            passTemp,
+                            userDb.CorreoElectronico
+                        );
+
+                        ViewBag.MensajeOK = "Te enviamos una contraseña temporal a tu correo.";
+                        return View(); // o RedirectToAction("Login","Home");
+                    }
+                }
+
+                ViewBag.Mensaje = "No se encontró un usuario con ese correo o no se pudo restablecer.";
+                return View(usuario);
+            }
         }
 
 
