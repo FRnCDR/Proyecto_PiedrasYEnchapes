@@ -135,6 +135,7 @@
     <Content Include="StaticFiles\cssEx\materialdesignicons.min.css" />
     <Content Include="StaticFiles\cssEx\style.css" />
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
+    <Content Include="StaticFiles\css\about-modern.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
     <Content Include="StaticFiles\css\catalogo-minimal.css" />
     <Content Include="StaticFiles\css\catalogo-productos.css" />

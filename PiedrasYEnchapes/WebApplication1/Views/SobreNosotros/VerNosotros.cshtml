@@ -3,63 +3,86 @@
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
 
-<div class="hero_general hero-about">
-    <div class="hero-bg"
-         style="background-image: url(https://cdn.pixabay.com/photo/2021/09/20/04/47/family-6639676_1280.jpg); ">
+<!-- HERO MODERNO -->
+<section class="about-hero">
+    <div class="about-hero-bg"
+         style="background-image:url('https://cdn.pixabay.com/photo/2016/11/29/03/53/stone-1867805_1280.jpg');">
     </div>
 
-    <div class="hero-text text-center">
-        <h1>Sobre Nosotros</h1>
-        <p>Transformamos espacios con piedra y diseño</p>
-    </div>
-</div>
+    <div class="about-hero-overlay"></div>
 
+    <div class="container about-hero-content">
+        <span class="about-pill">Sobre nosotros</span>
+        <h1>Piedra natural para espacios con carácter</h1>
+        <p>
+            Seleccionamos, asesoramos y entregamos piedra y enchapes decorativos
+            para proyectos interiores y exteriores con un acabado profesional.
+        </p>
 
-<section class="about_section layout_padding bg-white">
-    <div class="container">
-
-        <div class="heading_container heading_center mb-5">
-            <h2>Nuestra Historia</h2>
-            <hr class="w-25 mx-auto mb-5">
-            <p>Pasión por la piedra, compromiso con la calidad</p>
+        <div class="about-hero-actions">
+            <a href="#" class="about-btn-primary">Cotizar ahora</a>
+            <a href="@Url.Action("VerProductos", "Productos")" class="about-btn-ghost">Ver catálogo</a>
         </div>
 
-        <div class="row align-items-center">
+        <div class="about-hero-badges">
+            <div class="badge-mini">
+                <span class="badge-num">+10</span>
+                <span class="badge-txt">años</span>
+            </div>
+            <div class="badge-mini">
+                <span class="badge-num">+500</span>
+                <span class="badge-txt">proyectos</span>
+            </div>
+            <div class="badge-mini">
+                <span class="badge-num">100%</span>
+                <span class="badge-txt">calidad</span>
+            </div>
+        </div>
+    </div>
+</section>
 
-            <!-- LOGO -->
-            <div class="col-md-6 mb-4 text-center">
-                <img src="https://cdn.pixabay.com/photo/2022/12/23/09/27/logo-7673991_1280.png"
-                     class="img-fluid rounded shadow-sm"
-                     style="max-width: 420px;"
-                     alt="Nuestra empresa" />
+<!-- HISTORIA (EDITORIAL) -->
+<section class="about-story">
+    <div class="container">
+        <div class="about-story-grid">
+
+            <div class="about-story-copy">
+                <span class="section-kicker">Nuestra historia</span>
+                <h2>Pasión por la piedra, obsesión por el detalle</h2>
+
+                <p>
+                    En <strong>Piedras Decorativas</strong> creemos que un buen material no solo se ve bien:
+                    se siente, dura y transforma. Por eso trabajamos con piedra natural y enchapes
+                    seleccionados para elevar la estética y la funcionalidad de cada espacio.
+                </p>
+
+                <p>
+                    Acompañamos al cliente desde la elección del material hasta el resultado final,
+                    con asesoría personalizada, recomendaciones técnicas y un enfoque en acabados
+                    que realmente se notan.
+                </p>
+
+                <div class="about-checks">
+                    <div class="check-item"><i class="fa fa-check"></i> Selección curada de materiales</div>
+                    <div class="check-item"><i class="fa fa-check"></i> Asesoría en diseño y aplicación</div>
+                    <div class="check-item"><i class="fa fa-check"></i> Calidad consistente y entregas confiables</div>
+                </div>
             </div>
 
-            <!-- TEXTO -->
-            <div class="col-md-6 mb-4">
-                <div class="p-4 about-text">
+            <div class="about-story-media">
+                <div class="media-card">
+                    <img src="https://cdn.pixabay.com/photo/2017/08/10/07/18/masonry-2618578_1280.jpg"
+                         alt="Proceso" />
+                </div>
 
-                    <p>
-                        En <strong>Piedras Decorativas</strong> creemos que cada espacio
-                        cuenta una historia. Por eso seleccionamos cuidadosamente
-                        materiales que combinan estética, durabilidad y carácter.
-                    </p>
+                <div class="media-card small">
+                    <img src="https://cdn.pixabay.com/photo/2017/08/06/12/56/stone-2590667_1280.jpg"
+                         alt="Textura" />
+                </div>
 
-                    <p>
-                        Nos especializamos en piedras naturales, revestimientos y
-                        soluciones decorativas para proyectos residenciales,
-                        comerciales y arquitectónicos.
-                    </p>
-
-                    <p>
-                        Acompañamos a nuestros clientes desde la elección del material
-                        hasta la entrega final, ofreciendo asesoría personalizada y
-                        resultados que perduran en el tiempo.
-                    </p>
-
-                    <p class="mb-0">
-                        Nuestra experiencia es el respaldo de cada proyecto que
-                        transformamos en una obra única.
-                    </p>
+                <div class="media-floating">
+                    <span class="float-title">Acabados que se notan</span>
+                    <span class="float-sub">Interiores • Fachadas • Jardines</span>
                 </div>
             </div>
 
@@ -67,84 +90,125 @@
     </div>
 </section>
 
-<section class="py-5 bg-white text-center">
+<!-- BLOQUE KPI (MODERNO) -->
+<section class="about-kpis">
     <div class="container">
-        <blockquote class="blockquote">
-            <p class="mb-0 font-italic">
-                “La piedra no solo construye espacios, construye experiencias.”
-            </p>
-        </blockquote>
-    </div>
-</section>
-
-<section class="py-5 bg-white">
-    <div class="container">
-        <div class="row text-center">
-
-            <div class="col-md-4">
-                <h3 class="font-weight-bold">+10</h3>
-                <p class="text-muted">Años de experiencia</p>
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <h3>+10</h3>
+                <p>Años de experiencia</p>
             </div>
-
-            <div class="col-md-4">
-                <h3 class="font-weight-bold">+500</h3>
-                <p class="text-muted">Proyectos realizados</p>
+            <div class="kpi-card">
+                <h3>+500</h3>
+                <p>Proyectos realizados</p>
             </div>
-
-            <div class="col-md-4">
-                <h3 class="font-weight-bold">100%</h3>
-                <p class="text-muted">Clientes satisfechos</p>
+            <div class="kpi-card">
+                <h3>100%</h3>
+                <p>Clientes satisfechos</p>
             </div>
-
+            <div class="kpi-card">
+                <h3>+20</h3>
+                <p>Tipos de piedra</p>
+            </div>
         </div>
     </div>
 </section>
 
-
-
-<section class="layout_padding bg-light">
+<!-- PRINCIPIOS (CARDS PREMIUM) -->
+<section class="about-principles">
     <div class="container">
-
-        <div class="heading_container heading_center mb-5">
-            <h2>Nuestros Principios</h2>
-            <p>Lo que nos define como empresa</p>
+        <div class="about-head center">
+            <span class="section-kicker">Lo que nos define</span>
+            <h2>Nuestros principios</h2>
+            <p>Un enfoque simple: material excelente + asesoría real + resultados que duran.</p>
         </div>
 
-        <div class="row text-center">
-
+        <div class="row">
             <div class="col-md-4 mb-4">
-                <div class="p-4 h-100 bg-white rounded shadow-sm">
-                    <i class="fa fa-bullseye fa-3x mb-3 text-secondary"></i>
+                <article class="principle-card">
+                    <div class="icon-bubble">
+                        <i class="fa fa-bullseye"></i>
+                    </div>
                     <h5>Misión</h5>
                     <p>
-                        Brindar soluciones en piedras decorativas que eleven
-                        la calidad, estética y funcionalidad de cada espacio.
+                        Brindar soluciones en piedras y enchapes decorativos que eleven la estética,
+                        la durabilidad y la funcionalidad de cada espacio.
                     </p>
-                </div>
+                </article>
             </div>
 
             <div class="col-md-4 mb-4">
-                <div class="p-4 h-100 bg-white rounded shadow-sm">
-                    <i class="fa fa-eye fa-3x mb-3 text-secondary"></i>
+                <article class="principle-card">
+                    <div class="icon-bubble">
+                        <i class="fa fa-eye"></i>
+                    </div>
                     <h5>Visión</h5>
                     <p>
-                        Ser referentes en innovación, diseño y calidad dentro
-                        del mercado nacional e internacional.
+                        Ser referentes en innovación, diseño y calidad dentro del mercado nacional,
+                        construyendo proyectos memorables.
                     </p>
-                </div>
+                </article>
             </div>
 
             <div class="col-md-4 mb-4">
-                <div class="p-4 h-100 bg-white rounded shadow-sm">
-                    <i class="fa fa-diamond fa-3x mb-3 text-secondary"></i>
+                <article class="principle-card">
+                    <div class="icon-bubble">
+                        <i class="fa fa-diamond"></i>
+                    </div>
                     <h5>Valores</h5>
                     <p>
-                        Compromiso, responsabilidad, excelencia, innovación
-                        y cercanía con nuestros clientes.
+                        Compromiso, excelencia, responsabilidad e innovación, con cercanía real
+                        con nuestros clientes.
                     </p>
-                </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROCESO (CEREZA 🍒) -->
+<section class="about-process">
+    <div class="container">
+        <div class="about-head">
+            <span class="section-kicker">Cómo trabajamos</span>
+            <h2>De la idea al acabado final</h2>
+            <p>Un proceso claro y rápido, sin complicaciones.</p>
+        </div>
+
+        <div class="process-grid">
+            <div class="process-step">
+                <span class="step-num">01</span>
+                <h5>Asesoría</h5>
+                <p>Te ayudamos a elegir según estilo, uso y presupuesto.</p>
             </div>
 
+            <div class="process-step">
+                <span class="step-num">02</span>
+                <h5>Selección</h5>
+                <p>Materiales curados por textura, resistencia y estética.</p>
+            </div>
+
+            <div class="process-step">
+                <span class="step-num">03</span>
+                <h5>Entrega</h5>
+                <p>Logística ordenada para que el proyecto no se detenga.</p>
+            </div>
+
+            <div class="process-step">
+                <span class="step-num">04</span>
+                <h5>Resultado</h5>
+                <p>Acabados que se sienten premium y duran años.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FRASE FINAL -->
+<section class="about-quote">
+    <div class="container">
+        <div class="quote-card">
+            <p>“La piedra no solo construye espacios, construye experiencias.”</p>
+            <span>— Gustavo Fallas Piedras Enchapes y Más</span>
         </div>
     </div>
 </section>
