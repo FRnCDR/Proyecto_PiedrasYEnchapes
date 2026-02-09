@@ -21,33 +21,31 @@ a {
 }
 
 /* ===============================
-   FIX NAVBAR → HERO (DEFINITIVO)
+   FIX NAVBAR → HERO (si usás hero_general)
+   Si NO querés ocultar el hero_general, quitá este bloque.
 ================================ */
-
-/* Evita que el navbar empuje contenido */
 nav.navbar {
     margin-bottom: 0 !important;
 }
 
-/* ESTE hero viene del layout y genera el espacio */
+/* Si seguís usando el hero_general arriba, NO lo ocultés.
+   Si querés ocultarlo porque repetís hero, dejalo en display:none.
+   (Ahora lo dejo visible, porque vos lo estás usando) */
 .hero_general {
-    display: none !important;
-}
-
-/* Asegurar que el hero del catálogo inicie pegado */
-.catalog-hero {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* ===============================
-   CATALOG HERO (CEREZA 🍒)
+   CATALOG HERO
 ================================ */
 .catalog-hero {
     position: relative;
     width: 100%;
     height: 420px;
     overflow: hidden;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .catalog-hero-img img {
@@ -56,12 +54,11 @@ nav.navbar {
     object-fit: cover;
 }
 
-/* Overlay elegante */
 .catalog-hero::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient( to right, rgba(0,0,0,0.65), rgba(0,0,0,0.15) );
+    background: linear-gradient(to right, rgba(0,0,0,0.65), rgba(0,0,0,0.15));
 }
 
 .catalog-hero-content {
@@ -106,7 +103,7 @@ nav.navbar {
 }
 
 /* ===============================
-   HEADER CATÁLOGO
+   HEADER
 ================================ */
 .catalog-head {
     display: flex;
@@ -128,7 +125,7 @@ nav.navbar {
 }
 
 /* ===============================
-   BUSCADOR (ESTÉTICO)
+   BUSCADOR
 ================================ */
 .catalog-search {
     display: flex;
@@ -150,7 +147,6 @@ nav.navbar {
         color: #999;
     }
 
-/* Ocultar buscador en móvil */
 @media (max-width: 768px) {
     .catalog-search {
         display: none;
@@ -158,7 +154,7 @@ nav.navbar {
 }
 
 /* ===============================
-   FILTROS MINIMAL
+   FILTROS
 ================================ */
 .filters_menu.filters-minimal {
     display: flex;
@@ -184,97 +180,112 @@ nav.navbar {
             color: #fff;
         }
 
-/* ===============================
-   CARDS CATÁLOGO (MINIMAL PREMIUM)
-================================ */
+/* =========================================================
+   ✅ AJUSTES QUE PEDISTE (CARDS MÁS PEQUEÑAS + IMAGEN CENTRADA)
+========================================================= */
+
+/* 1) Más separación entre filas (vertical) */
+.grid > [class*="col-"] {
+    margin-bottom: 36px; /* antes era poco: ahora se nota */
+}
+
+/* 2) Card más compacta, borde blanco visible */
 .catalog-card {
     background: #fff;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-    transition: transform .4s ease, box-shadow .4s ease;
+    border: 1px solid #eee; /* borde recuadro blanco */
+    border-radius: 0; /* cuadrado */
+    box-shadow: 0 16px 30px rgba(0,0,0,0.06);
+    transition: transform .25s ease, box-shadow .25s ease;
     height: 100%;
+    max-width: 320px; /* ✅ hace el cuadro más pequeño */
+    margin: 0 auto; /* ✅ centra la card dentro de la columna */
 }
 
     .catalog-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        transform: translateY(-4px);
+        box-shadow: 0 24px 45px rgba(0,0,0,0.10);
     }
 
-/* Imagen cuadrada */
+/* 3) Caja de imagen: menos alta y centrada en el medio */
 .catalog-img {
-    display: block;
+    display: flex; /* ✅ centrado */
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 220px; /* ✅ más pequeño (antes era 1:1 enorme) */
+    background: #fff;
     overflow: hidden;
+    padding: 14px; /* ✅ aire para que se vea “en el medio” */
 }
 
+    /* La imagen ya NO llena todo, queda centrada */
     .catalog-img img {
-        width: 100%;
+        width: auto;
         height: 100%;
-        object-fit: cover;
-        transition: transform .5s ease;
+        max-height: 190px; /* ✅ evita que se pase */
+        object-fit: contain; /* ✅ se ve completa y centrada */
+        transition: transform .4s ease;
     }
 
 .catalog-card:hover .catalog-img img {
-    transform: scale(1.06);
+    transform: scale(1.03);
 }
 
-/* ===============================
-   CUERPO CARD
-================================ */
+/* 4) Cuerpo más compacto */
 .catalog-body {
-    padding: 22px;
+    padding: 16px 18px; /* ✅ menos alto */
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
 }
 
 .catalog-topline {
     display: flex;
-    gap: 16px;
+    gap: 14px;
+    align-items: flex-start;
 }
 
 .catalog-num {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     color: #bbb;
-    min-width: 32px;
+    min-width: 30px;
 }
 
 .catalog-name {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin: 0 0 4px 0;
 }
 
 .catalog-desc {
-    font-size: 14px;
+    font-size: 13px;
     color: #777;
     line-height: 1.4;
+    margin: 0;
 }
 
-/* ===============================
-   FOOTER CARD
-================================ */
+/* Footer card */
 .catalog-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid #eee;
-    padding-top: 14px;
+    padding-top: 12px;
 }
 
 .catalog-price {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .catalog-link {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: gap .3s ease;
+    transition: gap .25s ease;
 }
 
     .catalog-link:hover {
@@ -282,16 +293,14 @@ nav.navbar {
     }
 
     .catalog-link .arrow {
-        transition: transform .3s ease;
+        transition: transform .25s ease;
     }
 
     .catalog-link:hover .arrow {
         transform: translateX(4px);
     }
 
-/* ===============================
-   CTA FINAL
-================================ */
+/* CTA FINAL */
 .catalog-cta {
     margin-top: 60px;
     text-align: center;
@@ -310,9 +319,11 @@ nav.navbar {
         background: #000;
     }
 
-/* ===============================
-   RESPONSIVE HERO
-================================ */
+
+
+
+
+/* Responsive */
 @media (max-width: 768px) {
     .catalog-hero {
         height: 320px;
@@ -326,4 +337,12 @@ nav.navbar {
         .catalog-hero-content h1 {
             font-size: 30px;
         }
+
+    .catalog-card {
+        max-width: 100%;
+    }
+    /* en móvil que ocupe el ancho */
+    .catalog-img {
+        height: 210px;
+    }
 }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WebApplication1.Models.Usuario
+
+@{
     ViewBag.Title = "Registro";
     Layout = "~/Views/Shared/_LayoutExterno.cshtml";
 }
@@ -18,57 +20,80 @@
                 <p class="login-subtitle">Registrate para comenzar a cotizar con nosotros</p>
             </div>
 
-            <form action="/Registro" method="post" class="login-form">
+            @if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-danger" style="margin-bottom: 15px; border-radius:12px;">
+                    <i class="fa fa-exclamation-triangle" style="margin-right:8px;"></i>
+                    @ViewBag.Mensaje
+                </div>
+            }
 
+
+            @using (Html.BeginForm("Registro", "Home", FormMethod.Post, new { @class = "register-form" }))
+            {
+                <!-- Identificación -->
+                <div class="input-group-modern">
+                    <span class="input-icon">
+                        <i class="fa fa-id-card"></i>
+                    </span>
+                    @Html.TextBoxFor(m => m.Identificacion, new
+                    {
+                        @class = "form-control input-modern",
+                        placeholder = "Identificación",
+                    })
+                </div>
+
+                <!-- Nombre -->
                 <div class="input-group-modern">
                     <span class="input-icon">
                         <i class="fa fa-user"></i>
                     </span>
-                    <input type="text"
-                           class="form-control input-modern"
-                           name="nombreUsuario"
-                           placeholder="Nombre de usuario"
-                           required />
+                    @Html.TextBoxFor(m => m.Nombre, new
+                    {
+                        @class = "form-control input-modern",
+                        placeholder = "Nombre completo",
+                    })
                 </div>
 
+                <!-- Correo -->
                 <div class="input-group-modern">
                     <span class="input-icon">
                         <i class="fa fa-envelope"></i>
                     </span>
-                    <input type="email"
-                           class="form-control input-modern"
-                           name="correo"
-                           placeholder="Correo electrónico"
-                           required />
+                    @Html.TextBoxFor(m => m.CorreoElectronico, new
+                    {
+                        @class = "form-control input-modern",
+                        placeholder = "Correo electrónico",
+                        type = "email",
+                    })
                 </div>
 
+                <!-- Contraseña -->
                 <div class="input-group-modern">
                     <span class="input-icon">
                         <i class="fa fa-lock"></i>
                     </span>
-                    <input type="password"
-                           class="form-control input-modern"
-                           name="password"
-                           placeholder="Contraseña"
-                           required />
+                    @Html.PasswordFor(m => m.Contrasenna, new
+                    {
+                        @class = "form-control input-modern",
+                        placeholder = "Contraseña",
+                    })
                 </div>
-
-                
 
                 <button type="submit" class="btn login-btn w-100">
                     Registrarme
                 </button>
+            }
 
-                <div class="login-divider">
-                    <span>o</span>
-                </div>
+            <div class="login-divider">
+                <span>o</span>
+            </div>
 
-                <div class="login-footer">
-                    <span>¿Ya tienes cuenta?</span>
-                    <a href="@Url.Action("Login", "Home")" class="signup">Inicia sesión</a>
-                </div>
+            <div class="login-footer">
+                <span>¿Ya tienes cuenta?</span>
+                <a href="@Url.Action("Login", "Home")" class="signup">Inicia sesión</a>
+            </div>
 
-            </form>
         </div>
     </section>
 </div>

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WebApplication1.Models.Usuario
+
+@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_LayoutExterno.cshtml";
 }
@@ -18,49 +20,46 @@
                 <p class="login-subtitle">Inicia sesión para continuar</p>
             </div>
 
-            <form action="/Login" method="post" class="login-form">
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "login-form" }))
+            {
+
 
                 <div class="input-group-modern">
                     <span class="input-icon">
                         <i class="fa fa-envelope"></i>
                     </span>
-                    <input type="email"
-                           class="form-control input-modern"
-                           name="correo"
-                           placeholder="Correo"
-                           required />
+                    @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "form-control input-modern", placeholder = "Correo electrónico" })
+
                 </div>
 
                 <div class="input-group-modern">
                     <span class="input-icon">
                         <i class="fa fa-lock"></i>
                     </span>
-                    <input type="password"
-                           class="form-control input-modern"
-                           name="password"
-                           placeholder="Contraseña"
-                           required />
+                    @Html.TextBoxFor(m => m.Contrasenna, new { @class = "form-control input-modern", placeholder = "Contraseña", type = "password" })
                 </div>
 
                 <button type="submit" class="btn login-btn w-100">
                     Iniciar sesión
                 </button>
+            }
 
-                <div class="login-row">
-                    <a href="@Url.Action("RecuperarAcceso", "Home")" class="forgot">¿Olvidó su contraseña?</a>
+            <div class="login-row">
+                <a href="@Url.Action("RecuperarAcceso", "Home")" class="forgot">¿Olvidó su contraseña?</a>
 
-                </div>
+            </div>
 
-                <div class="login-divider">
-                    <span>o</span>
-                </div>
+            <div class="login-divider">
+                <span>o</span>
+            </div>
 
-                <div class="login-footer">
-                    <span>¿No tienes cuenta?</span>
-                    <a href="@Url.Action("Registro", "Home")" class="signup">Crear cuenta</a>
-                </div>
+            <div class="login-footer">
+                <span>¿No tienes cuenta?</span>
+                <a href="@Url.Action("Registro", "Home")" class="signup">Crear cuenta</a>
+            </div>
 
-            </form>
+
+
         </div>
     </section>
 </div>
