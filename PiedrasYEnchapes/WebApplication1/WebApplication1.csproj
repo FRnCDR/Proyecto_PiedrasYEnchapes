@@ -126,12 +126,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CarritoController.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\ProductosController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\SobreNosotrosController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="EF\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -179,12 +181,14 @@
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
     <Content Include="StaticFiles\css\about-modern.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
+    <Content Include="StaticFiles\css\carrito.css" />
     <Content Include="StaticFiles\css\catalogo-minimal.css" />
     <Content Include="StaticFiles\css\catalogo-productos.css" />
     <Content Include="StaticFiles\css\font-awesome.min.css" />
     <Content Include="StaticFiles\css\index-moderno.css" />
     <Content Include="StaticFiles\css\layout-modern.css" />
     <Content Include="StaticFiles\css\login.css" />
+    <Content Include="StaticFiles\css\perfil.css" />
     <Content Include="StaticFiles\css\responsive.css" />
     <Content Include="StaticFiles\css\style.css" />
     <Content Include="StaticFiles\images\about-img.png" />
@@ -237,7 +241,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="StaticFiles\fonts\" />
-    <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="EF\Model1.edmx">
@@ -256,6 +259,8 @@
     <Content Include="Views\SobreNosotros\VerNosotros.cshtml" />
     <Content Include="Views\Empleado\VerEmpleados.cshtml" />
     <Content Include="Views\Home\RecuperarAcceso.cshtml" />
+    <Content Include="Views\Usuario\VerPerfil.cshtml" />
+    <Content Include="Views\Carrito\VerCarrito.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

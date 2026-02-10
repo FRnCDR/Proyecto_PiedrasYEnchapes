@@ -1,0 +1,97 @@
+﻿@{
+    
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<link rel="stylesheet" href="~/StaticFiles/css/perfil-instagram.css" />
+
+<div class="ig-settings">
+
+    <!-- Header  -->
+    <div class="ig-header">
+        <a class="ig-back" href="@Url.Action("Index", "Home")" title="Volver">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+
+        <div class="ig-title">Configuración y actividad</div>
+
+        <div class="ig-spacer"></div>
+    </div>
+
+    <!-- Sección 1 -->
+    <div class="ig-section">
+        <div class="ig-section-title">Cómo usas Piedras Decorativas</div>
+
+        <a class="ig-item" href="@Url.Action("VerGuardados", "Home")">
+            <div class="ig-item-left">
+                <span class="ig-ico"><i class="fa fa-bookmark-o"></i></span>
+                <span class="ig-text">Guardado</span>
+            </div>
+            <div class="ig-item-right">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </a>
+
+        <a class="ig-item" href="@Url.Action("VerActividad", "Home")">
+            <div class="ig-item-left">
+                <span class="ig-ico"><i class="fa fa-bar-chart"></i></span>
+                <span class="ig-text">Tu actividad</span>
+            </div>
+            <div class="ig-item-right">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </a>
+
+        <a class="ig-item" href="@Url.Action("Notificaciones", "Home")">
+            <div class="ig-item-left">
+                <span class="ig-ico"><i class="fa fa-bell-o"></i></span>
+                <span class="ig-text">Notificaciones</span>
+            </div>
+            <div class="ig-item-right">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </a>
+    </div>
+
+    <!-- Sección 2 -->
+    <div class="ig-section">
+        <div class="ig-section-title">Tu cuenta</div>
+
+        <a class="ig-item" href="@Url.Action("EditarPerfil", "Home")">
+            <div class="ig-item-left">
+                <span class="ig-ico"><i class="fa fa-user-o"></i></span>
+                <span class="ig-text">Editar perfil</span>
+            </div>
+            <div class="ig-item-right">
+                <span class="ig-sub">Mi información</span>
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </a>
+
+        <a class="ig-item" href="@Url.Action("CambiarContrasenna", "Home")">
+            <div class="ig-item-left">
+                <span class="ig-ico"><i class="fa fa-lock"></i></span>
+                <span class="ig-text">Seguridad</span>
+            </div>
+            <div class="ig-item-right">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </a>
+
+        <!-- Botón salir -->
+        
+            <a class="ig-item ig-item-danger" href="@Url.Action("CerrarSesion","Home")">
+                <div class="ig-item-left">
+                    <span class="ig-ico"><i class="fa fa-sign-out"></i></span>
+                    <span class="ig-text">Cerrar sesión</span>
+                </div>
+                <div class="ig-item-right">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+            </a>
+    </div>
+
+   
+   
+
+</div>

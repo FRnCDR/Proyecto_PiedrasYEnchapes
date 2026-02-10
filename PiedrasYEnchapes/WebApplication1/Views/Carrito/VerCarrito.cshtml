@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Carrito";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<link rel="stylesheet" href="~/StaticFiles/css/carrito-negro.css" />
+
+<div class="cart-page">
+
+    <!-- Header -->
+    <div class="cart-header">
+        <a class="cart-back" href="@Url.Action("VerProductos","Productos")" title="Volver">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+
+        <div class="cart-title">
+            Carrito
+            <span class="cart-badge">3</span>
+        </div>
+
+        <a class="cart-trash" href="#" title="Vaciar carrito">
+            <i class="fa fa-trash-o"></i>
+        </a>
+    </div>
+
+    <div class="cart-grid">
+
+        <!-- Lista -->
+        <div class="cart-list">
+
+            <!-- Item 1 -->
+            <div class="cart-item">
+                <div class="cart-img">
+                    <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Producto" />
+                </div>
+
+                <div class="cart-info">
+                    <div class="cart-name">Piedra Decorativa Gris</div>
+                    <div class="cart-meta">SKU: PD-001 • 1m²</div>
+
+                    <div class="cart-bottom">
+                        <div class="cart-price">₡ 12,500</div>
+
+                        <div class="cart-qty">
+                            <button type="button" class="qty-btn" title="Menos">
+                                <i class="fa fa-minus"></i>
+                            </button>
+
+                            <input class="qty-input" type="text" value="1" />
+
+                            <button type="button" class="qty-btn" title="Más">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="cart-remove" href="#" title="Eliminar">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="cart-item">
+                <div class="cart-img">
+                    <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Producto" />
+                </div>
+
+                <div class="cart-info">
+                    <div class="cart-name">Enchape Natural Beige</div>
+                    <div class="cart-meta">SKU: EN-014 • Caja</div>
+
+                    <div class="cart-bottom">
+                        <div class="cart-price">₡ 9,900</div>
+
+                        <div class="cart-qty">
+                            <button type="button" class="qty-btn">
+                                <i class="fa fa-minus"></i>
+                            </button>
+
+                            <input class="qty-input" type="text" value="2" />
+
+                            <button type="button" class="qty-btn">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="cart-remove" href="#" title="Eliminar">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="cart-item">
+                <div class="cart-img">
+                    <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Producto" />
+                </div>
+
+                <div class="cart-info">
+                    <div class="cart-name">Piedra Negra Premium</div>
+                    <div class="cart-meta">SKU: PN-300 • 1m²</div>
+
+                    <div class="cart-bottom">
+                        <div class="cart-price">₡ 15,000</div>
+
+                        <div class="cart-qty">
+                            <button type="button" class="qty-btn">
+                                <i class="fa fa-minus"></i>
+                            </button>
+
+                            <input class="qty-input" type="text" value="1" />
+
+                            <button type="button" class="qty-btn">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="cart-remove" href="#" title="Eliminar">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Resumen -->
+        <div class="cart-summary">
+            <div class="summary-card">
+                <div class="summary-title">Resumen</div>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <strong>₡ 47,300</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Envío</span>
+                    <strong>₡ 0</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Impuestos</span>
+                    <strong>₡ 0</strong>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <strong>₡ 47,300</strong>
+                </div>
+
+                <a class="summary-btn" href="@Url.Action("Checkout","Carrito")">
+                    Continuar <span class="arrow">→</span>
+                </a>
+
+                <div class="summary-hint">
+                    Tip: Podés cotizar por WhatsApp si preferís una atención rápida.
+                </div>
+
+                <a class="summary-alt" href="#" title="Cotizar por WhatsApp">
+                    <i class="fa fa-whatsapp"></i> Cotizar por WhatsApp
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
