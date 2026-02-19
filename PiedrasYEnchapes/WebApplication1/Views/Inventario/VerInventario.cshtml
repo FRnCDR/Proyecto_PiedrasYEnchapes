@@ -1,123 +1,58 @@
 ﻿@{
+    ViewBag.Title = "Inventario";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
+@model List<WebApplication1.Models.Producto>
 
-<!-- HERO + NAVBAR -->
+<!-- HERO GENERAL -->
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
-   
 </div>
 
-<section class="layout_padding">
-    <div class="container">
+<h2>Inventario de Productos</h2>
 
-        <div class="heading_container heading_center mb-4">
-            <h2>Inventario</h2>
-            <p>Control y monitoreo de existencias y movimientos</p>
-        </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Imagen</th>
+            <th>Categoría ID</th> <!-- Agregar columna para CategoriaID -->
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var producto in Model)
+        {
+            <tr>
+                <td>@producto.Nombre</td>
+                <td>@producto.Descripcion</td>
+                <td>@producto.Stock</td>
+                <td>@producto.Precio</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(producto.Imagen))
+                    {
+                        <img src="@Url.Content("~/" + producto.Imagen)" alt="@producto.Nombre" width="50" />
+                    }
+                </td>
+                <td>@producto.CategoriaID</td> <!-- Mostrar el CategoriaID -->
 
-        <div class="row text-center mb-5">
+                <td>
+                    <a href="@Url.Action("ActualizarProducto", "Inventario", new { q = producto.ProductoID })" class="btn btn-warning">Editar</a>
+                    <a href="@Url.Action("EliminarProducto", "Inventario", new { q = producto.ProductoID })" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este producto?')">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-            <div class="col-md-3">
-                <div class="card shadow-sm p-3">
-                    <h5>Total Productos</h5>
-                    <h3>42</h3>
-                </div>
-            </div>
+<a href="@Url.Action("AgregarProducto", "Inventario")" class="btn btn-dark">Agregar Nuevo Producto</a>
 
-            <div class="col-md-3">
-                <div class="card shadow-sm p-3">
-                    <h5>Stock Bajo</h5>
-                    <h3 class="text-warning">6</h3>
-                </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="card shadow-sm p-3">
-                    <h5>Movimientos Hoy</h5>
-                    <h3>12</h3>
-                </div>
-            </div>
+<a href="@Url.Action("VerCategorias", "Categoria")" class="btn btn-success">Ver lista de categorias</a>
 
-            <div class="col-md-3">
-                <div class="card shadow-sm p-3">
-                    <h5>Alertas</h5>
-                    <h3 class="text-danger">3</h3>
-                </div>
-            </div>
 
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Buscar producto por nombre..." />
-            </div>
-            <div class="col-md-3">
-                <select class="form-control">
-                    <option>Filtrar por estado</option>
-                    <option>Stock Normal</option>
-                    <option>Stock Bajo</option>
-                    <option>Crítico</option>
-                </select>
-            </div>
-            <div class="col-md-3 text-right">
-                <button class="btn btn-dark">Registrar Movimiento</button>
-            </div>
-        </div>
-
-        <!-- TABLA INVENTARIO -->
-        <div class="table-responsive shadow-sm">
-            <table class= "border-redondos table table-bordered table-hover text-center">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Producto</th>
-                        <th>Tipo</th>
-                        <th>Stock Actual</th>
-                        <th>Último Movimiento</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr>
-                        <td>Mollejón</td>
-                        <td>Enchape</td>
-                        <td>120</td>
-                        <td>Entrada +50</td>
-                        <td><span class="badge badge-success">Normal</span></td>
-                        <td>
-                            <button class="btn btn-sm text-light btn-warning">Historial</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Piedra Roja</td>
-                        <td>Decorativa</td>
-                        <td>15</td>
-                        <td>Salida -30</td>
-                        <td><span class="badge badge-warning">Bajo</span></td>
-                        <td>
-                            <button class="btn btn-sm text-light btn-warning">Historial</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Piedra Blanca</td>
-                        <td>Decorativa</td>
-                        <td>5</td>
-                        <td>Salida -10</td>
-                        <td><span class="badge badge-danger">Crítico</span></td>
-                        <td>
-                            <button class="btn btn-sm text-light btn-warning">Historial</button>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-</section>

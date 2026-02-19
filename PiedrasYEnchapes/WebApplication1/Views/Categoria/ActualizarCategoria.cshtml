@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Categorías";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+@model WebApplication1.Models.Categoria
+
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<!-- categoría section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header pb-0 bg-transparent">
+                        <h4 class="font-weight-bolder mb-1">Editar Categoría</h4>
+                        <p class="text-sm text-muted mb-0">
+                            Modifica la información de la categoría seleccionada.
+                        </p>
+                    </div>
+
+                    <div class="card-body pt-3">
+                        @using (Html.BeginForm("ActualizarCategoria", "Categoria", FormMethod.Post, new { @id = "FormActualizarCategoria" }))
+                        {
+                            @Html.HiddenFor(x => x.CategoriaID) <!-- Es importante incluir el Id de la categoría en el formulario -->
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <label for="Nombre" class="form-label">Nombre</label>
+                                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.Nombre, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="mb-3">
+                                <label for="Descripcion" class="form-label">Descripción</label>
+                                @Html.TextAreaFor(x => x.Descripcion, new { @class = "form-control", rows = "3" })
+                                @Html.ValidationMessageFor(x => x.Descripcion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Botón de guardar cambios -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success w-100 mb-0">Guardar cambios</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end categoría section -->

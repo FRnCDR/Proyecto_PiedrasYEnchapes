@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Categorias";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+@model List<WebApplication1.Models.Categoria>
+
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<h2>Lista de Categorías</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categoria in Model)
+        {
+            <tr>
+                <td>@categoria.Nombre</td>
+                <td>@categoria.Descripcion</td>
+                <td>
+                    <a href="@Url.Action("ActualizarCategoria", "Categoria", new { id = categoria.CategoriaID })" class="btn btn-warning">Editar</a> |
+                    <a href="@Url.Action("EliminarCategoria", "Categoria", new { id = categoria.CategoriaID })" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("AgregarCategoria", "Categoria")" class="btn btn-success">Agregar Nueva Categoría</a>
+<a href="@Url.Action("VerInventario", "Inventario")" class="btn btn-dark">Ver lista de poductos</a>

@@ -4,11 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="49192fb6cf804ed689f4eecf95313663" Name="Diagram1">
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbEmpleados" Width="1.5" PointX="5.75" PointY="2.875" IsExpanded="true" />
+      <Diagram DiagramId="8d58f762a1eb4ee6b5d6af9f578c4fd4" Name="Diagram1">
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbCategorias" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbEmpleados" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbPerfil" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbPerfiles" Width="1.5" PointX="3.5" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbPerfiles" Width="1.5" PointX="5.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbProductos" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbUsuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_Categoria" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Empleados_Perfiles" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Usuario_Perfil" ManuallyRouted="false" />
       </Diagram>

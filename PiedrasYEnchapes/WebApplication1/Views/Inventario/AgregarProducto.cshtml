@@ -1,0 +1,54 @@
+﻿@model WebApplication1.Models.Producto
+
+@{
+    ViewBag.Title = "Agregar Producto";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<h2>Agregar Nuevo Producto</h2>
+
+@using (Html.BeginForm("AgregarProducto", "Inventario", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nombre)
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre del producto" })
+        @Html.ValidationMessageFor(model => model.Nombre)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Descripcion)
+        @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "3" })
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Stock)
+        @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", placeholder = "Stock" })
+        @Html.ValidationMessageFor(model => model.Stock)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Precio)
+        @Html.TextBoxFor(model => model.Precio, new { @class = "form-control", placeholder = "Precio" })
+        @Html.ValidationMessageFor(model => model.Precio)
+    </div>
+
+    <!-- Campo para ingresar el ID de la categoría -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.CategoriaID)
+        @Html.TextBoxFor(model => model.CategoriaID, new { @class = "form-control", placeholder = "ID de la categoría" })
+        @Html.ValidationMessageFor(model => model.CategoriaID)
+    </div>
+
+    <!-- Imagen -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.Imagen)
+        <input type="file" name="Imagen" class="form-control" />
+        @Html.ValidationMessageFor(model => model.Imagen)
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Producto</button>
+    <a href="@Url.Action("VerInventario", "Inventario")" class="btn btn-secondary">Cancelar</a>
+}

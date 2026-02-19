@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbCategorias">
+          <Key>
+            <PropertyRef Name="CategoriaID" />
+          </Key>
+          <Property Name="CategoriaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="tbEmpleados">
           <Key>
             <PropertyRef Name="IdEmpleado" />
@@ -32,6 +40,18 @@
           <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbProductos">
+          <Key>
+            <PropertyRef Name="ProductoID" />
+          </Key>
+          <Property Name="ProductoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Stock" Type="int" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Imagen" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoriaID" Type="int" />
+        </EntityType>
         <EntityType Name="tbUsuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -44,6 +64,18 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Categoria">
+          <End Role="tbCategorias" Type="Self.tbCategorias" Multiplicity="0..1" />
+          <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbCategorias">
+              <PropertyRef Name="CategoriaID" />
+            </Principal>
+            <Dependent Role="tbProductos">
+              <PropertyRef Name="CategoriaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Empleados_Perfiles">
           <End Role="tbPerfiles" Type="Self.tbPerfiles" Multiplicity="0..1" />
           <End Role="tbEmpleados" Type="Self.tbEmpleados" Multiplicity="*" />
@@ -79,10 +111,16 @@
           <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="DATABASE_PYEModelStoreContainer">
+          <EntitySet Name="tbCategorias" EntityType="Self.tbCategorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbPerfiles" EntityType="Self.tbPerfiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbProductos" EntityType="Self.tbProductos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Categoria" Association="Self.FK_Categoria">
+            <End Role="tbCategorias" EntitySet="tbCategorias" />
+            <End Role="tbProductos" EntitySet="tbProductos" />
+          </AssociationSet>
           <AssociationSet Name="FK_Empleados_Perfiles" Association="Self.FK_Empleados_Perfiles">
             <End Role="tbPerfiles" EntitySet="tbPerfiles" />
             <End Role="tbEmpleados" EntitySet="tbEmpleados" />
@@ -97,6 +135,15 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DATABASE_PYEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbCategorias">
+          <Key>
+            <PropertyRef Name="CategoriaID" />
+          </Key>
+          <Property Name="CategoriaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbProductos" Relationship="Self.FK_Categoria" FromRole="tbCategorias" ToRole="tbProductos" />
+        </EntityType>
         <EntityType Name="tbEmpleados">
           <Key>
             <PropertyRef Name="IdEmpleado" />
@@ -127,6 +174,19 @@
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="tbEmpleados" Relationship="Self.FK_Empleados_Perfiles" FromRole="tbPerfiles" ToRole="tbEmpleados" />
         </EntityType>
+        <EntityType Name="tbProductos">
+          <Key>
+            <PropertyRef Name="ProductoID" />
+          </Key>
+          <Property Name="ProductoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Imagen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriaID" Type="Int32" />
+          <NavigationProperty Name="tbCategorias" Relationship="Self.FK_Categoria" FromRole="tbProductos" ToRole="tbCategorias" />
+        </EntityType>
         <EntityType Name="tbUsuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -140,6 +200,18 @@
           <Property Name="IdPerfil" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbPerfil" Relationship="Self.FK_Usuario_Perfil" FromRole="tbUsuario" ToRole="tbPerfil" />
         </EntityType>
+        <Association Name="FK_Categoria">
+          <End Role="tbCategorias" Type="Self.tbCategorias" Multiplicity="0..1" />
+          <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbCategorias">
+              <PropertyRef Name="CategoriaID" />
+            </Principal>
+            <Dependent Role="tbProductos">
+              <PropertyRef Name="CategoriaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Empleados_Perfiles">
           <End Role="tbPerfiles" Type="Self.tbPerfiles" Multiplicity="0..1" />
           <End Role="tbEmpleados" Type="Self.tbEmpleados" Multiplicity="*" />
@@ -164,11 +236,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DATABASE_PYEEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DATABASE_PYEEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbCategorias" EntityType="Self.tbCategorias" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" />
           <EntitySet Name="tbPerfiles" EntityType="Self.tbPerfiles" />
+          <EntitySet Name="tbProductos" EntityType="Self.tbProductos" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" />
+          <AssociationSet Name="FK_Categoria" Association="Self.FK_Categoria">
+            <End Role="tbCategorias" EntitySet="tbCategorias" />
+            <End Role="tbProductos" EntitySet="tbProductos" />
+          </AssociationSet>
           <AssociationSet Name="FK_Empleados_Perfiles" Association="Self.FK_Empleados_Perfiles">
             <End Role="tbPerfiles" EntitySet="tbPerfiles" />
             <End Role="tbEmpleados" EntitySet="tbEmpleados" />
@@ -193,7 +271,16 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities">
+        <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities1">
+          <EntitySetMapping Name="tbCategorias">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbCategorias">
+              <MappingFragment StoreEntitySet="tbCategorias">
+                <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbEmpleados">
             <EntityTypeMapping TypeName="DATABASE_PYEModel.tbEmpleados">
               <MappingFragment StoreEntitySet="tbEmpleados">
@@ -221,6 +308,19 @@
               <MappingFragment StoreEntitySet="tbPerfiles">
                 <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbProductos">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbProductos">
+              <MappingFragment StoreEntitySet="tbProductos">
+                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

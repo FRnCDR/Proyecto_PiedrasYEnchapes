@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Agregar Categoria";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+@model WebApplication1.Models.Categoria
+
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<h2>Agregar Nueva Categoría</h2>
+
+@using (Html.BeginForm("AgregarCategoria", "Categoria", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nombre)
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre de la categoría" })
+        @Html.ValidationMessageFor(model => model.Nombre)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Descripcion)
+        @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "3" })
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar Categoría</button>
+    <a href="@Url.Action("VerCategorias", "Categoria")" class="btn btn-secondary">Cancelar</a>
+}
