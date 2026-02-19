@@ -27,7 +27,9 @@ namespace WebApplication1.EF
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<tbEmpleados> tbEmpleados { get; set; }
         public virtual DbSet<tbPerfil> tbPerfil { get; set; }
+        public virtual DbSet<tbPerfiles> tbPerfiles { get; set; }
         public virtual DbSet<tbUsuario> tbUsuario { get; set; }
     
         public virtual ObjectResult<Nullable<int>> CrearUsuarios(string identificacion, string nombre, string correoElectronico, string contrasenna)

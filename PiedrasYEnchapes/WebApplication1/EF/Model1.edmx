@@ -5,12 +5,32 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbEmpleados">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Apellidos" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Correo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="15" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="IdPerfil" Type="int" />
+        </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
             <PropertyRef Name="IdPerfil" />
           </Key>
           <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbPerfiles">
+          <Key>
+            <PropertyRef Name="IdPerfil" />
+          </Key>
+          <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="tbUsuario">
           <Key>
@@ -24,6 +44,18 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Empleados_Perfiles">
+          <End Role="tbPerfiles" Type="Self.tbPerfiles" Multiplicity="0..1" />
+          <End Role="tbEmpleados" Type="Self.tbEmpleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbPerfiles">
+              <PropertyRef Name="IdPerfil" />
+            </Principal>
+            <Dependent Role="tbEmpleados">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Usuario_Perfil">
           <End Role="tbPerfil" Type="Self.tbPerfil" Multiplicity="1" />
           <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="*" />
@@ -47,8 +79,14 @@
           <Parameter Name="Contrasenna" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="DATABASE_PYEModelStoreContainer">
+          <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbPerfiles" EntityType="Self.tbPerfiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Empleados_Perfiles" Association="Self.FK_Empleados_Perfiles">
+            <End Role="tbPerfiles" EntitySet="tbPerfiles" />
+            <End Role="tbEmpleados" EntitySet="tbEmpleados" />
+          </AssociationSet>
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="tbPerfil" EntitySet="tbPerfil" />
             <End Role="tbUsuario" EntitySet="tbUsuario" />
@@ -59,6 +97,20 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DATABASE_PYEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbEmpleados">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdPerfil" Type="Int32" />
+          <NavigationProperty Name="tbPerfiles" Relationship="Self.FK_Empleados_Perfiles" FromRole="tbEmpleados" ToRole="tbPerfiles" />
+        </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
             <PropertyRef Name="IdPerfil" />
@@ -66,6 +118,14 @@
           <Property Name="IdPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tbUsuario" Relationship="Self.FK_Usuario_Perfil" FromRole="tbPerfil" ToRole="tbUsuario" />
+        </EntityType>
+        <EntityType Name="tbPerfiles">
+          <Key>
+            <PropertyRef Name="IdPerfil" />
+          </Key>
+          <Property Name="IdPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tbEmpleados" Relationship="Self.FK_Empleados_Perfiles" FromRole="tbPerfiles" ToRole="tbEmpleados" />
         </EntityType>
         <EntityType Name="tbUsuario">
           <Key>
@@ -80,6 +140,18 @@
           <Property Name="IdPerfil" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbPerfil" Relationship="Self.FK_Usuario_Perfil" FromRole="tbUsuario" ToRole="tbPerfil" />
         </EntityType>
+        <Association Name="FK_Empleados_Perfiles">
+          <End Role="tbPerfiles" Type="Self.tbPerfiles" Multiplicity="0..1" />
+          <End Role="tbEmpleados" Type="Self.tbEmpleados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbPerfiles">
+              <PropertyRef Name="IdPerfil" />
+            </Principal>
+            <Dependent Role="tbEmpleados">
+              <PropertyRef Name="IdPerfil" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Usuario_Perfil">
           <End Role="tbPerfil" Type="Self.tbPerfil" Multiplicity="1" />
           <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="*" />
@@ -93,8 +165,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DATABASE_PYEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" />
+          <EntitySet Name="tbPerfiles" EntityType="Self.tbPerfiles" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" />
+          <AssociationSet Name="FK_Empleados_Perfiles" Association="Self.FK_Empleados_Perfiles">
+            <End Role="tbPerfiles" EntitySet="tbPerfiles" />
+            <End Role="tbEmpleados" EntitySet="tbEmpleados" />
+          </AssociationSet>
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="tbPerfil" EntitySet="tbPerfil" />
             <End Role="tbUsuario" EntitySet="tbUsuario" />
@@ -116,9 +194,31 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities">
+          <EntitySetMapping Name="tbEmpleados">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbEmpleados">
+              <MappingFragment StoreEntitySet="tbEmpleados">
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbPerfil">
             <EntityTypeMapping TypeName="DATABASE_PYEModel.tbPerfil">
               <MappingFragment StoreEntitySet="tbPerfil">
+                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbPerfiles">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbPerfiles">
+              <MappingFragment StoreEntitySet="tbPerfiles">
                 <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
               </MappingFragment>
