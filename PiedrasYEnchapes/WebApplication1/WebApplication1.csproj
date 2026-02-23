@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CarritoController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
@@ -153,6 +154,9 @@
     <Compile Include="EF\tbCategorias.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tbClientes.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tbEmpleados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -165,6 +169,9 @@
     <Compile Include="EF\tbProductos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tbProveedores.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tbUsuario.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -172,6 +179,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\Proveedor.cs" />
+    <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\Empleado.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\Usuario.cs" />
@@ -286,6 +295,11 @@
     <Content Include="Views\Categoria\AgregarCategoria.cshtml" />
     <Content Include="VerCategorias.cshtml" />
     <Content Include="Views\Categoria\ActualizarCategoria.cshtml" />
+    <Content Include="Views\Cliente\ActualizarCliente.cshtml" />
+    <Content Include="Views\Cliente\AgregarCliente.cshtml" />
+    <Content Include="Views\Cliente\VerClientes.cshtml" />
+    <Content Include="Views\Proveedor\ActualizarProveedor.cshtml" />
+    <Content Include="Views\Proveedor\AgregarProveedor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

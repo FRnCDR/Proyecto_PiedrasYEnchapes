@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+@model WebApplication1.Models.Cliente
+
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<!-- clientes section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header pb-0 bg-transparent">
+                        <h4 class="font-weight-bolder mb-1">Editar Cliente</h4>
+                        <p class="text-sm text-muted mb-0">
+                            Modifica la información del cliente seleccionado.
+                        </p>
+                    </div>
+
+                    <div class="card-body pt-3">
+                        @using (Html.BeginForm("ActualizarCliente", "Cliente", FormMethod.Post, new { @id = "FormActualizarCliente" }))
+                        {
+                            @Html.HiddenFor(x => x.IdCliente)
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                            <!-- Identificación (Solo lectura) -->
+                            <div class="mb-3">
+                                <label class="form-label">Identificación</label>
+                                @Html.TextBoxFor(x => x.Identificacion,
+                                    new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.Nombre, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Apellidos -->
+                            <div class="mb-3">
+                                <label class="form-label">Apellidos</label>
+                                @Html.TextBoxFor(x => x.Apellidos, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Correo -->
+                            <div class="mb-3">
+                                <label class="form-label">Correo electrónico</label>
+                                @Html.TextBoxFor(x => x.CorreoElectronico,
+                                    new { @class = "form-control", type = "email" })
+                                @Html.ValidationMessageFor(x => x.CorreoElectronico, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="mb-3">
+                                <label class="form-label">Teléfono</label>
+                                @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.Telefono, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Dirección -->
+                            <div class="mb-3">
+                                <label class="form-label">Dirección</label>
+                                @Html.TextAreaFor(x => x.Direccion,
+                                    new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(x => x.Direccion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Fecha Registro (Solo lectura) -->
+                            <div class="mb-3">
+                                <label class="form-label">Fecha de Registro</label>
+                                @Html.TextBoxFor(x => x.FechaRegistro,
+                                    "{0:dd/MM/yyyy HH:mm}",
+                                    new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <!-- Estado -->
+                            <div class="form-check mb-3">
+                                @Html.CheckBoxFor(x => x.Estado, new { @class = "form-check-input" })
+                                <label class="form-check-label">Cliente Activo</label>
+                            </div>
+
+                            <!-- Botón guardar -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success w-100 mb-0">
+                                    Guardar cambios
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

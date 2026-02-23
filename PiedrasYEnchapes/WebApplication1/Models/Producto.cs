@@ -31,5 +31,7 @@ namespace WebApplication1.Models
         // Relación con la categoría
         public int? CategoriaID { get; set; }  // Guardar el ID de la categoría
         public virtual Categoria Categoria { get; set; }
+
+        public int? ProveedorID { get; set; } 
     }
 }

@@ -35,11 +35,22 @@
         @Html.ValidationMessageFor(model => model.Precio)
     </div>
 
-    <!-- Campo para ingresar el ID de la categoría -->
-    <div class="form-group">
-        @Html.LabelFor(model => model.CategoriaID)
-        @Html.TextBoxFor(model => model.CategoriaID, new { @class = "form-control", placeholder = "ID de la categoría" })
-        @Html.ValidationMessageFor(model => model.CategoriaID)
+    <div class="mb-3">
+        <label class="form-label">Categoría</label>
+        @Html.DropDownListFor(
+            x => x.CategoriaID,                     // Propiedad del modelo que guarda el ID
+            (SelectList)ViewBag.Categorias,        // Lista de categorías enviada desde el controlador
+            "Seleccione una categoría",             // Opción por defecto
+            new { @class = "form-control" }        // Clases CSS
+        )
+        @Html.ValidationMessageFor(x => x.CategoriaID, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Selección de proveedor -->
+    <div class="mb-3">
+        <label class="form-label">Proveedor</label>
+        @Html.DropDownListFor(x => x.ProveedorID, (SelectList)ViewBag.Proveedores, "Seleccione un proveedor", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.ProveedorID, "", new { @class = "text-danger" })
     </div>
 
     <!-- Imagen -->

@@ -12,16 +12,16 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbUsuario
+    public partial class tbClientes
     {
-        public int IdUsuario { get; set; }
+        public int IdCliente { get; set; }
         public string Identificacion { get; set; }
         public string Nombre { get; set; }
+        public string Apellidos { get; set; }
         public string CorreoElectronico { get; set; }
-        public string Contrasenna { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
+        public System.DateTime FechaRegistro { get; set; }
         public bool Estado { get; set; }
-        public int IdPerfil { get; set; }
-    
-        public virtual tbPerfil tbPerfil { get; set; }
     }
 }

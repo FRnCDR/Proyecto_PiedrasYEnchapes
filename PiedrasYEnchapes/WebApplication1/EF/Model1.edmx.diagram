@@ -14,6 +14,9 @@
         <AssociationConnector Association="DATABASE_PYEModel.FK_Categoria" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Empleados_Perfiles" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Usuario_Perfil" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbClientes" Width="1.5" PointX="7.375" PointY="4.75" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbProveedores" Width="1.5" PointX="5.375" PointY="5" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbProductos_tbProveedores" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

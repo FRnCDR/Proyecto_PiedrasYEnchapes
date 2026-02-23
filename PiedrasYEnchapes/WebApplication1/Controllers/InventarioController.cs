@@ -22,14 +22,15 @@ namespace WebApplication1.Controllers
             return View(resultado);
         }
 
-        // Agregar nuevo producto (GET)
         [HttpGet]
         public ActionResult AgregarProducto()
         {
-            // Obtener todas las categorías para el dropdown
+            // Obtener todas las categorías y proveedores
+            ViewBag.Categorias = new SelectList(db.tbCategorias, "CategoriaID", "Nombre");
+            ViewBag.Proveedores = new SelectList(db.tbProveedores, "ProveedorID", "NombreEmpresa");
+
             return View(new Producto());
         }
-
         // Agregar nuevo producto (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -49,7 +50,8 @@ namespace WebApplication1.Controllers
                     Stock = producto.Stock,
                     Precio = producto.Precio,
                     CategoriaID = producto.CategoriaID, // Asociar con el ID de la categoría
-                    Imagen = string.Empty, // Iniciar el campo de la imagen vacío
+                    ProveedorID = (int)producto.ProveedorID,
+                    Imagen = string.Empty // Iniciar el campo de la imagen vacío
                 };
 
                 context.tbProductos.Add(nuevoProducto);
@@ -89,25 +91,20 @@ namespace WebApplication1.Controllers
         }
 
 
-        // Actualizar un producto (GET)
+        // GET: ActualizarProducto
         [HttpGet]
         public ActionResult ActualizarProducto(int? q)
         {
             if (!q.HasValue)
-            {
-                return RedirectToAction("VerInventario", "Inventario");
-            }
+                return RedirectToAction("VerInventario");
 
             using (var context = new DATABASE_PYEEntities())
             {
-                var producto = context.tbProductos
-                    .Where(p => p.ProductoID == q)
-                    .FirstOrDefault();
-
+                var producto = context.tbProductos.FirstOrDefault(p => p.ProductoID == q.Value);
                 if (producto == null)
                 {
                     TempData["Mensaje"] = "Producto no encontrado.";
-                    return RedirectToAction("VerInventario", "Inventario");
+                    return RedirectToAction("VerInventario");
                 }
 
                 var datos = new Producto
@@ -117,21 +114,34 @@ namespace WebApplication1.Controllers
                     Descripcion = producto.Descripcion,
                     Stock = producto.Stock,
                     Precio = producto.Precio,
-                    CategoriaID = producto.CategoriaID, // Solo cargar CategoriaID
+                    CategoriaID = producto.CategoriaID,
+                    ProveedorID = producto.ProveedorID,
                     Imagen = producto.Imagen
                 };
 
-                ViewBag.Categorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "CategoriaID"); // Solo mostrar el ID de la categoría
+                // Cargar dropdowns con valor seleccionado
+                ViewBag.ListaCategorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", datos.CategoriaID);
+                ViewBag.ListaProveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", datos.ProveedorID);
+
                 return View(datos);
             }
         }
-        // Actualizar un producto (POST)
+
+
+        // POST: ActualizarProducto
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ActualizarProducto(Producto producto)
+        public ActionResult ActualizarProducto(Producto producto, HttpPostedFileBase Imagen)
         {
             if (!ModelState.IsValid)
             {
+                // Recargar dropdowns si hay error de validación
+                using (var context = new DATABASE_PYEEntities())
+                {
+                    ViewBag.Categorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", producto.CategoriaID);
+                    ViewBag.Proveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", producto.ProveedorID);
+                }
+
                 return View(producto);
             }
 
@@ -139,40 +149,63 @@ namespace WebApplication1.Controllers
             {
                 using (var context = new DATABASE_PYEEntities())
                 {
-                    var productoExistente = context.tbProductos
-                        .FirstOrDefault(p => p.ProductoID == producto.ProductoID);
-
+                    var productoExistente = context.tbProductos.FirstOrDefault(p => p.ProductoID == producto.ProductoID);
                     if (productoExistente == null)
                     {
                         ViewBag.Mensaje = "Producto no encontrado.";
                         return View(producto);
                     }
 
-                    // Solo actualizar el CategoriaID
+                    // Actualizar campos
                     productoExistente.Nombre = producto.Nombre;
                     productoExistente.Descripcion = producto.Descripcion;
                     productoExistente.Stock = producto.Stock;
                     productoExistente.Precio = producto.Precio;
-                    productoExistente.CategoriaID = producto.CategoriaID; // Solo actualizar el CategoriaID
-                    productoExistente.Imagen = producto.Imagen;
+                    productoExistente.CategoriaID = producto.CategoriaID;
 
-                    var resultadoActualizacion = context.SaveChanges();
+                    if (producto.ProveedorID.HasValue)
+                        productoExistente.ProveedorID = producto.ProveedorID.Value;
 
-                    if (resultadoActualizacion > 0)
+                    // Manejo de imagen opcional
+                    if (Imagen != null && Imagen.ContentLength > 0)
                     {
-                        return RedirectToAction("VerInventario", "Inventario");
+                        var extension = Path.GetExtension(Imagen.FileName).ToLower();
+                        var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        if (!validExtensions.Contains(extension))
+                        {
+                            ViewBag.Mensaje = "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.";
+                            // Recargar dropdowns antes de retornar
+                            ViewBag.ListaCategorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", producto.CategoriaID);
+                            ViewBag.ListaProveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", producto.ProveedorID);
+                            return View(producto);
+                        }
+
+                        var folderPath = Server.MapPath("~/wwwroot/imgProductos/");
+                        if (!Directory.Exists(folderPath))
+                            Directory.CreateDirectory(folderPath);
+
+                        var rutaImagen = Path.Combine(folderPath, productoExistente.ProductoID + extension);
+                        Imagen.SaveAs(rutaImagen);
+                        productoExistente.Imagen = "imgProductos/" + productoExistente.ProductoID + extension;
                     }
 
-                    ViewBag.Mensaje = "No se pudo actualizar la información.";
-                    return View(producto);
+                    context.SaveChanges();
+                    TempData["Mensaje"] = "Producto actualizado correctamente.";
+                    return RedirectToAction("VerInventario");
                 }
             }
             catch (Exception ex)
             {
                 ViewBag.Mensaje = "Error: " + ex.Message;
+                using (var context = new DATABASE_PYEEntities())
+                {
+                    ViewBag.Categorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", producto.CategoriaID);
+                    ViewBag.Proveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", producto.ProveedorID);
+                }
                 return View(producto);
             }
         }
+
         // Eliminar un producto
         public ActionResult EliminarProducto(int q)
         {

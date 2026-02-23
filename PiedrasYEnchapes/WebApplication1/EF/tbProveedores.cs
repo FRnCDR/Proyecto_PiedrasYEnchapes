@@ -12,18 +12,25 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbPerfiles
+    public partial class tbProveedores
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbPerfiles()
+        public tbProveedores()
         {
-            this.tbEmpleados = new HashSet<tbEmpleados>();
+            this.tbProductos = new HashSet<tbProductos>();
         }
     
-        public int IdPerfil { get; set; }
-        public string Nombre { get; set; }
+        public int ProveedorID { get; set; }
+        public string NombreEmpresa { get; set; }
+        public string Contacto { get; set; }
+        public string CorreoElectronico { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
+        public System.DateTime FechaRegistro { get; set; }
+        public bool Estado { get; set; }
+        public string Tipo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
+        public virtual ICollection<tbProductos> tbProductos { get; set; }
     }
 }

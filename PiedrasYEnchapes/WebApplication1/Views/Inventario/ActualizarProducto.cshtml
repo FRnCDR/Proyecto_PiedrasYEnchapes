@@ -1,5 +1,5 @@
 ﻿@model WebApplication1.Models.Producto
-
+@Html.HiddenFor(model => model.ProductoID)
 @{
     ViewBag.Title = "Agregar Producto";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
@@ -35,11 +35,28 @@
         @Html.ValidationMessageFor(model => model.Precio)
     </div>
 
-    <!-- Campo para editar el CategoriaID -->
-    <div class="form-group">
-        @Html.LabelFor(model => model.CategoriaID)
-        @Html.TextBoxFor(model => model.CategoriaID, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.CategoriaID)
+    <!-- Dropdown Categoría -->
+    <div class="mb-3">
+        <label class="form-label">Categoría</label>
+        @Html.DropDownListFor(
+            x => x.CategoriaID,
+            (IEnumerable<SelectListItem>)ViewBag.ListaCategorias,
+            "Seleccione una categoría",
+            new { @class = "form-control" }
+        )
+        @Html.ValidationMessageFor(x => x.CategoriaID, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Dropdown Proveedor -->
+    <div class="mb-3">
+        <label class="form-label">Proveedor</label>
+        @Html.DropDownListFor(
+            x => x.ProveedorID,
+            (IEnumerable<SelectListItem>)ViewBag.ListaProveedores,
+            "Seleccione un proveedor",
+            new { @class = "form-control" }
+        )
+        @Html.ValidationMessageFor(x => x.ProveedorID, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">

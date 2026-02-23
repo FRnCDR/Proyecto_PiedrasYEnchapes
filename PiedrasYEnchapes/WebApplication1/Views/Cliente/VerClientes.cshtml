@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+@model List<WebApplication1.Models.Cliente>
+
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<!-- clientes section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+
+    <div class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark fw-bold">Gestión de Clientes</h3>
+            <a href="@Url.Action("AgregarCliente", "Cliente")" class="btn btn-success shadow-sm">
+                <i class="material-symbols-rounded align-middle">Agregar Cliente</i>
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0 table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Identificación</th>
+                                <th>Nombre Completo</th>
+                                <th>Correo Electrónico</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Fecha Registro</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Identificacion</td>
+                                    <td>@item.Nombre @item.Apellidos</td>
+                                    <td>@item.CorreoElectronico</td>
+                                    <td>@item.Telefono</td>
+                                    <td>@item.Direccion</td>
+                                    <td>@item.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.Estado)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("ActualizarCliente", "Cliente", new { q = item.IdCliente })"
+                                           class="btn btn-sm btn-primary shadow-sm me-2">
+                                            <i class="material-symbols-rounded align-middle">Editar</i>
+                                        </a>
+
+                                        <div class="form-check form-switch d-inline-block">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   @(item.Estado ? "checked" : "")
+                                                   onclick="location.href='@Url.Action("CambiarEstadoCliente", "Cliente", new { q = item.IdCliente })'">
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

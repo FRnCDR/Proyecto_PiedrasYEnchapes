@@ -1,97 +1,79 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
+@model List<WebApplication1.Models.Proveedor>
 
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
-    
 </div>
 
 <!-- proveedores section -->
 <section class="food_section layout_padding-bottom layout_padding-top">
     <div class="container">
-        <div class="heading_container heading_center">
-            <h2>Proveedores</h2>
-            <p>Listado general de proveedores registrados en el sistema</p>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="heading_container">
+                <h2>Proveedores</h2>
+                <p>Listado general de proveedores registrados en el sistema</p>
+            </div>
+            <a href="@Url.Action("AgregarProveedor", "Proveedor")" class="btn btn-success shadow-sm">
+                Agregar Proveedor
+            </a>
         </div>
 
-        <div class="table-responsive mt-4">
-            <table class="border-redondos table table-striped table-bordered text-center">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center table-sm">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Imagen</th>
                         <th>Nombre</th>
+                        <th>Contacto</th>
                         <th>Teléfono</th>
                         <th>Email</th>
+                        <th>Dirección</th>
                         <th>Tipo</th>
+                        <th>Fecha Registro</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <!-- PROVEEDOR 1 -->
-                    <tr>
-                        <td>
-                            <img src="~/StaticFiles/images/lagar.jpg" width="70" style="border-radius:8px;" />
-                        </td>
-                        <td>El Lagar</td>
-                        <td>1234-5678</td>
-                        <td>contacto@ellagar.com</td>
-                        <td>Nacional</td>
-                        <td>
-                            <span class="badge badge-success">Activo</span>
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-dark">Detalles</a>
-                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                        </td>
-                    </tr>
-
-                    <!-- PROVEEDOR 2 -->
-                    <tr>
-                        <td>
-                            <img src="~/StaticFiles/images/epa.jpg" width="70" style="border-radius:8px;" />
-                        </td>
-                        <td>EPA</td>
-                        <td>8765-4321</td>
-                        <td>info@epa.com</td>
-                        <td>Internacional</td>
-                        <td>
-                            <span class="badge badge-success">Activo</span>
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-dark">Detalles</a>
-                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                        </td>
-                    </tr>
-
-                    <!-- PROVEEDOR 3 -->
-                    <tr>
-                        <td>
-                            <img src="~/StaticFiles/images/distribuidor.jpg" width="70" style="border-radius:8px;" />
-                        </td>
-                        <td>Charlie's Piedras</td>
-                        <td>1122-3344</td>
-                        <td>ventas@charlie.com</td>
-                        <td>Nacional</td>
-                        <td>
-                            <span class="badge badge-danger">Inactivo</span>
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-dark">Detalles</a>
-                            <a href="#" class="btn btn-sm btn-warning">Editar</a>
-                        </td>
-                    </tr>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-truncate" style="max-width:120px;">@item.NombreEmpresa</td>
+                                <td class="text-truncate" style="max-width:120px;">@item.Contacto</td>
+                                <td>@item.Telefono</td>
+                                <td class="text-truncate" style="max-width:150px;">@item.CorreoElectronico</td>
+                                <td class="text-truncate" style="max-width:200px;">@item.Direccion</td>
+                                <td>@item.Tipo</td>
+                                <td>@item.FechaRegistro.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    @if (item.Estado)
+                                    {
+                                        <span class="badge badge-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Inactivo</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("ActualizarProveedor", "Proveedor", new { id = item.ProveedorID })" class="btn btn-sm btn-warning">Editar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9">No hay proveedores registrados.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
-
-        <div class="btn-box">
-            <a href="#" class="btn btn-dark px-4 py-2 mt-3">Agregar Proveedor</a>
-        </div>
     </div>
 </section>
-<!-- end proveedores section -->
