@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tbCategorias">
           <Key>
             <PropertyRef Name="CategoriaID" />
@@ -46,13 +46,6 @@
           </Key>
           <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tbPerfiles">
-          <Key>
-            <PropertyRef Name="IdPerfil" />
-          </Key>
-          <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="tbProductos">
           <Key>
@@ -105,18 +98,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Empleados_Perfiles">
-          <End Role="tbPerfiles" Type="Self.tbPerfiles" Multiplicity="0..1" />
-          <End Role="tbEmpleados" Type="Self.tbEmpleados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbPerfiles">
-              <PropertyRef Name="IdPerfil" />
-            </Principal>
-            <Dependent Role="tbEmpleados">
-              <PropertyRef Name="IdPerfil" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tbProductos_tbProveedores">
           <End Role="tbProveedores" Type="Self.tbProveedores" Multiplicity="1" />
           <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="*" />
@@ -156,17 +137,12 @@
           <EntitySet Name="tbClientes" EntityType="Self.tbClientes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbPerfiles" EntityType="Self.tbPerfiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Categoria" Association="Self.FK_Categoria">
             <End Role="tbCategorias" EntitySet="tbCategorias" />
             <End Role="tbProductos" EntitySet="tbProductos" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Empleados_Perfiles" Association="Self.FK_Empleados_Perfiles">
-            <End Role="tbPerfiles" EntitySet="tbPerfiles" />
-            <End Role="tbEmpleados" EntitySet="tbEmpleados" />
           </AssociationSet>
           <AssociationSet Name="FK_tbProductos_tbProveedores" Association="Self.FK_tbProductos_tbProveedores">
             <End Role="tbProveedores" EntitySet="tbProveedores" />
@@ -177,7 +153,8 @@
             <End Role="tbUsuario" EntitySet="tbUsuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DATABASE_PYEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -189,6 +166,20 @@
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tbProductos" Relationship="Self.FK_Categoria" FromRole="tbCategorias" ToRole="tbProductos" />
+        </EntityType>
+        <EntityType Name="tbClientes">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Identificacion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CorreoElectronico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tbEmpleados">
           <Key>
@@ -202,7 +193,6 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IdPerfil" Type="Int32" />
-          <NavigationProperty Name="tbPerfiles" Relationship="Self.FK_Empleados_Perfiles" FromRole="tbEmpleados" ToRole="tbPerfiles" />
         </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
@@ -211,14 +201,6 @@
           <Property Name="IdPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tbUsuario" Relationship="Self.FK_Usuario_Perfil" FromRole="tbPerfil" ToRole="tbUsuario" />
-        </EntityType>
-        <EntityType Name="tbPerfiles">
-          <Key>
-            <PropertyRef Name="IdPerfil" />
-          </Key>
-          <Property Name="IdPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="tbEmpleados" Relationship="Self.FK_Empleados_Perfiles" FromRole="tbPerfiles" ToRole="tbEmpleados" />
         </EntityType>
         <EntityType Name="tbProductos">
           <Key>
@@ -231,9 +213,24 @@
           <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Imagen" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CategoriaID" Type="Int32" />
-          <NavigationProperty Name="tbCategorias" Relationship="Self.FK_Categoria" FromRole="tbProductos" ToRole="tbCategorias" />
           <Property Name="ProveedorID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbProveedores" Relationship="DATABASE_PYEModel.FK_tbProductos_tbProveedores" FromRole="tbProductos" ToRole="tbProveedores" />
+          <NavigationProperty Name="tbCategorias" Relationship="Self.FK_Categoria" FromRole="tbProductos" ToRole="tbCategorias" />
+          <NavigationProperty Name="tbProveedores" Relationship="Self.FK_tbProductos_tbProveedores" FromRole="tbProductos" ToRole="tbProveedores" />
+        </EntityType>
+        <EntityType Name="tbProveedores">
+          <Key>
+            <PropertyRef Name="ProveedorID" />
+          </Key>
+          <Property Name="ProveedorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreEmpresa" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Contacto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CorreoElectronico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tbProductos" Relationship="Self.FK_tbProductos_tbProveedores" FromRole="tbProveedores" ToRole="tbProductos" />
         </EntityType>
         <EntityType Name="tbUsuario">
           <Key>
@@ -260,18 +257,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Empleados_Perfiles">
-          <End Role="tbPerfiles" Type="Self.tbPerfiles" Multiplicity="0..1" />
-          <End Role="tbEmpleados" Type="Self.tbEmpleados" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbPerfiles">
-              <PropertyRef Name="IdPerfil" />
-            </Principal>
-            <Dependent Role="tbEmpleados">
-              <PropertyRef Name="IdPerfil" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Usuario_Perfil">
           <End Role="tbPerfil" Type="Self.tbPerfil" Multiplicity="1" />
           <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="*" />
@@ -284,24 +269,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DATABASE_PYEEntities1" annotation:LazyLoadingEnabled="true">
+        <Association Name="FK_tbProductos_tbProveedores">
+          <End Role="tbProveedores" Type="Self.tbProveedores" Multiplicity="1" />
+          <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProveedores">
+              <PropertyRef Name="ProveedorID" />
+            </Principal>
+            <Dependent Role="tbProductos">
+              <PropertyRef Name="ProveedorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DATABASE_PYEEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tbCategorias" EntityType="Self.tbCategorias" />
+          <EntitySet Name="tbClientes" EntityType="Self.tbClientes" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" />
-          <EntitySet Name="tbPerfiles" EntityType="Self.tbPerfiles" />
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" />
+          <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" />
           <AssociationSet Name="FK_Categoria" Association="Self.FK_Categoria">
             <End Role="tbCategorias" EntitySet="tbCategorias" />
             <End Role="tbProductos" EntitySet="tbProductos" />
           </AssociationSet>
-          <AssociationSet Name="FK_Empleados_Perfiles" Association="Self.FK_Empleados_Perfiles">
-            <End Role="tbPerfiles" EntitySet="tbPerfiles" />
-            <End Role="tbEmpleados" EntitySet="tbEmpleados" />
-          </AssociationSet>
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="tbPerfil" EntitySet="tbPerfil" />
             <End Role="tbUsuario" EntitySet="tbUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbProductos_tbProveedores" Association="Self.FK_tbProductos_tbProveedores">
+            <End Role="tbProveedores" EntitySet="tbProveedores" />
+            <End Role="tbProductos" EntitySet="tbProductos" />
           </AssociationSet>
           <FunctionImport Name="CrearUsuarios" ReturnType="Collection(Int32)">
             <Parameter Name="Identificacion" Mode="In" Type="String" />
@@ -313,66 +311,34 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="tbClientes" EntityType="DATABASE_PYEModel.tbClientes" />
-          <EntitySet Name="tbProveedores" EntityType="DATABASE_PYEModel.tbProveedores" />
-          <AssociationSet Name="FK_tbProductos_tbProveedores" Association="DATABASE_PYEModel.FK_tbProductos_tbProveedores">
-            <End Role="tbProveedores" EntitySet="tbProveedores" />
-            <End Role="tbProductos" EntitySet="tbProductos" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="tbClientes">
-          <Key>
-            <PropertyRef Name="IdCliente" />
-          </Key>
-          <Property Name="IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Identificacion" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CorreoElectronico" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Estado" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tbProveedores">
-          <Key>
-            <PropertyRef Name="ProveedorID" />
-          </Key>
-          <Property Name="ProveedorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NombreEmpresa" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Contacto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CorreoElectronico" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Estado" Type="Boolean" Nullable="false" />
-          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="tbProductos" Relationship="DATABASE_PYEModel.FK_tbProductos_tbProveedores" FromRole="tbProveedores" ToRole="tbProductos" />
-        </EntityType>
-        <Association Name="FK_tbProductos_tbProveedores">
-          <End Type="DATABASE_PYEModel.tbProveedores" Role="tbProveedores" Multiplicity="1" />
-          <End Type="DATABASE_PYEModel.tbProductos" Role="tbProductos" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbProveedores">
-              <PropertyRef Name="ProveedorID" />
-            </Principal>
-            <Dependent Role="tbProductos">
-              <PropertyRef Name="ProveedorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities1">
+        <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities">
           <EntitySetMapping Name="tbCategorias">
             <EntityTypeMapping TypeName="DATABASE_PYEModel.tbCategorias">
               <MappingFragment StoreEntitySet="tbCategorias">
                 <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbClientes">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbClientes">
+              <MappingFragment StoreEntitySet="tbClientes">
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -398,18 +364,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbPerfiles">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbPerfiles">
-              <MappingFragment StoreEntitySet="tbPerfiles">
-                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbProductos">
             <EntityTypeMapping TypeName="DATABASE_PYEModel.tbProductos">
               <MappingFragment StoreEntitySet="tbProductos">
-                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
                 <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -417,6 +374,22 @@
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
                 <ScalarProperty Name="Imagen" ColumnName="Imagen" />
                 <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbProveedores">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbProveedores">
+              <MappingFragment StoreEntitySet="tbProveedores">
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+                <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
+                <ScalarProperty Name="Contacto" ColumnName="Contacto" />
+                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -435,36 +408,6 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CrearUsuarios" FunctionName="DATABASE_PYEModel.Store.CrearUsuarios" />
           <FunctionImportMapping FunctionImportName="LoginUsuario" FunctionName="DATABASE_PYEModel.Store.LoginUsuario" />
-          <EntitySetMapping Name="tbClientes">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbClientes">
-              <MappingFragment StoreEntitySet="tbClientes">
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
-                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbProveedores">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbProveedores">
-              <MappingFragment StoreEntitySet="tbProveedores">
-                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Contacto" ColumnName="Contacto" />
-                <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
-                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

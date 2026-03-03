@@ -26,6 +26,8 @@ namespace WebApplication1.Controllers
         {
              return View();
         }
+
+
         [HttpPost]
         public ActionResult Login(Usuario usuario)
         {
@@ -34,7 +36,7 @@ namespace WebApplication1.Controllers
                 int resultado = context.LoginUsuario(
                     usuario.CorreoElectronico,
                     usuario.Contrasenna
-                ).FirstOrDefault() ?? 0; 
+                ).FirstOrDefault() ?? 0;
 
                 if (resultado == 1)
                 {
@@ -42,12 +44,11 @@ namespace WebApplication1.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
+                // ⚠ Login fallido
                 ViewBag.Mensaje = "Correo o contraseña incorrectos.";
                 return View(usuario);
             }
         }
-
-
 
 
 

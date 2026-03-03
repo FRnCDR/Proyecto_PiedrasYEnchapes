@@ -163,9 +163,6 @@
     <Compile Include="EF\tbPerfil.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tbPerfiles.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tbProductos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -216,6 +213,7 @@
     <Content Include="StaticFiles\css\perfil.css" />
     <Content Include="StaticFiles\css\responsive.css" />
     <Content Include="StaticFiles\css\style.css" />
+    <Content Include="StaticFiles\css\toast.css" />
     <Content Include="StaticFiles\images\about-img.png" />
     <Content Include="StaticFiles\images\client1.jpg" />
     <Content Include="StaticFiles\images\client2.jpg" />

@@ -28,8 +28,7 @@
                 </div>
             }
 
-
-            @using (Html.BeginForm("Registro", "Home", FormMethod.Post, new { @class = "register-form" }))
+            @using (Html.BeginForm("Registro", "Home", FormMethod.Post, new { @class = "register-form", id = "FormRegistro" }))
             {
                 <!-- Identificación -->
                 <div class="input-group-modern">
@@ -78,13 +77,16 @@
                     {
                         @class = "form-control input-modern",
                         placeholder = "Contraseña",
+                        required = "required",
+                        minlength = "8",
+                        id = "Contrasenna"
                     })
                 </div>
 
                 <button type="submit" class="btn login-btn w-100">
                     Registrarme
                 </button>
-            }
+            }   <!-- AQUÍ se cierra el using -->
 
             <div class="login-divider">
                 <span>o</span>
@@ -95,7 +97,7 @@
                 <a href="@Url.Action("Login", "Home")" class="signup">Inicia sesión</a>
             </div>
 
-        </div>
+        </div> <!-- .login-card -->
     </section>
 </div>
 
@@ -104,7 +106,5 @@
         const urlConsultarCedula = '@Url.Action("ConsultarCedula", "Home")';
     </script>
 
-    <!-- Enlazamos el archivo JS externo -->
-   
     <script src="~/StaticFiles/js/registro.js"></script>
 }
