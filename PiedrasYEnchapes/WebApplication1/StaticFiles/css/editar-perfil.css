@@ -1,0 +1,83 @@
+﻿/* ===== FORMULARIO MI INFORMACIÓN ===== */
+
+.ig-form {
+    width: 100%;
+}
+
+/* Campo */
+.ig-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+/* Label */
+.ig-label {
+    font-size: 13px;
+    color: rgba(255,255,255,.75);
+}
+
+/* Inputs */
+.ig-control {
+    width: 100%;
+    background: rgba(0,0,0,.6);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.20);
+    padding: 10px 12px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+    .ig-control:focus {
+        border-color: rgba(255,255,255,.6);
+    }
+
+/* Botón */
+.ig-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ig-btn-primary {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+    color: #000;
+}
+
+    .ig-btn-primary:hover {
+        background: #f3f3f3;
+    }
+
+
+
+
+/* Hacer el "card" más útil para formularios */
+.ig-item {
+    width: 100%;
+}
+
+    /* Aumentar el ancho del bloque donde está el form */
+    .ig-item form {
+        width: 100%;
+    }
+
+/* Inputs: más anchos y un poco más altos */
+.ig-control {
+    width: 100%;
+    min-height: 46px;
+    font-size: 15px;
+}
+
+/* Si quieres que el nombre se vea completo aunque sea largo */
+#Nombre {
+    font-size: 15px;
+}

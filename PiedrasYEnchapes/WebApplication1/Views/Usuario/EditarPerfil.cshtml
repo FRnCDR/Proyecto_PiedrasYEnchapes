@@ -1,0 +1,91 @@
+﻿@model WebApplication1.Models.Usuario
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<link rel="stylesheet" href="~/StaticFiles/css/perfil-instagram.css" />
+
+<div class="ig-settings">
+
+    <!-- Header -->
+    <div class="ig-header">
+        <a class="ig-back" href="@Url.Action("VerPerfil", "Usuario")">
+            <i class="fa fa-chevron-left"></i>
+        </a>
+
+        <div class="ig-title">Mi información</div>
+
+        <div class="ig-spacer"></div>
+    </div>
+
+    <div class="ig-section">
+        <div class="ig-section-title">Información personal</div>
+
+        <div class="ig-item">
+
+            @using (Html.BeginForm("EditarPerfil", "Usuario", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <!-- Identificación -->
+                <div class="ig-field">
+                    <label class="ig-label">Identificación</label>
+                    @Html.TextBoxFor(x => x.Identificacion,
+                        new { @class = "ig-control", id = "Identificacion" })
+                </div>
+
+                <!-- Nombre -->
+                <div class="ig-field">
+                    <label class="ig-label">Nombre completo</label>
+                    @Html.TextBoxFor(x => x.Nombre,
+                        new { @class = "ig-control", id = "Nombre", @readonly = "readonly" })
+                </div>
+
+                <!-- Correo -->
+                <div class="ig-field">
+                    <label class="ig-label">Correo electrónico</label>
+                    @Html.TextBoxFor(x => x.CorreoElectronico,
+                        new { @class = "ig-control", type = "email" })
+                </div>
+
+                <div class="ig-actions">
+                    <button type="submit" class="ig-btn-primary">
+                        Guardar cambios
+                    </button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Mensaje != null)
+{
+    var tipo = (ViewBag.TipoMensaje as string ?? "info").ToLower();
+
+    <div id="perfilToast" class="custom-toast toast-@tipo">
+        <span>@ViewBag.Mensaje</span>
+        <button type="button" onclick="closePerfilToast()">×</button>
+    </div>
+}
+
+
+@section Scripts {
+    <script>
+        console.log("UrlConsultarCedulaEditarPerfil:", '@ViewBag.UrlConsultarCedula');
+        var urlConsultarCedulaEditarPerfil = '@ViewBag.UrlConsultarCedula';
+
+        function closePerfilToast() {
+            const toast = document.getElementById('perfilToast');
+            if (toast) toast.remove();
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(closePerfilToast, 4000);
+        });
+
+
+    </script>
+
+    <script src="~/StaticFiles/js/EditarPerfil.js"></script>
+}
