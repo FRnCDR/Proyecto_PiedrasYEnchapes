@@ -5,61 +5,117 @@
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
 
-<h2>Agregar Nuevo Producto</h2>
-
-@using (Html.BeginForm("AgregarProducto", "Inventario", FormMethod.Post, new { @enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Nombre)
-        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre del producto" })
-        @Html.ValidationMessageFor(model => model.Nombre)
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
+</div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Descripcion)
-        @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "3" })
-        @Html.ValidationMessageFor(model => model.Descripcion)
+<!-- producto section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-header pb-0 bg-transparent">
+                        <h4 class="font-weight-bolder mb-1">Agregar Producto</h4>
+                        <p class="text-sm text-muted mb-0">
+                            Registra un nuevo producto en el inventario.
+                        </p>
+                    </div>
+
+                    <div class="card-body pt-3">
+
+                        @using (Html.BeginForm("AgregarProducto", "Inventario", FormMethod.Post,
+                            new { enctype = "multipart/form-data", id = "FormAgregarProducto" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <label class="form-label">Nombre del producto</label>
+                                @Html.TextBoxFor(model => model.Nombre,
+                                    new { @class = "form-control", placeholder = "Nombre del producto" })
+                                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                @Html.TextAreaFor(model => model.Descripcion,
+                                    new { @class = "form-control", rows = "3" })
+                                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Stock -->
+                            <div class="mb-3">
+                                <label class="form-label">Stock</label>
+                                @Html.TextBoxFor(model => model.Stock,
+                                    new { @class = "form-control", placeholder = "Stock disponible" })
+                                @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Precio -->
+                            <div class="mb-3">
+                                <label class="form-label">Precio</label>
+                                @Html.TextBoxFor(model => model.Precio,
+                                    new { @class = "form-control", placeholder = "Precio del producto" })
+                                @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Categoría -->
+                            <div class="mb-3">
+                                <label class="form-label">Categoría</label>
+                                @Html.DropDownListFor(
+                                    x => x.CategoriaID,
+                                    (SelectList)ViewBag.Categorias,
+                                    "Seleccione una categoría",
+                                    new { @class = "form-control" }
+                                )
+                                @Html.ValidationMessageFor(x => x.CategoriaID, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Proveedor -->
+                            <div class="mb-3">
+                                <label class="form-label">Proveedor</label>
+                                @Html.DropDownListFor(
+                                    x => x.ProveedorID,
+                                    (SelectList)ViewBag.Proveedores,
+                                    "Seleccione un proveedor",
+                                    new { @class = "form-control" }
+                                )
+                                @Html.ValidationMessageFor(x => x.ProveedorID, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Imagen -->
+                            <div class="mb-3">
+                                <label class="form-label">Imagen del producto</label>
+                                <input type="file" name="Imagen" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.Imagen, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success w-100 mb-2">
+                                    Guardar Producto
+                                </button>
+
+                                <a href="@Url.Action("VerInventario", "Inventario")"
+                                   class="btn btn-secondary w-100">
+                                    Cancelar
+                                </a>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Stock)
-        @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", placeholder = "Stock" })
-        @Html.ValidationMessageFor(model => model.Stock)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Precio)
-        @Html.TextBoxFor(model => model.Precio, new { @class = "form-control", placeholder = "Precio" })
-        @Html.ValidationMessageFor(model => model.Precio)
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Categoría</label>
-        @Html.DropDownListFor(
-            x => x.CategoriaID,                     // Propiedad del modelo que guarda el ID
-            (SelectList)ViewBag.Categorias,        // Lista de categorías enviada desde el controlador
-            "Seleccione una categoría",             // Opción por defecto
-            new { @class = "form-control" }        // Clases CSS
-        )
-        @Html.ValidationMessageFor(x => x.CategoriaID, "", new { @class = "text-danger" })
-    </div>
-
-    <!-- Selección de proveedor -->
-    <div class="mb-3">
-        <label class="form-label">Proveedor</label>
-        @Html.DropDownListFor(x => x.ProveedorID, (SelectList)ViewBag.Proveedores, "Seleccione un proveedor", new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.ProveedorID, "", new { @class = "text-danger" })
-    </div>
-
-    <!-- Imagen -->
-    <div class="form-group">
-        @Html.LabelFor(model => model.Imagen)
-        <input type="file" name="Imagen" class="form-control" />
-        @Html.ValidationMessageFor(model => model.Imagen)
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar Producto</button>
-    <a href="@Url.Action("VerInventario", "Inventario")" class="btn btn-secondary">Cancelar</a>
-}
+</section>

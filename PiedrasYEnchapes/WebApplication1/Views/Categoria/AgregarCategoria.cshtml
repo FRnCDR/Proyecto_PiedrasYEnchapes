@@ -11,24 +11,56 @@
     </div>
 </div>
 
-<h2>Agregar Nueva Categoría</h2>
+<!-- categorias section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
 
-@using (Html.BeginForm("AgregarCategoria", "Categoria", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+                <div class="card shadow-sm border-0">
+                    <div class="card-header pb-0 bg-transparent">
+                        <h4 class="font-weight-bolder mb-1">Agregar Categoría</h4>
+                        <p class="text-sm text-muted mb-0">
+                            Registra una nueva categoría en el sistema.
+                        </p>
+                    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Nombre)
-        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre de la categoría" })
-        @Html.ValidationMessageFor(model => model.Nombre)
+                    <div class="card-body pt-3">
+                        @using (Html.BeginForm("AgregarCategoria", "Categoria", FormMethod.Post, new { id = "FormAgregarCategoria" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", placeholder = "Nombre de la categoría" })
+                                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "3", placeholder = "Descripción de la categoría" })
+                                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success w-100 mb-2">
+                                    Guardar Categoría
+                                </button>
+
+                                <a href="@Url.Action("VerCategorias", "Categoria")" class="btn btn-secondary w-100">
+                                    Cancelar
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Descripcion)
-        @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "3" })
-        @Html.ValidationMessageFor(model => model.Descripcion)
-    </div>
-
-    <button type="submit" class="btn btn-success">Guardar Categoría</button>
-    <a href="@Url.Action("VerCategorias", "Categoria")" class="btn btn-secondary">Cancelar</a>
-}
+</section>

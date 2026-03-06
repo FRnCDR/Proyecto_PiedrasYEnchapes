@@ -206,11 +206,16 @@
                                        class="btn btn-sm btn-warning">
                                         Editar
                                     </a>
-                                    <a href="@Url.Action("EliminarProducto", "Inventario", new { q = producto.ProductoID })"
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('¿Seguro que deseas eliminar este producto?');">
-                                        Eliminar
-                                    </a>
+                                    @using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post, new { style = "display:inline;" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("q", producto.ProductoID)
+
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
+                                            Eliminar
+                                        </button>
+                                    }
                                 </td>
                             </tr>
                         }

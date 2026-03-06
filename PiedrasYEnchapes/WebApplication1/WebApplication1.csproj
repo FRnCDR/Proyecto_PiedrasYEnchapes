@@ -216,6 +216,7 @@
     <Content Include="StaticFiles\css\style.css" />
     <Content Include="StaticFiles\css\toast-perfil.css" />
     <Content Include="StaticFiles\css\toast.css" />
+    <Content Include="StaticFiles\images\7PPV6LHMMJEPREAIQ7WNC7I6XI.jpg" />
     <Content Include="StaticFiles\images\about-img.png" />
     <Content Include="StaticFiles\images\client1.jpg" />
     <Content Include="StaticFiles\images\client2.jpg" />

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using WebApplication1.EF;
 using WebApplication1.Models;
@@ -11,150 +8,159 @@ namespace WebApplication1.Controllers
 {
     public class CategoriaController : Controller
     {
-        private readonly DATABASE_PYEEntities db = new DATABASE_PYEEntities(); // Aquí creamos la instancia del contexto
+        // ---------------------------------------------------------
+        // LISTAR
+        // ---------------------------------------------------------
+        public ActionResult VerCategorias()
+        {
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var categoriasModelo = context.tbCategorias
+                    .AsNoTracking()
+                    .Select(c => new Categoria
+                    {
+                        CategoriaID = c.CategoriaID,
+                        Nombre = c.Nombre,
+                        Descripcion = c.Descripcion
+                    })
+                    .ToList();
 
-       public ActionResult VerCategorias()
-{
-    // Consultamos las categorías desde la base de datos
-    var categorias = db.tbCategorias.ToList();
+                return View(categoriasModelo);
+            }
+        }
 
-    // Convertimos las categorías de la base de datos al modelo adecuado
-    var categoriasModelo = categorias.Select(c => new Categoria
-    {
-        CategoriaID = c.CategoriaID,
-        Nombre = c.Nombre,
-        Descripcion = c.Descripcion
-    }).ToList();
-
-    // Pasamos el modelo a la vista
-    return View(categoriasModelo);  // Ahora pasamos List<Categoria> en lugar de List<tbCategorias>
-}
-
-        // Agregar nueva categoría (GET)
+        // ---------------------------------------------------------
+        // GET: AGREGAR
+        // ---------------------------------------------------------
         [HttpGet]
         public ActionResult AgregarCategoria()
         {
-            return View();
+            return View(new Categoria());
         }
 
+        // ---------------------------------------------------------
+        // POST: AGREGAR
+        // ---------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AgregarCategoria(Categoria categoria)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) return View(categoria);
+
+            try
             {
-                return View(categoria);
-            }
-
-            using (var context = new DATABASE_PYEEntities())
-            {
-                var nuevaCategoria = new tbCategorias
+                using (var context = new DATABASE_PYEEntities())
                 {
-                    Nombre = categoria.Nombre,
-                    Descripcion = categoria.Descripcion
-                };
+                    var nuevaCategoria = new tbCategorias
+                    {
+                        Nombre = categoria.Nombre,
+                        Descripcion = categoria.Descripcion
+                    };
 
-                context.tbCategorias.Add(nuevaCategoria);
-                var resultado = context.SaveChanges();
+                    context.tbCategorias.Add(nuevaCategoria);
+                    var resultado = context.SaveChanges();
 
-                if (resultado > 0)
-                {
-                    return RedirectToAction("VerCategorias");
+                    if (resultado > 0) return RedirectToAction("VerCategorias");
+
+                    ViewBag.Mensaje = "No se pudo agregar la categoría.";
+                    return View(categoria);
                 }
-
-                ViewBag.Mensaje = "No se pudo agregar la categoría.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Mensaje = "Error: " + ex.Message;
                 return View(categoria);
             }
         }
 
-        // Actualizar una categoría (GET)
+        // ---------------------------------------------------------
+        // GET: ACTUALIZAR
+        // ---------------------------------------------------------
         [HttpGet]
         public ActionResult ActualizarCategoria(int? id)
         {
-            if (!id.HasValue)
-            {
-                return RedirectToAction("VerCategorias", "Categoria");
-            }
+            if (!id.HasValue) return RedirectToAction("VerCategorias");
 
             using (var context = new DATABASE_PYEEntities())
             {
                 var categoria = context.tbCategorias
-                    .Where(c => c.CategoriaID == id)
-                    .FirstOrDefault();
+                    .AsNoTracking()
+                    .FirstOrDefault(c => c.CategoriaID == id.Value);
 
                 if (categoria == null)
                 {
                     TempData["Mensaje"] = "Categoría no encontrada.";
-                    return RedirectToAction("VerCategorias", "Categoria");
+                    return RedirectToAction("VerCategorias");
                 }
 
-                // Mapear los datos a un modelo de categoría
-                var categoriaModel = new Categoria
+                var model = new Categoria
                 {
                     CategoriaID = categoria.CategoriaID,
                     Nombre = categoria.Nombre,
                     Descripcion = categoria.Descripcion
                 };
 
-                return View(categoriaModel); // Pasar los datos a la vista
+                return View(model);
             }
         }
 
-        // Actualizar una categoría (POST)
+        // ---------------------------------------------------------
+        // POST: ACTUALIZAR
+        // ---------------------------------------------------------
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ActualizarCategoria(Categoria categoria)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(categoria); // Si el modelo no es válido, regresar a la vista
-            }
+            if (!ModelState.IsValid) return View(categoria);
 
             try
             {
                 using (var context = new DATABASE_PYEEntities())
                 {
-                    var categoriaExistente = context.tbCategorias
+                    var existente = context.tbCategorias
                         .FirstOrDefault(c => c.CategoriaID == categoria.CategoriaID);
 
-                    if (categoriaExistente == null)
+                    if (existente == null)
                     {
                         ViewBag.Mensaje = "Categoría no encontrada.";
-                        return View(categoria); // Si no se encuentra la categoría, mostrar mensaje
+                        return View(categoria);
                     }
 
-                    // Actualizar los valores de la categoría
-                    categoriaExistente.Nombre = categoria.Nombre;
-                    categoriaExistente.Descripcion = categoria.Descripcion;
+                    existente.Nombre = categoria.Nombre;
+                    existente.Descripcion = categoria.Descripcion;
 
-                    var resultadoActualizacion = context.SaveChanges(); // Guardar los cambios
-
-                    if (resultadoActualizacion > 0)
-                    {
-                        return RedirectToAction("VerCategorias", "Categoria"); // Redirigir si la actualización fue exitosa
-                    }
+                    var resultado = context.SaveChanges();
+                    if (resultado > 0) return RedirectToAction("VerCategorias");
 
                     ViewBag.Mensaje = "No se pudo actualizar la información.";
-                    return View(categoria); // Volver a la vista con el error
+                    return View(categoria);
                 }
             }
             catch (Exception ex)
             {
                 ViewBag.Mensaje = "Error: " + ex.Message;
-                return View(categoria); // Si ocurre un error, mostrarlo en la vista
+                return View(categoria);
             }
         }
 
+        // ---------------------------------------------------------
+        // ELIMINAR
+        // ---------------------------------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EliminarCategoria(int id)
         {
-            var categoria = db.tbCategorias.FirstOrDefault(c => c.CategoriaID == id);
-            if (categoria != null)
+            using (var context = new DATABASE_PYEEntities())
             {
-                db.tbCategorias.Remove(categoria);
-                db.SaveChanges();
+                var categoria = context.tbCategorias.FirstOrDefault(c => c.CategoriaID == id);
+                if (categoria != null)
+                {
+                    context.tbCategorias.Remove(categoria);
+                    context.SaveChanges();
+                }
             }
 
             return RedirectToAction("VerCategorias");
         }
-
     }
 }

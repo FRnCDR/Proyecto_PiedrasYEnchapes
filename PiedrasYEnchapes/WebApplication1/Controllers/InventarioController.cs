@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -11,87 +12,119 @@ namespace WebApplication1.Controllers
 {
     public class InventarioController : Controller
     {
-        private readonly DATABASE_PYEEntities db = new DATABASE_PYEEntities(); // Aquí creamos la instancia del contexto
-
-        // Consultar todos los productos
+        // ---------------------------------------------------------
+        // VER INVENTARIO
+        // ---------------------------------------------------------
         public ActionResult VerInventario()
         {
             var resultado = ConsultarProductos();
-            // Consultar todas las categorías
-            ViewBag.Categorias = new SelectList(db.tbCategorias.ToList(), "CategoriaID");
+
+            using (var context = new DATABASE_PYEEntities())
+            {
+                ViewBag.Categorias = new SelectList(
+                    context.tbCategorias.AsNoTracking().ToList(),
+                    "CategoriaID",
+                    "Nombre"
+                );
+            }
+
             return View(resultado);
         }
 
+        // ---------------------------------------------------------
+        // GET: AGREGAR PRODUCTO
+        // ---------------------------------------------------------
         [HttpGet]
         public ActionResult AgregarProducto()
         {
-            // Obtener todas las categorías y proveedores
-            ViewBag.Categorias = new SelectList(db.tbCategorias, "CategoriaID", "Nombre");
-            ViewBag.Proveedores = new SelectList(db.tbProveedores, "ProveedorID", "NombreEmpresa");
-
+            CargarCombos();
             return View(new Producto());
         }
-        // Agregar nuevo producto (POST)
+
+        // ---------------------------------------------------------
+        // POST: AGREGAR PRODUCTO
+        // ---------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AgregarProducto(Producto producto, HttpPostedFileBase Imagen)
         {
-            if (!ModelState.IsValid)
+            // Validar imagen antes de insertar
+            if (Imagen != null && Imagen.ContentLength > 0)
             {
-                return View(producto);
-            }
+                var extension = Path.GetExtension(Imagen.FileName).ToLower();
+                var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
 
-            using (var context = new DATABASE_PYEEntities())
-            {
-                var nuevoProducto = new tbProductos
+                if (!validExtensions.Contains(extension))
                 {
-                    Nombre = producto.Nombre,
-                    Descripcion = producto.Descripcion,
-                    Stock = producto.Stock,
-                    Precio = producto.Precio,
-                    CategoriaID = producto.CategoriaID, // Asociar con el ID de la categoría
-                    ProveedorID = (int)producto.ProveedorID,
-                    Imagen = string.Empty // Iniciar el campo de la imagen vacío
-                };
-
-                context.tbProductos.Add(nuevoProducto);
-                var resultadoInsercion = context.SaveChanges();
-
-                if (resultadoInsercion > 0)
-                {
-                    // Lógica para guardar la imagen (si es que se seleccionó)
-                    if (Imagen != null && Imagen.ContentLength > 0)
-                    {
-                        var extension = Path.GetExtension(Imagen.FileName).ToLower();
-                        var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                        if (!validExtensions.Contains(extension))
-                        {
-                            ViewBag.Mensaje = "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.";
-                            return View(producto);
-                        }
-
-                        var rutaImagen = Path.Combine(Server.MapPath("~/wwwroot/imgProductos/"), nuevoProducto.ProductoID + extension);
-                        var folderPath = Server.MapPath("~/wwwroot/imgProductos/");
-                        if (!Directory.Exists(folderPath))
-                        {
-                            Directory.CreateDirectory(folderPath);
-                        }
-
-                        Imagen.SaveAs(rutaImagen);
-                        nuevoProducto.Imagen = "imgProductos/" + nuevoProducto.ProductoID + extension;
-                        context.SaveChanges();
-                    }
-
-                    return RedirectToAction("VerInventario", "Inventario");
+                    ModelState.AddModelError("Imagen", "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.");
                 }
             }
 
-            ViewBag.Mensaje = "La información no se pudo insertar.";
-            return View();
+            // Validar proveedor si es obligatorio
+            if (!producto.ProveedorID.HasValue || producto.ProveedorID.Value <= 0)
+            {
+                ModelState.AddModelError("ProveedorID", "Debe seleccionar un proveedor.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                CargarCombos(producto.CategoriaID, producto.ProveedorID);
+                return View(producto);
+            }
+
+            try
+            {
+                using (var context = new DATABASE_PYEEntities())
+                {
+                    var nuevoProducto = new tbProductos
+                    {
+                        Nombre = producto.Nombre,
+                        Descripcion = producto.Descripcion,
+                        Stock = producto.Stock,
+                        Precio = producto.Precio,
+                        CategoriaID = producto.CategoriaID,
+                        ProveedorID = producto.ProveedorID.Value,
+                        Imagen = string.Empty
+                    };
+
+                    context.tbProductos.Add(nuevoProducto);
+                    context.SaveChanges();
+
+                    // Guardar imagen si viene
+                    if (Imagen != null && Imagen.ContentLength > 0)
+                    {
+                        var extension = Path.GetExtension(Imagen.FileName).ToLower();
+                        var folderPath = Server.MapPath("~/StaticFiles/images/");
+
+                        if (!Directory.Exists(folderPath))
+                            Directory.CreateDirectory(folderPath);
+
+                        // Guardar solo el nombre del archivo
+                        var nombreArchivo = nuevoProducto.ProductoID + extension;
+                        var rutaImagen = Path.Combine(folderPath, nombreArchivo);
+
+                        Imagen.SaveAs(rutaImagen);
+
+                        // En BD solo guardar el nombre
+                        nuevoProducto.Imagen = nombreArchivo;
+                        context.SaveChanges();
+                    }
+
+                    TempData["Mensaje"] = "Producto agregado correctamente.";
+                    return RedirectToAction("VerInventario", "Inventario");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Mensaje = "Error: " + ex.Message;
+                CargarCombos(producto.CategoriaID, producto.ProveedorID);
+                return View(producto);
+            }
         }
 
-
-        // GET: ActualizarProducto
+        // ---------------------------------------------------------
+        // GET: ACTUALIZAR PRODUCTO
+        // ---------------------------------------------------------
         [HttpGet]
         public ActionResult ActualizarProducto(int? q)
         {
@@ -100,7 +133,8 @@ namespace WebApplication1.Controllers
 
             using (var context = new DATABASE_PYEEntities())
             {
-                var producto = context.tbProductos.FirstOrDefault(p => p.ProductoID == q.Value);
+                var producto = context.tbProductos.AsNoTracking().FirstOrDefault(p => p.ProductoID == q.Value);
+
                 if (producto == null)
                 {
                     TempData["Mensaje"] = "Producto no encontrado.";
@@ -119,29 +153,39 @@ namespace WebApplication1.Controllers
                     Imagen = producto.Imagen
                 };
 
-                // Cargar dropdowns con valor seleccionado
-                ViewBag.ListaCategorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", datos.CategoriaID);
-                ViewBag.ListaProveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", datos.ProveedorID);
-
+                CargarCombos(datos.CategoriaID, datos.ProveedorID);
                 return View(datos);
             }
         }
 
-
-        // POST: ActualizarProducto
+        // ---------------------------------------------------------
+        // POST: ACTUALIZAR PRODUCTO
+        // ---------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ActualizarProducto(Producto producto, HttpPostedFileBase Imagen)
         {
+            // Validar imagen antes de actualizar
+            if (Imagen != null && Imagen.ContentLength > 0)
+            {
+                var extension = Path.GetExtension(Imagen.FileName).ToLower();
+                var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+
+                if (!validExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("Imagen", "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.");
+                }
+            }
+
+            // Validar proveedor si es obligatorio
+            if (!producto.ProveedorID.HasValue || producto.ProveedorID.Value <= 0)
+            {
+                ModelState.AddModelError("ProveedorID", "Debe seleccionar un proveedor.");
+            }
+
             if (!ModelState.IsValid)
             {
-                // Recargar dropdowns si hay error de validación
-                using (var context = new DATABASE_PYEEntities())
-                {
-                    ViewBag.Categorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", producto.CategoriaID);
-                    ViewBag.Proveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", producto.ProveedorID);
-                }
-
+                CargarCombos(producto.CategoriaID, producto.ProveedorID);
                 return View(producto);
             }
 
@@ -150,43 +194,49 @@ namespace WebApplication1.Controllers
                 using (var context = new DATABASE_PYEEntities())
                 {
                     var productoExistente = context.tbProductos.FirstOrDefault(p => p.ProductoID == producto.ProductoID);
+
                     if (productoExistente == null)
                     {
                         ViewBag.Mensaje = "Producto no encontrado.";
+                        CargarCombos(producto.CategoriaID, producto.ProveedorID);
                         return View(producto);
                     }
 
-                    // Actualizar campos
                     productoExistente.Nombre = producto.Nombre;
                     productoExistente.Descripcion = producto.Descripcion;
                     productoExistente.Stock = producto.Stock;
                     productoExistente.Precio = producto.Precio;
                     productoExistente.CategoriaID = producto.CategoriaID;
+                    productoExistente.ProveedorID = producto.ProveedorID.Value;
 
-                    if (producto.ProveedorID.HasValue)
-                        productoExistente.ProveedorID = producto.ProveedorID.Value;
-
-                    // Manejo de imagen opcional
+                    // Actualizar imagen si viene una nueva
                     if (Imagen != null && Imagen.ContentLength > 0)
                     {
                         var extension = Path.GetExtension(Imagen.FileName).ToLower();
-                        var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                        if (!validExtensions.Contains(extension))
-                        {
-                            ViewBag.Mensaje = "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.";
-                            // Recargar dropdowns antes de retornar
-                            ViewBag.ListaCategorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", producto.CategoriaID);
-                            ViewBag.ListaProveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", producto.ProveedorID);
-                            return View(producto);
-                        }
+                        var folderPath = Server.MapPath("~/StaticFiles/images/");
 
-                        var folderPath = Server.MapPath("~/wwwroot/imgProductos/");
                         if (!Directory.Exists(folderPath))
                             Directory.CreateDirectory(folderPath);
 
-                        var rutaImagen = Path.Combine(folderPath, productoExistente.ProductoID + extension);
+                        // Eliminar imagen anterior si existe
+                        if (!string.IsNullOrEmpty(productoExistente.Imagen))
+                        {
+                            var rutaAnterior = Path.Combine(folderPath, productoExistente.Imagen);
+
+                            if (System.IO.File.Exists(rutaAnterior))
+                            {
+                                System.IO.File.Delete(rutaAnterior);
+                            }
+                        }
+
+                        // Guardar solo el nombre del archivo
+                        var nombreArchivo = productoExistente.ProductoID + extension;
+                        var rutaImagen = Path.Combine(folderPath, nombreArchivo);
+
                         Imagen.SaveAs(rutaImagen);
-                        productoExistente.Imagen = "imgProductos/" + productoExistente.ProductoID + extension;
+
+                        // En BD solo guardar el nombre
+                        productoExistente.Imagen = nombreArchivo;
                     }
 
                     context.SaveChanges();
@@ -197,38 +247,64 @@ namespace WebApplication1.Controllers
             catch (Exception ex)
             {
                 ViewBag.Mensaje = "Error: " + ex.Message;
-                using (var context = new DATABASE_PYEEntities())
-                {
-                    ViewBag.Categorias = new SelectList(context.tbCategorias.ToList(), "CategoriaID", "Nombre", producto.CategoriaID);
-                    ViewBag.Proveedores = new SelectList(context.tbProveedores.ToList(), "ProveedorID", "NombreEmpresa", producto.ProveedorID);
-                }
+                CargarCombos(producto.CategoriaID, producto.ProveedorID);
                 return View(producto);
             }
         }
 
-        // Eliminar un producto
+        // ---------------------------------------------------------
+        // ELIMINAR PRODUCTO (POST)
+        // ---------------------------------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EliminarProducto(int q)
         {
-            using (var context = new DATABASE_PYEEntities())
+            try
             {
-                var producto = context.tbProductos.FirstOrDefault(p => p.ProductoID == q);
-                if (producto != null)
+                using (var context = new DATABASE_PYEEntities())
                 {
-                    context.tbProductos.Remove(producto);
-                    context.SaveChanges();
+                    var producto = context.tbProductos.FirstOrDefault(p => p.ProductoID == q);
+
+                    if (producto != null)
+                    {
+                        // Eliminar imagen física si existe
+                        if (!string.IsNullOrEmpty(producto.Imagen))
+                        {
+                            var rutaImagen = Server.MapPath("~/StaticFiles/" + producto.Imagen);
+                            if (System.IO.File.Exists(rutaImagen))
+                            {
+                                System.IO.File.Delete(rutaImagen);
+                            }
+                        }
+
+                        context.tbProductos.Remove(producto);
+                        context.SaveChanges();
+
+                        TempData["Mensaje"] = "Producto eliminado correctamente.";
+                    }
+                    else
+                    {
+                        TempData["Mensaje"] = "Producto no encontrado.";
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "Error al eliminar: " + ex.Message;
             }
 
             return RedirectToAction("VerInventario", "Inventario");
         }
 
-        // Consultar productos
+        // ---------------------------------------------------------
+        // CONSULTAR PRODUCTOS
+        // ---------------------------------------------------------
         private List<Producto> ConsultarProductos()
         {
             using (var context = new DATABASE_PYEEntities())
             {
                 var resultado = context.tbProductos
-                    .ToList()
+                    .AsNoTracking()
                     .Select(p => new Producto
                     {
                         ProductoID = p.ProductoID,
@@ -238,7 +314,7 @@ namespace WebApplication1.Controllers
                         Precio = p.Precio,
                         Imagen = p.Imagen,
                         CategoriaID = p.CategoriaID,
-
+                        ProveedorID = p.ProveedorID
                     })
                     .ToList();
 
@@ -246,6 +322,27 @@ namespace WebApplication1.Controllers
             }
         }
 
+        // ---------------------------------------------------------
+        // CARGAR COMBOS
+        // ---------------------------------------------------------
+        private void CargarCombos(int? categoriaId = null, int? proveedorId = null)
+        {
+            using (var context = new DATABASE_PYEEntities())
+            {
+                ViewBag.Categorias = new SelectList(
+                    context.tbCategorias.AsNoTracking().ToList(),
+                    "CategoriaID",
+                    "Nombre",
+                    categoriaId
+                );
 
+                ViewBag.Proveedores = new SelectList(
+                    context.tbProveedores.AsNoTracking().ToList(),
+                    "ProveedorID",
+                    "NombreEmpresa",
+                    proveedorId
+                );
+            }
+        }
     }
 }

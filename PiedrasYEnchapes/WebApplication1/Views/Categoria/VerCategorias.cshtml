@@ -4,37 +4,82 @@
 }
 @model List<WebApplication1.Models.Categoria>
 
-<!-- HERO GENERAL -->
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
 </div>
 
-<h2>Lista de Categorías</h2>
+<!-- categorias section -->
+<section class="food_section layout_padding-bottom layout_padding-top">
+    <div class="container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var categoria in Model)
-        {
-            <tr>
-                <td>@categoria.Nombre</td>
-                <td>@categoria.Descripcion</td>
-                <td>
-                    <a href="@Url.Action("ActualizarCategoria", "Categoria", new { id = categoria.CategoriaID })" class="btn btn-warning">Editar</a> |
-                    <a href="@Url.Action("EliminarCategoria", "Categoria", new { id = categoria.CategoriaID })" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="heading_container">
+                <h2>Categorías</h2>
+                <p>Listado general de categorías registradas en el sistema</p>
+            </div>
 
-<a href="@Url.Action("AgregarCategoria", "Categoria")" class="btn btn-success">Agregar Nueva Categoría</a>
-<a href="@Url.Action("VerInventario", "Inventario")" class="btn btn-dark">Ver lista de poductos</a>
+            <div>
+                <a href="@Url.Action("AgregarCategoria", "Categoria")" class="btn btn-success shadow-sm">
+                    Agregar Categoría
+                </a>
+
+                <a href="@Url.Action("VerInventario", "Inventario")" class="btn btn-dark shadow-sm">
+                    Ver lista de productos
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var categoria in Model)
+                        {
+                            <tr>
+                                <td class="text-truncate" style="max-width:200px;">
+                                    @categoria.Nombre
+                                </td>
+
+                                <td class="text-truncate" style="max-width:300px;">
+                                    @categoria.Descripcion
+                                </td>
+
+                                <td>
+                                    <a href="@Url.Action("ActualizarCategoria", "Categoria", new { id = categoria.CategoriaID })"
+                                       class="btn btn-sm btn-warning">
+                                        Editar
+                                    </a>
+
+                                    <a href="@Url.Action("EliminarCategoria", "Categoria", new { id = categoria.CategoriaID })"
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3">No hay categorías registradas.</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
