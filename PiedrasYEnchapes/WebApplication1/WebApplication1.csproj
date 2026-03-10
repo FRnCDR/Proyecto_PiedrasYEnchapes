@@ -175,6 +175,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CambiarContrasennaViewModel.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -203,6 +204,7 @@
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
     <Content Include="StaticFiles\css\about-modern.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
+    <Content Include="StaticFiles\css\CambiarContrasenna.css" />
     <Content Include="StaticFiles\css\carrito.css" />
     <Content Include="StaticFiles\css\catalogo-minimal.css" />
     <Content Include="StaticFiles\css\catalogo-productos.css" />
@@ -303,6 +305,7 @@
     <Content Include="Views\Proveedor\ActualizarProveedor.cshtml" />
     <Content Include="Views\Proveedor\AgregarProveedor.cshtml" />
     <Content Include="Views\Usuario\EditarPerfil.cshtml" />
+    <Content Include="Views\Usuario\CambiarContrasenna.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

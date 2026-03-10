@@ -128,5 +128,99 @@ namespace WebApplication1.Controllers
 
             return RedirectToAction("EditarPerfil");
         }
+
+
+        [HttpGet]
+        public ActionResult CambiarContrasenna()
+        {
+            ViewBag.Mensaje = TempData["Mensaje"];
+            ViewBag.TipoMensaje = TempData["TipoMensaje"];
+
+
+            return View(new CambiarContrasennaViewModel());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CambiarContrasenna(CambiarContrasennaViewModel model)
+        {
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Mensaje = "Por favor complete correctamente los campos.";
+                ViewBag.Mensaje = "danger";
+                return View(model);
+
+            }
+
+
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var correoSesion = Session["UsuarioCorreo"]?.ToString();
+
+                if (string.IsNullOrWhiteSpace(correoSesion))
+                {
+                    TempData["Mensaje"] = "No hay sesión activa. Inicia sesión nuevamente.";
+                    TempData["TipoMensaje"] = "danger";
+                    return RedirectToAction("Login", "Home");
+                }
+
+
+                var u = context.tbUsuario.FirstOrDefault(x => x.CorreoElectronico == correoSesion);
+
+
+               //Validar Contraseña Actual
+               if (u.Contrasenna != model.ContrasennaActual)
+                {
+                    ViewBag.Mensaje = "La contraseña actual es incorrecta.";
+                    ViewBag.TipoMensaje = "danger";
+                    return View(model);
+                }
+
+
+
+
+               //Validar que la nueva no sea igual a la actual
+               if(model.ContrasennaActual == model.NuevaContrasenna)
+                {
+
+                    ViewBag.Mensaje = "La nueva contraseña no puede ser igual a la actual.";
+                    ViewBag.TipoMensaje = "warning";
+                    return View(model);
+
+                }
+
+
+
+                //Guardar nueva contraseña
+
+                u.Contrasenna = model.NuevaContrasenna;
+
+                var filas = context.SaveChanges();
+
+
+
+                if(filas > 0)
+                {
+                    TempData["Mensaje"] = "La contraseña se actualizó correctamente.";
+                    TempData["TipoMensaje"] = "success";
+                    return RedirectToAction("CambiarContrasenna");
+                }
+                else
+                {
+
+
+                    ViewBag.Mensaje = "No se pudo actualizar la contraseña.";
+                    ViewBag.TipoMensaje = "danger";
+                    return View(model);
+                }
+
+            }
+
+
+            
+        }
     }
 }

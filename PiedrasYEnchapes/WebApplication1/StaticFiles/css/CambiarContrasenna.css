@@ -1,0 +1,221 @@
+﻿/* ===== PÁGINA GENERAL ===== */
+
+.cp-page {
+    max-width: 950px;
+    margin: 0 auto;
+}
+/* ===== HEADER ===== */
+
+.cp-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 42px;
+    min-height: 56px;
+}
+
+.cp-back {
+    position: absolute;
+    left: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: #161616;
+    border: 1px solid rgba(255,255,255,.10);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 20px;
+    transition: all .2s ease;
+}
+
+    .cp-back:hover {
+        background: #202020;
+        border-color: rgba(255,255,255,.18);
+        color: #fff;
+    }
+
+.cp-title-wrap {
+    text-align: center;
+    width: 100%;
+}
+
+.cp-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    letter-spacing: 0;
+}
+
+/* ===== SECCIÓN ===== */
+
+.cp-section {
+    width: 100%;
+}
+
+.cp-section-title {
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    color: rgba(255,255,255,.72);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    padding-left: 6px;
+}
+
+/* ===== CARD OSCURO ===== */
+
+.cp-card {
+    width: 100%;
+    background: #111113;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    padding: 28px 26px 20px 26px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0,0,0,.28);
+}
+
+/* ===== FORM ===== */
+
+.cp-form {
+    width: 100%;
+}
+
+.cp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.cp-label {
+    font-size: 14px;
+    color: rgba(255,255,255,.90);
+    font-weight: 500;
+}
+
+.cp-input {
+    width: 100%;
+    min-height: 58px;
+    background: #000;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 16px;
+    padding: 14px 16px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    transition: all .2s ease;
+}
+
+    .cp-input::placeholder {
+        color: rgba(255,255,255,.38);
+    }
+
+    .cp-input:focus {
+        border-color: rgba(255,255,255,.34);
+        background: #050505;
+        box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    }
+
+/* ===== MENSAJES ===== */
+
+.cp-error {
+    font-size: 12px;
+    color: #ff6b6b;
+    margin-top: 2px;
+}
+
+.cp-message {
+    margin-top: 2px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.10);
+    color: #fff;
+    font-size: 13px;
+}
+
+/* ===== BOTÓN ===== */
+
+.cp-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cp-btn-primary {
+    border: none;
+    border-radius: 999px;
+    padding: 13px 26px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    background: #fff;
+    color: #000;
+    transition: all .2s ease;
+}
+
+    .cp-btn-primary:hover {
+        background: #f1f1f1;
+        transform: translateY(-1px);
+    }
+
+/* FONDO NEGRO DE TODA LA PÁGINA */
+
+.cp-background {
+    background: #0a0a0a;
+    min-height: calc(100vh - 80px);
+    padding: 60px 20px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+    .cp-page {
+        margin-top: 30px;
+        padding: 0 14px;
+    }
+
+    .cp-header {
+        margin-bottom: 28px;
+        min-height: 48px;
+    }
+
+    .cp-back {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        font-size: 18px;
+    }
+
+    .cp-title {
+        font-size: 24px;
+    }
+
+    .cp-card {
+        padding: 20px 16px 18px 16px;
+        border-radius: 18px;
+    }
+
+    .cp-input {
+        min-height: 52px;
+        font-size: 14px;
+    }
+
+    .cp-actions {
+        justify-content: stretch;
+    }
+
+    .cp-btn-primary {
+        width: 100%;
+    }
+
+
+}

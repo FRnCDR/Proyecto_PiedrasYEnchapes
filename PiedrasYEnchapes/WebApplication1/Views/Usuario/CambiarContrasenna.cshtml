@@ -1,0 +1,51 @@
+﻿@model WebApplication1.Models.CambiarContrasennaViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+<div class="cp-background">
+
+    <div class="cp-page">
+
+        <div class="cp-header">
+            <a class="cp-back" href="@Url.Action("VerPerfil", "Usuario")">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+
+            <h1 class="cp-title">Cambiar Contraseña</h1>
+        </div>
+
+        <div class="cp-card">
+
+            @using (Html.BeginForm("CambiarContrasenna", "Usuario", FormMethod.Post, new { @class = "cp-form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="cp-field">
+                    <label class="cp-label">Contraseña actual</label>
+                    @Html.PasswordFor(x => x.ContrasennaActual, new { @class = "cp-input", placeholder = "Ingrese su contraseña actual" })
+                </div>
+
+                <div class="cp-field">
+                    <label class="cp-label">Nueva contraseña</label>
+                    @Html.PasswordFor(x => x.NuevaContrasenna, new { @class = "cp-input", placeholder = "Ingrese su nueva contraseña" })
+                </div>
+
+                <div class="cp-field">
+                    <label class="cp-label">Confirmar nueva contraseña</label>
+                    @Html.PasswordFor(x => x.ConfirmarContrasenna, new { @class = "cp-input", placeholder = "Confirme su nueva contraseña" })
+                </div>
+
+                <div class="cp-actions">
+                    <button type="submit" class="cp-btn-primary">
+                        Guardar cambios
+                    </button>
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
