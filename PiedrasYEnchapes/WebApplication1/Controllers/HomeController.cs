@@ -9,12 +9,15 @@ using System.Web.Mvc;
 using WebApplication1.EF;
 using WebApplication1.Services;
 using WebApplication1.Models;
+using WebApplication1.Filtros;
 
 namespace WebApplication1.Controllers
 {
+    
     public class HomeController : Controller
     {
         [HttpGet]
+        [ValidarSesion]
         public ActionResult Index()
         {
             return View();

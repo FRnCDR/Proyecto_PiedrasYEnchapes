@@ -6,9 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.EF;
 using WebApplication1.Models;
+using WebApplication1.Filtros;
 
 namespace WebApplication1.Controllers
 {
+    [ValidarSesion]
     public class ProductosController : Controller
     {
         public ActionResult VerProductos()

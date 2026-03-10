@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using WebApplication1.Filtros;
 
 namespace WebApplication1.Controllers
 {
+    [ValidarSesion]
     public class ClienteController : Controller
     {
         // Consultar todos los clientes
