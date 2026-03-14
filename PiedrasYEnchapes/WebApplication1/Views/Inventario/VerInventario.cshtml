@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Inventario";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var totalProductos = Model != null ? Model.Count : 0;
+    var stockTotal = Model != null ? Model.Sum(p => p.Stock) : 0;
+    var productosStockBajo = Model != null ? Model.Count(p => p.Stock <= 5) : 0;
+    var valorInventario = Model != null ? Model.Sum(p => p.Stock * p.Precio) : 0;
 }
 
 <!-- HERO GENERAL -->
@@ -13,13 +18,14 @@
 </div>
 
 <style>
-    /* Cabecera del módulo de inventario */
     .inventory-section {
         padding: 30px 0 40px;
+        background: #f8fafc;
+        min-height: 100vh;
     }
 
     .inventory-container {
-        max-width: 1200px;
+        max-width: 1250px;
         margin: 0 auto;
         padding: 0 16px;
     }
@@ -29,17 +35,19 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        margin-bottom: 18px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
     }
 
     .inventory-title {
         margin: 0;
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 700;
+        color: #111827;
     }
 
     .inventory-subtitle {
-        margin: 4px 0 0;
+        margin: 5px 0 0;
         font-size: 14px;
         color: #6b7280;
     }
@@ -50,14 +58,14 @@
         gap: 10px;
     }
 
-    /* Botones más integrados al diseño */
     .btn-inventory-primary {
         background: #111827;
         border: none;
         color: #fff;
         font-weight: 600;
-        padding: 8px 14px;
+        padding: 10px 16px;
         border-radius: 999px;
+        text-decoration: none;
     }
 
         .btn-inventory-primary:hover {
@@ -70,8 +78,9 @@
         border: none;
         color: #fff;
         font-weight: 600;
-        padding: 8px 14px;
+        padding: 10px 16px;
         border-radius: 999px;
+        text-decoration: none;
     }
 
         .btn-inventory-secondary:hover {
@@ -79,22 +88,100 @@
             color: #fff;
         }
 
+    /* Dashboard cards */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .dashboard-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .dashboard-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+    .card-total::before {
+        background: #2563eb;
+    }
+
+    .card-stock::before {
+        background: #16a34a;
+    }
+
+    .card-low::before {
+        background: #f59e0b;
+    }
+
+    .card-value::before {
+        background: #7c3aed;
+    }
+
+    .dashboard-label {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .dashboard-value {
+        font-size: 30px;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.1;
+    }
+
+    .dashboard-extra {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    /* Mensaje */
+    .inventory-alert {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
     /* Tarjeta de tabla */
     .inventory-card {
         background: #fff;
-        border-radius: 14px;
+        border-radius: 16px;
         box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-        padding: 16px;
+        padding: 18px;
     }
 
-    /* Miniaturas */
+    .inventory-card-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 14px;
+    }
+
     .inventory-thumb {
-        border-radius: 6px;
+        border-radius: 8px;
         object-fit: cover;
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    /* DataTables: ajustes suaves */
     table.dataTable thead th {
         background: #111827;
         color: #fff;
@@ -126,51 +213,108 @@
             color: #111827 !important;
         }
 
-    <style >
-    /* ...todo lo demas... */
+    .stock-bajo {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .stock-normal {
+        background: #dcfce7;
+        color: #166534;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    @@media (max-width: 992px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @@media (max-width: 768px) {
         .inventory-head {
             flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
         }
 
         .inventory-card {
-            padding: 10px;
+            padding: 12px;
         }
     }
 </style>
 
- 
-
 <section class="inventory-section">
     <div class="inventory-container">
 
-        <!-- Header / acciones -->
         <div class="inventory-head">
             <div>
                 <h2 class="inventory-title">Inventario de Productos</h2>
                 <p class="inventory-subtitle">
-                    Administra el stock, precios e imágenes de todos los productos.
+                    Visualiza el estado general del inventario y administra los productos registrados.
                 </p>
             </div>
 
             <div class="inventory-actions">
-                <a href="@Url.Action("AgregarProducto", "Inventario")"
-                   class="btn btn-inventory-primary">
+                <a href="@Url.Action("AgregarProducto", "Inventario")" class="btn btn-inventory-primary">
                     Agregar nuevo producto
                 </a>
 
-                <a href="@Url.Action("VerCategorias", "Categoria")"
-                   class="btn btn-inventory-secondary">
+                <a href="@Url.Action("VerCategorias", "Categoria")" class="btn btn-inventory-secondary">
                     Ver lista de categorías
                 </a>
             </div>
         </div>
 
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="inventory-alert">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <!-- Dashboard -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card card-total">
+                <div class="dashboard-label">Total de productos</div>
+                <div class="dashboard-value">@totalProductos</div>
+                <div class="dashboard-extra">Productos registrados en el sistema</div>
+            </div>
+
+            <div class="dashboard-card card-stock">
+                <div class="dashboard-label">Stock total</div>
+                <div class="dashboard-value">@stockTotal</div>
+                <div class="dashboard-extra">Unidades disponibles en inventario</div>
+            </div>
+
+            <div class="dashboard-card card-low">
+                <div class="dashboard-label">Stock bajo</div>
+                <div class="dashboard-value">@productosStockBajo</div>
+                <div class="dashboard-extra">Productos con 5 unidades o menos</div>
+            </div>
+
+            <div class="dashboard-card card-value">
+                <div class="dashboard-label">Valor del inventario</div>
+                <div class="dashboard-value">₡ @valorInventario.ToString("N2")</div>
+                <div class="dashboard-extra">Cálculo basado en stock × precio</div>
+            </div>
+        </div>
+
         <!-- Tabla -->
         <div class="inventory-card">
+            <h3 class="inventory-card-title">Listado de productos</h3>
+
             <div class="table-responsive">
-                <table id="tablaInventario"
-                       class="table table-striped table-hover align-middle">
+                <table id="tablaInventario" class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
                             <th>Nombre</th>
@@ -188,8 +332,17 @@
                             <tr>
                                 <td>@producto.Nombre</td>
                                 <td>@producto.Descripcion</td>
-                                <td>@producto.Stock</td>
-                                <td>₡ @producto.Precio</td>
+                                <td>
+                                    @if (producto.Stock <= 5)
+                                    {
+                                        <span class="stock-bajo">@producto.Stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="stock-normal">@producto.Stock</span>
+                                    }
+                                </td>
+                                <td>₡ @producto.Precio.ToString("N2")</td>
                                 <td>
                                     @if (!string.IsNullOrEmpty(producto.Imagen))
                                     {
@@ -206,12 +359,14 @@
                                        class="btn btn-sm btn-warning">
                                         Editar
                                     </a>
+
                                     @using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post, new { style = "display:inline;" }))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.Hidden("q", producto.ProductoID)
 
-                                        <button type="submit" class="btn btn-sm btn-danger"
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
                                                 onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
                                             Eliminar
                                         </button>
@@ -228,7 +383,6 @@
 </section>
 
 @section Scripts {
-    <!-- DataTables (simple, sin integración especial con Bootstrap) -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script>
@@ -240,7 +394,7 @@
                 pageLength: 10,
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { orderable: false, targets: [4, 6] } // imagen y acciones sin orden
+                    { orderable: false, targets: [4, 6] }
                 ]
             });
         });
