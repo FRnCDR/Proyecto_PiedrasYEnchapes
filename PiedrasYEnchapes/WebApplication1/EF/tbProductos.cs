@@ -14,6 +14,12 @@ namespace WebApplication1.EF
     
     public partial class tbProductos
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tbProductos()
+        {
+            this.tbDetalleCotizacion = new HashSet<tbDetalleCotizacion>();
+        }
+    
         public int ProductoID { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
@@ -25,5 +31,7 @@ namespace WebApplication1.EF
     
         public virtual tbCategorias tbCategorias { get; set; }
         public virtual tbProveedores tbProveedores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
     }
 }

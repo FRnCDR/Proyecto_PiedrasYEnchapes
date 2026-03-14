@@ -12,25 +12,23 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbClientes
+    public partial class tbCotizaciones
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbClientes()
+        public tbCotizaciones()
         {
-            this.tbCotizaciones = new HashSet<tbCotizaciones>();
+            this.tbDetalleCotizacion = new HashSet<tbDetalleCotizacion>();
         }
     
-        public int IdCliente { get; set; }
-        public string Identificacion { get; set; }
-        public string Nombre { get; set; }
-        public string Apellidos { get; set; }
-        public string CorreoElectronico { get; set; }
-        public string Telefono { get; set; }
-        public string Direccion { get; set; }
-        public System.DateTime FechaRegistro { get; set; }
-        public bool Estado { get; set; }
+        public int CotizacionID { get; set; }
+        public Nullable<int> IdCliente { get; set; }
+        public System.DateTime FechaCotizacion { get; set; }
+        public decimal Total { get; set; }
+        public string Estado { get; set; }
+        public string Observaciones { get; set; }
     
+        public virtual tbClientes tbClientes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbCotizaciones> tbCotizaciones { get; set; }
+        public virtual ICollection<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
     }
 }

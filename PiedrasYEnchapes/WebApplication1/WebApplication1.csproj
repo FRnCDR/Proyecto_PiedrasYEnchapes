@@ -130,6 +130,7 @@
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
+    <Compile Include="Controllers\CotizacionController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
@@ -156,6 +157,12 @@
     <Compile Include="EF\tbClientes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tbCotizaciones.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tbDetalleCotizacion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tbEmpleados.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -177,6 +184,10 @@
     </Compile>
     <Compile Include="Models\CambiarContrasennaViewModel.cs" />
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\Cotizacion.cs" />
+    <Compile Include="Models\CotizacionLista.cs" />
+    <Compile Include="Models\DetalleCotizacion.cs" />
+    <Compile Include="Models\DetalleCotizacionViewModel.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\Empleado.cs" />
@@ -306,6 +317,9 @@
     <Content Include="Views\Proveedor\AgregarProveedor.cshtml" />
     <Content Include="Views\Usuario\EditarPerfil.cshtml" />
     <Content Include="Views\Usuario\CambiarContrasenna.cshtml" />
+    <Content Include="Views\Cotizacion\CrearCotizacion.cshtml" />
+    <Content Include="Views\Cotizacion\AgregarDetalleCotizacion.cshtml" />
+    <Content Include="Views\Cotizacion\VerCotizaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

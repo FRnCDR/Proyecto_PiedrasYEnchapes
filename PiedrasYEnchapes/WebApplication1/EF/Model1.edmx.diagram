@@ -15,6 +15,11 @@
         <AssociationConnector Association="DATABASE_PYEModel.FK_Categoria" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Usuario_Perfil" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_tbProductos_tbProveedores" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbCotizaciones" Width="1.5" PointX="6" PointY="9.25" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleCotizacion" Width="1.5" PointX="8.25" PointY="4.25" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbCotizaciones_tbClientes" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCotizacion_tbCotizaciones" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCotizacion_tbProductos" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

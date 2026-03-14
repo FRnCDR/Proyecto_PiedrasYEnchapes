@@ -1,0 +1,302 @@
+﻿@model WebApplication1.Models.DetalleCotizacion
+
+@{
+    ViewBag.Title = "Detalle Cotización";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var cotizacion = ViewBag.Cotizacion as WebApplication1.Models.Cotizacion;
+    var detalle = ViewBag.DetalleCotizacion as List<WebApplication1.Models.DetalleCotizacionViewModel>;
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+
+    .cotizacion-section {
+        padding: 30px 0 40px;
+        background: #f8fafc;
+    }
+
+    .cotizacion-container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 16px;
+    }
+
+    .cotizacion-card {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    .cotizacion-title {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .info-box {
+        background: #f3f4f6;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .info-value {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr auto;
+        gap: 10px;
+        align-items: end;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        padding: 7px 10px;
+        width: 100%;
+    }
+
+    .btn-primary-custom {
+        background: #111827;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+        .btn-primary-custom:hover {
+            background: black;
+        }
+
+    .btn-danger-custom {
+        background: #dc2626;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 999px;
+    }
+
+    table.dataTable thead th {
+        background: #111827;
+        color: white;
+        font-size: 13px;
+    }
+
+    .total-box {
+        text-align: right;
+        font-size: 20px;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+
+    .alert-success-custom {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+</style>
+
+<section class="cotizacion-section">
+    <div class="cotizacion-container">
+
+        <div class="cotizacion-card">
+
+            <h2 class="cotizacion-title">Detalle de Cotización</h2>
+
+            <div class="info-grid">
+
+                <div class="info-box">
+                    <div class="info-label">Cotización</div>
+                    <div class="info-value">#@cotizacion.CotizacionID</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Cliente</div>
+                    <div class="info-value">@ViewBag.ClienteNombre</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Fecha</div>
+                    <div class="info-value">@cotizacion.FechaCotizacion.ToShortDateString()</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Estado</div>
+                    <div class="info-value">@cotizacion.Estado</div>
+                </div>
+
+            </div>
+
+        </div>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert-success-custom">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <div class="cotizacion-card">
+
+            <h4>Agregar Producto</h4>
+
+            @using (Html.BeginForm("AgregarDetalleCotizacion", "Cotizacion", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(x => x.CotizacionID)
+
+                <div class="form-grid">
+
+                    <div>
+                        @Html.DropDownListFor(
+                            x => x.ProductoID,
+                            (SelectList)ViewBag.Productos,
+                            "Seleccione un producto",
+                            new { @class = "form-control" }
+                        )
+                    </div>
+
+                    <div>
+                        @Html.TextBoxFor(
+                            x => x.Cantidad,
+                            new { @class = "form-control", placeholder = "Cantidad" }
+                        )
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn-primary-custom">
+                            Agregar
+                        </button>
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+        <div class="cotizacion-card">
+
+            <h4>Productos en la Cotización</h4>
+
+            <div class="table-responsive">
+
+                <table id="tablaDetalle" class="table table-striped table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (detalle != null)
+                        {
+                            foreach (var item in detalle)
+                            {
+                                <tr>
+
+                                    <td>@item.NombreProducto</td>
+
+                                    <td>@item.Cantidad</td>
+
+                                    <td>₡ @item.PrecioUnitario.ToString("N2")</td>
+
+                                    <td>₡ @item.Subtotal.ToString("N2")</td>
+
+                                    <td>
+
+                                        @using (Html.BeginForm("EliminarDetalleCotizacion", "Cotizacion", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            @Html.Hidden("q", item.DetalleCotizacionID)
+                                            @Html.Hidden("cotizacionId", item.CotizacionID)
+
+                                            <button class="btn-danger-custom"
+                                                    onclick="return confirm('¿Eliminar producto de la cotización?')">
+                                                Eliminar
+                                            </button>
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="total-box">
+                Total: ₡ @cotizacion.Total.ToString("N2")
+            </div>
+
+        </div>
+
+        <div style="margin-top:10px;">
+            <a href="@Url.Action("VerCotizaciones","Cotizacion")"
+               class="btn-primary-custom">
+                Volver a Cotizaciones
+            </a>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+
+$(document).ready(function () {
+
+    $('#tablaDetalle').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+        },
+        paging: false,
+        searching: false,
+        info: false
+    });
+
+});
+
+    </script>
+
+}

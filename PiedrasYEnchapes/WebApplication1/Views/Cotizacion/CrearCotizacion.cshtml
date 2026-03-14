@@ -1,0 +1,190 @@
+﻿@model WebApplication1.Models.Cotizacion
+
+@{
+    ViewBag.Title = "Crear Cotización";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<!-- HERO GENERAL -->
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+
+    .cotizacion-section {
+        padding: 30px 0 40px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .cotizacion-container {
+        max-width: 900px;
+        margin: auto;
+        padding: 0 16px;
+    }
+
+    .cotizacion-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .cotizacion-subtitle {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .cotizacion-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 25px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        padding: 8px 10px;
+        width: 100%;
+    }
+
+    .btn-primary-custom {
+        background: #111827;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+        .btn-primary-custom:hover {
+            background: #000;
+        }
+
+    .btn-secondary-custom {
+        background: #16a34a;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+        .btn-secondary-custom:hover {
+            background: #15803d;
+        }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .alert-success-custom {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<section class="cotizacion-section">
+    <div class="cotizacion-container">
+
+        <h2 class="cotizacion-title">Crear Cotización</h2>
+        <p class="cotizacion-subtitle">
+            Selecciona el cliente y registra una nueva cotización.
+        </p>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert-success-custom">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <div class="cotizacion-card">
+
+            @using (Html.BeginForm("CrearCotizacion", "Cotizacion", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <!-- CLIENTE -->
+                <div class="form-group">
+                    <label class="form-label">Cliente</label>
+                    @Html.DropDownListFor(
+                        model => model.IdCliente,
+                        (SelectList)ViewBag.Clientes,
+                        "Seleccione un cliente",
+                        new { @class = "form-control" }
+                    )
+                    @Html.ValidationMessageFor(model => model.IdCliente, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- ESTADO -->
+                <div class="form-group">
+                    <label class="form-label">Estado</label>
+                    @Html.DropDownListFor(
+                        model => model.Estado,
+                        new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "Pendiente", Value = "Pendiente" },
+                            new SelectListItem { Text = "Aprobada", Value = "Aprobada" },
+                            new SelectListItem { Text = "Rechazada", Value = "Rechazada" }
+                        },
+                        new { @class = "form-control" }
+                    )
+                </div>
+
+                <!-- OBSERVACIONES -->
+                <div class="form-group">
+                    <label class="form-label">Observaciones</label>
+                    @Html.TextAreaFor(
+                        model => model.Observaciones,
+                        new
+                        {
+                            @class = "form-control",
+                            rows = 3,
+                            placeholder = "Observaciones adicionales para la cotización..."
+                        })
+                </div>
+
+                <!-- BOTONES -->
+                <div class="acciones">
+                    <button type="submit" class="btn-primary-custom">
+                        Crear Cotización
+                    </button>
+
+                    <a href="@Url.Action("VerCotizaciones", "Cotizacion")"
+                       class="btn-secondary-custom">
+                        Volver
+                    </a>
+                </div>
+            }
+
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
