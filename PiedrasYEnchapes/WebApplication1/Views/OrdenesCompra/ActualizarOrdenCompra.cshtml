@@ -1,0 +1,204 @@
+﻿@model WebApplication1.Models.OrdenCompra
+
+@{
+    ViewBag.Title = "Actualizar Orden de Compra";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+    .orden-section {
+        padding: 30px 0 40px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .orden-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .orden-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
+    .orden-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .orden-subtitle {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .orden-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        min-height: 45px;
+        border: 1px solid #d1d5db;
+        box-shadow: none;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #111827;
+            box-shadow: 0 0 0 0.15rem rgba(17, 24, 39, 0.15);
+        }
+
+    .btn-orden-primary {
+        background: #111827;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+    }
+
+        .btn-orden-primary:hover {
+            background: #000;
+            color: #fff;
+        }
+
+    .btn-orden-secondary {
+        background: #16a34a;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+    }
+
+        .btn-orden-secondary:hover {
+            background: #15803d;
+            color: #fff;
+        }
+
+    .text-danger {
+        font-size: 13px;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .alert-custom {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+</style>
+
+<section class="orden-section">
+    <div class="orden-container">
+
+        <div class="orden-head">
+            <div>
+                <h2 class="orden-title">Actualizar Orden de Compra</h2>
+                <p class="orden-subtitle">
+                    Modifica la información general de la orden seleccionada.
+                </p>
+            </div>
+
+            <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")" class="btn btn-orden-secondary">
+                Volver al listado
+            </a>
+        </div>
+
+        @if (ViewBag.Mensaje != null)
+        {
+            <div class="alert-custom">
+                @ViewBag.Mensaje
+            </div>
+        }
+
+        <div class="orden-card">
+            @using (Html.BeginForm("ActualizarOrdenCompra", "OrdenesCompra", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.OrdenCompraID)
+                @Html.HiddenFor(model => model.Estado)
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label-custom">ID de la Orden</label>
+                        <input type="text" class="form-control" value="@Model.OrdenCompraID" readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label-custom">Proveedor</label>
+                        @Html.DropDownListFor(model => model.ProveedorID,
+                            ViewBag.Proveedores as SelectList,
+                            "-- Seleccione un proveedor --",
+                            new { @class = "form-select" })
+                        @Html.ValidationMessageFor(model => model.ProveedorID, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label-custom">Fecha de la orden</label>
+                        @Html.TextBoxFor(model => model.FechaOrden, "{0:yyyy-MM-dd}",
+                            new { @class = "form-control", @type = "date" })
+                        @Html.ValidationMessageFor(model => model.FechaOrden, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label-custom">Total</label>
+                        @Html.TextBoxFor(model => model.Total,
+                            new { @class = "form-control", @type = "number", step = "0.01", min = "0" })
+                        @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label-custom">Estado actual</label>
+                        <input type="text" class="form-control" value="@(Model.Estado ? "Activo" : "Inactivo")" readonly />
+                    </div>
+
+                    <div class="col-12 mt-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-orden-primary">
+                            Guardar Cambios
+                        </button>
+
+                        <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+    </div>
+</section>

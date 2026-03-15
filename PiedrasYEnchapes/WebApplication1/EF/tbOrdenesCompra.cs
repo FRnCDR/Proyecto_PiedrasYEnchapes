@@ -12,30 +12,21 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbProductos
+    public partial class tbOrdenesCompra
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbProductos()
+        public tbOrdenesCompra()
         {
-            this.tbDetalleCotizacion = new HashSet<tbDetalleCotizacion>();
             this.tbDetalleOrdenCompra = new HashSet<tbDetalleOrdenCompra>();
         }
     
-        public int ProductoID { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public int Stock { get; set; }
-        public decimal Precio { get; set; }
-        public string Imagen { get; set; }
-        public Nullable<int> CategoriaID { get; set; }
+        public int OrdenCompraID { get; set; }
         public int ProveedorID { get; set; }
+        public System.DateTime FechaOrden { get; set; }
+        public decimal Total { get; set; }
         public bool Estado { get; set; }
     
-        public virtual tbCategorias tbCategorias { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
-        public virtual tbProveedores tbProveedores { get; set; }
     }
 }

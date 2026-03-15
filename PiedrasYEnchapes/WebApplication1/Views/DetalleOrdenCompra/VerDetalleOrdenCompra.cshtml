@@ -1,0 +1,363 @@
+﻿@model List<WebApplication1.Models.DetalleOrdenCompra>
+
+@{
+    ViewBag.Title = "Detalle de Orden de Compra";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var orden = ViewBag.OrdenCompra as WebApplication1.Models.OrdenCompra;
+    var totalLineas = Model != null ? Model.Count : 0;
+    var totalCantidad = Model != null ? Model.Sum(x => x.Cantidad) : 0;
+    var totalOrden = Model != null ? Model.Sum(x => x.Subtotal) : 0;
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+    .detalle-section {
+        padding: 30px 0 40px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .detalle-container {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .detalle-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+    }
+
+    .detalle-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .detalle-subtitle {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .detalle-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .btn-detalle-primary {
+        background: #111827;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+    }
+
+        .btn-detalle-primary:hover {
+            background: #000;
+            color: #fff;
+        }
+
+    .btn-detalle-secondary {
+        background: #16a34a;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+    }
+
+        .btn-detalle-secondary:hover {
+            background: #15803d;
+            color: #fff;
+        }
+
+    .detalle-alert {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .detalle-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .detalle-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .detalle-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+    .card-id::before {
+        background: #2563eb;
+    }
+
+    .card-prov::before {
+        background: #16a34a;
+    }
+
+    .card-lineas::before {
+        background: #f59e0b;
+    }
+
+    .card-total::before {
+        background: #7c3aed;
+    }
+
+    .detalle-label {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .detalle-value {
+        font-size: 26px;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.1;
+    }
+
+    .detalle-extra {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .detalle-table-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        padding: 18px;
+    }
+
+    .detalle-table-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 14px;
+    }
+
+    table.dataTable thead th {
+        background: #111827;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        border-bottom: none;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        padding: 4px 10px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 999px !important;
+        padding: 4px 9px;
+        margin: 0 2px;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #facc15 !important;
+            border-color: #facc15 !important;
+            color: #111827 !important;
+        }
+
+    @@media (max-width: 992px) {
+        .detalle-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .detalle-head {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .detalle-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .detalle-table-card {
+            padding: 12px;
+        }
+    }
+</style>
+
+<section class="detalle-section">
+    <div class="detalle-container">
+
+        <div class="detalle-head">
+            <div>
+                <h2 class="detalle-title">Detalle de Orden de Compra</h2>
+                <p class="detalle-subtitle">
+                    Consulta los productos asociados a la orden seleccionada.
+                </p>
+            </div>
+
+            <div class="detalle-actions">
+                <a href="@Url.Action("AgregarDetalleOrdenCompra", "DetalleOrdenCompra", new { ordenId = ViewBag.OrdenCompraID })"
+                   class="btn btn-detalle-primary">
+                    Agregar Producto
+                </a>
+
+                <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")"
+                   class="btn btn-detalle-secondary">
+                    Volver a Órdenes
+                </a>
+            </div>
+        </div>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="detalle-alert">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <div class="detalle-grid">
+            <div class="detalle-card card-id">
+                <div class="detalle-label">ID de la orden</div>
+                <div class="detalle-value">@(orden != null ? orden.OrdenCompraID.ToString() : "N/D")</div>
+                <div class="detalle-extra">Identificador general de la orden</div>
+            </div>
+
+            <div class="detalle-card card-prov">
+                <div class="detalle-label">Proveedor</div>
+                <div class="detalle-value">@(orden != null ? orden.NombreProveedor : "N/D")</div>
+                <div class="detalle-extra">Proveedor asociado a la compra</div>
+            </div>
+
+            <div class="detalle-card card-lineas">
+                <div class="detalle-label">Líneas registradas</div>
+                <div class="detalle-value">@totalLineas</div>
+                <div class="detalle-extra">Cantidad de productos agregados</div>
+            </div>
+
+            <div class="detalle-card card-total">
+                <div class="detalle-label">Total de la orden</div>
+                <div class="detalle-value">₡ @totalOrden.ToString("N2")</div>
+                <div class="detalle-extra">Suma de subtotales del detalle</div>
+            </div>
+        </div>
+
+        <div class="detalle-table-card">
+            <h3 class="detalle-table-title">Productos de la orden</h3>
+
+            <div class="table-responsive">
+                <table id="tablaDetalleOrden" class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID Detalle</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Compra</th>
+                            <th>Subtotal</th>
+                            <th style="width: 160px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.DetalleOrdenCompraID</td>
+                                    <td>@item.NombreProducto</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>₡ @item.PrecioCompra.ToString("N2")</td>
+                                    <td>₡ @item.Subtotal.ToString("N2")</td>
+                                    <td>
+                                        @using (Html.BeginForm("EliminarDetalleOrdenCompra", "DetalleOrdenCompra", FormMethod.Post, new { style = "display:inline;" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("q", item.DetalleOrdenCompraID)
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('¿Seguro que deseas eliminar este detalle?')">
+                                                Eliminar
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">No hay productos</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tablaDetalleOrden').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+                pageLength: 10,
+                order: [[0, 'asc']],
+                columnDefs: [
+                    { orderable: false, targets: [5] }
+                ]
+            });
+        });
+    </script>
+}

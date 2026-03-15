@@ -128,6 +128,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
+    <Compile Include="Controllers\DetalleOrdenCompraController.cs" />
+    <Compile Include="Controllers\OrdenesCompraController .cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\CotizacionController.cs" />
@@ -163,7 +165,13 @@
     <Compile Include="EF\tbDetalleCotizacion.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tbDetalleOrdenCompra.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tbEmpleados.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tbOrdenesCompra.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tbPerfil.cs">
@@ -185,6 +193,8 @@
     <Compile Include="Models\CambiarContrasennaViewModel.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
+    <Compile Include="Models\DetalleOrdenCompra.cs" />
+    <Compile Include="Models\OrdenCompra.cs" />
     <Compile Include="Models\CotizacionLista.cs" />
     <Compile Include="Models\DetalleCotizacion.cs" />
     <Compile Include="Models\DetalleCotizacionViewModel.cs" />
@@ -320,6 +330,12 @@
     <Content Include="Views\Cotizacion\CrearCotizacion.cshtml" />
     <Content Include="Views\Cotizacion\AgregarDetalleCotizacion.cshtml" />
     <Content Include="Views\Cotizacion\VerCotizaciones.cshtml" />
+    <Content Include="Views\OrdenesCompra\VerOrdenesCompra.cshtml" />
+    <Content Include="VerOrdenesCompra.cshtml" />
+    <Content Include="Views\OrdenesCompra\AgregarOrdenCompra.cshtml" />
+    <Content Include="Views\OrdenesCompra\ActualizarOrdenCompra.cshtml" />
+    <Content Include="Views\DetalleOrdenCompra\VerDetalleOrdenCompra.cshtml" />
+    <Content Include="Views\DetalleOrdenCompra\AgregarDetalleOrdenCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

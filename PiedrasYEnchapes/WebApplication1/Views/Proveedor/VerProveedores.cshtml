@@ -17,9 +17,16 @@
                 <h2>Proveedores</h2>
                 <p>Listado general de proveedores registrados en el sistema</p>
             </div>
-            <a href="@Url.Action("AgregarProveedor", "Proveedor")" class="btn btn-success shadow-sm">
-                Agregar Proveedor
-            </a>
+
+            <div class="d-flex gap-2">
+                <a href="@Url.Action("AgregarProveedor", "Proveedor")" class="btn btn-success shadow-sm">
+                    Agregar Proveedor
+                </a>
+
+                <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")" class="btn btn-primary shadow-sm">
+                    Ver ordenes
+                </a>
+            </div>
         </div>
 
         <div class="table-responsive">

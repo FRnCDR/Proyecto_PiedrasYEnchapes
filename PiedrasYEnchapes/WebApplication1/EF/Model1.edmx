@@ -49,6 +49,17 @@
           <Property Name="PrecioUnitario" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Subtotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbDetalleOrdenCompra">
+          <Key>
+            <PropertyRef Name="DetalleOrdenCompraID" />
+          </Key>
+          <Property Name="DetalleOrdenCompraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrdenCompraID" Type="int" Nullable="false" />
+          <Property Name="ProductoID" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="PrecioCompra" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbEmpleados">
           <Key>
             <PropertyRef Name="IdEmpleado" />
@@ -61,6 +72,16 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="IdPerfil" Type="int" />
+        </EntityType>
+        <EntityType Name="tbOrdenesCompra">
+          <Key>
+            <PropertyRef Name="OrdenCompraID" />
+          </Key>
+          <Property Name="OrdenCompraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProveedorID" Type="int" Nullable="false" />
+          <Property Name="FechaOrden" Type="datetime" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
@@ -109,6 +130,30 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK__tbDetalle__Orden__74AE54BC">
+          <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
+          <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbOrdenesCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Principal>
+            <Dependent Role="tbDetalleOrdenCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbDetalle__Produ__75A278F5">
+          <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
+          <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProductos">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="tbDetalleOrdenCompra">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Categoria">
           <End Role="tbCategorias" Type="Self.tbCategorias" Multiplicity="0..1" />
           <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="*" />
@@ -196,11 +241,21 @@
           <EntitySet Name="tbClientes" EntityType="Self.tbClientes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbCotizaciones" EntityType="Self.tbCotizaciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbDetalleCotizacion" EntityType="Self.tbDetalleCotizacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbDetalleOrdenCompra" EntityType="Self.tbDetalleOrdenCompra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbOrdenesCompra" EntityType="Self.tbOrdenesCompra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tbDetalle__Orden__74AE54BC" Association="Self.FK__tbDetalle__Orden__74AE54BC">
+            <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
+            <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbDetalle__Produ__75A278F5" Association="Self.FK__tbDetalle__Produ__75A278F5">
+            <End Role="tbProductos" EntitySet="tbProductos" />
+            <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
+          </AssociationSet>
           <AssociationSet Name="FK_Categoria" Association="Self.FK_Categoria">
             <End Role="tbCategorias" EntitySet="tbCategorias" />
             <End Role="tbProductos" EntitySet="tbProductos" />
@@ -281,6 +336,19 @@
           <NavigationProperty Name="tbCotizaciones" Relationship="Self.FK_tbDetalleCotizacion_tbCotizaciones" FromRole="tbDetalleCotizacion" ToRole="tbCotizaciones" />
           <NavigationProperty Name="tbProductos" Relationship="Self.FK_tbDetalleCotizacion_tbProductos" FromRole="tbDetalleCotizacion" ToRole="tbProductos" />
         </EntityType>
+        <EntityType Name="tbDetalleOrdenCompra">
+          <Key>
+            <PropertyRef Name="DetalleOrdenCompraID" />
+          </Key>
+          <Property Name="DetalleOrdenCompraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrdenCompraID" Type="Int32" Nullable="false" />
+          <Property Name="ProductoID" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="PrecioCompra" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Subtotal" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="tbOrdenesCompra" Relationship="Self.FK__tbDetalle__Orden__74AE54BC" FromRole="tbDetalleOrdenCompra" ToRole="tbOrdenesCompra" />
+          <NavigationProperty Name="tbProductos" Relationship="Self.FK__tbDetalle__Produ__75A278F5" FromRole="tbDetalleOrdenCompra" ToRole="tbProductos" />
+        </EntityType>
         <EntityType Name="tbEmpleados">
           <Key>
             <PropertyRef Name="IdEmpleado" />
@@ -293,6 +361,17 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IdPerfil" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbOrdenesCompra">
+          <Key>
+            <PropertyRef Name="OrdenCompraID" />
+          </Key>
+          <Property Name="OrdenCompraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProveedorID" Type="Int32" Nullable="false" />
+          <Property Name="FechaOrden" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Orden__74AE54BC" FromRole="tbOrdenesCompra" ToRole="tbDetalleOrdenCompra" />
         </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
@@ -317,6 +396,7 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbCategorias" Relationship="Self.FK_Categoria" FromRole="tbProductos" ToRole="tbCategorias" />
           <NavigationProperty Name="tbDetalleCotizacion" Relationship="Self.FK_tbDetalleCotizacion_tbProductos" FromRole="tbProductos" ToRole="tbDetalleCotizacion" />
+          <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Produ__75A278F5" FromRole="tbProductos" ToRole="tbDetalleOrdenCompra" />
           <NavigationProperty Name="tbProveedores" Relationship="Self.FK_tbProductos_tbProveedores" FromRole="tbProductos" ToRole="tbProveedores" />
         </EntityType>
         <EntityType Name="tbProveedores">
@@ -395,6 +475,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__tbDetalle__Orden__74AE54BC">
+          <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
+          <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbOrdenesCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Principal>
+            <Dependent Role="tbDetalleOrdenCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tbDetalle__Produ__75A278F5">
+          <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
+          <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProductos">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="tbDetalleOrdenCompra">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Usuario_Perfil">
           <End Role="tbPerfil" Type="Self.tbPerfil" Multiplicity="1" />
           <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="*" />
@@ -424,7 +528,9 @@
           <EntitySet Name="tbClientes" EntityType="Self.tbClientes" />
           <EntitySet Name="tbCotizaciones" EntityType="Self.tbCotizaciones" />
           <EntitySet Name="tbDetalleCotizacion" EntityType="Self.tbDetalleCotizacion" />
+          <EntitySet Name="tbDetalleOrdenCompra" EntityType="Self.tbDetalleOrdenCompra" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" />
+          <EntitySet Name="tbOrdenesCompra" EntityType="Self.tbOrdenesCompra" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" />
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" />
           <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" />
@@ -444,6 +550,14 @@
           <AssociationSet Name="FK_tbDetalleCotizacion_tbProductos" Association="Self.FK_tbDetalleCotizacion_tbProductos">
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleCotizacion" EntitySet="tbDetalleCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbDetalle__Orden__74AE54BC" Association="Self.FK__tbDetalle__Orden__74AE54BC">
+            <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
+            <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tbDetalle__Produ__75A278F5" Association="Self.FK__tbDetalle__Produ__75A278F5">
+            <End Role="tbProductos" EntitySet="tbProductos" />
+            <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
           <AssociationSet Name="FK_Usuario_Perfil" Association="Self.FK_Usuario_Perfil">
             <End Role="tbPerfil" EntitySet="tbPerfil" />
@@ -518,6 +632,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tbDetalleOrdenCompra">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbDetalleOrdenCompra">
+              <MappingFragment StoreEntitySet="tbDetalleOrdenCompra">
+                <ScalarProperty Name="DetalleOrdenCompraID" ColumnName="DetalleOrdenCompraID" />
+                <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
+                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="PrecioCompra" ColumnName="PrecioCompra" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbEmpleados">
             <EntityTypeMapping TypeName="DATABASE_PYEModel.tbEmpleados">
               <MappingFragment StoreEntitySet="tbEmpleados">
@@ -529,6 +655,17 @@
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
                 <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbOrdenesCompra">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbOrdenesCompra">
+              <MappingFragment StoreEntitySet="tbOrdenesCompra">
+                <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
+                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+                <ScalarProperty Name="FechaOrden" ColumnName="FechaOrden" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

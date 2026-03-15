@@ -31,7 +31,9 @@ namespace WebApplication1.EF
         public virtual DbSet<tbClientes> tbClientes { get; set; }
         public virtual DbSet<tbCotizaciones> tbCotizaciones { get; set; }
         public virtual DbSet<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
+        public virtual DbSet<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
         public virtual DbSet<tbEmpleados> tbEmpleados { get; set; }
+        public virtual DbSet<tbOrdenesCompra> tbOrdenesCompra { get; set; }
         public virtual DbSet<tbPerfil> tbPerfil { get; set; }
         public virtual DbSet<tbProductos> tbProductos { get; set; }
         public virtual DbSet<tbProveedores> tbProveedores { get; set; }
