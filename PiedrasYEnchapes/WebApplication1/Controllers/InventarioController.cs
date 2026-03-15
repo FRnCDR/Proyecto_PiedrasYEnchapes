@@ -259,40 +259,18 @@ namespace WebApplication1.Controllers
         // ---------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EliminarProducto(int q)
+        public ActionResult CambiarEstadoProducto(int q)
         {
-            try
+            using (var context = new DATABASE_PYEEntities())
             {
-                using (var context = new DATABASE_PYEEntities())
+                var producto = context.tbProductos
+                    .FirstOrDefault(p => p.ProductoID == q);
+
+                if (producto != null)
                 {
-                    var producto = context.tbProductos.FirstOrDefault(p => p.ProductoID == q);
-
-                    if (producto != null)
-                    {
-                        // Eliminar imagen física si existe
-                        if (!string.IsNullOrEmpty(producto.Imagen))
-                        {
-                            var rutaImagen = Server.MapPath("~/StaticFiles/" + producto.Imagen);
-                            if (System.IO.File.Exists(rutaImagen))
-                            {
-                                System.IO.File.Delete(rutaImagen);
-                            }
-                        }
-
-                        context.tbProductos.Remove(producto);
-                        context.SaveChanges();
-
-                        TempData["Mensaje"] = "Producto eliminado correctamente.";
-                    }
-                    else
-                    {
-                        TempData["Mensaje"] = "Producto no encontrado.";
-                    }
+                    producto.Estado = !producto.Estado;
+                    context.SaveChanges();
                 }
-            }
-            catch (Exception ex)
-            {
-                TempData["Mensaje"] = "Error al eliminar: " + ex.Message;
             }
 
             return RedirectToAction("VerInventario", "Inventario");
@@ -305,20 +283,26 @@ namespace WebApplication1.Controllers
         {
             using (var context = new DATABASE_PYEEntities())
             {
-                var resultado = context.tbProductos
-                    .AsNoTracking()
-                    .Select(p => new Producto
-                    {
-                        ProductoID = p.ProductoID,
-                        Nombre = p.Nombre,
-                        Descripcion = p.Descripcion,
-                        Stock = p.Stock,
-                        Precio = p.Precio,
-                        Imagen = p.Imagen,
-                        CategoriaID = p.CategoriaID,
-                        ProveedorID = p.ProveedorID
-                    })
-                    .ToList();
+                var resultado = (from p in context.tbProductos.AsNoTracking()
+                                 join c in context.tbCategorias.AsNoTracking()
+                                    on p.CategoriaID equals c.CategoriaID
+                                 join pr in context.tbProveedores.AsNoTracking()
+                                    on p.ProveedorID equals pr.ProveedorID
+                                 select new Producto
+                                 {
+                                     ProductoID = p.ProductoID,
+                                     Nombre = p.Nombre,
+                                     Descripcion = p.Descripcion,
+                                     Stock = p.Stock,
+                                     Precio = p.Precio,
+                                     Imagen = p.Imagen,
+                                     CategoriaID = p.CategoriaID,
+                                     ProveedorID = p.ProveedorID,
+                                     NombreEmpresa = pr.NombreEmpresa,
+                                     Estado = p.Estado
+
+                                 })
+                                 .ToList();
 
                 return resultado;
             }

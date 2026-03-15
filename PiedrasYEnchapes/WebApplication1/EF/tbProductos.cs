@@ -28,10 +28,11 @@ namespace WebApplication1.EF
         public string Imagen { get; set; }
         public Nullable<int> CategoriaID { get; set; }
         public int ProveedorID { get; set; }
+        public bool Estado { get; set; }
     
         public virtual tbCategorias tbCategorias { get; set; }
-        public virtual tbProveedores tbProveedores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
+        public virtual tbProveedores tbProveedores { get; set; }
     }
 }

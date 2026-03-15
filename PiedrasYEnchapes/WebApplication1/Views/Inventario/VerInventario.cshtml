@@ -88,7 +88,6 @@
             color: #fff;
         }
 
-    /* Dashboard cards */
     .dashboard-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -150,7 +149,6 @@
         color: #9ca3af;
     }
 
-    /* Mensaje */
     .inventory-alert {
         background: #dcfce7;
         color: #166534;
@@ -161,7 +159,6 @@
         font-weight: 600;
     }
 
-    /* Tarjeta de tabla */
     .inventory-card {
         background: #fff;
         border-radius: 16px;
@@ -231,6 +228,24 @@
         display: inline-block;
     }
 
+    .estado-activo {
+        background: #28a745;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .estado-inactivo {
+        background: #dc3545;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
     @@media (max-width: 992px) {
         .dashboard-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -282,7 +297,6 @@
             </div>
         }
 
-        <!-- Dashboard -->
         <div class="dashboard-grid">
             <div class="dashboard-card card-total">
                 <div class="dashboard-label">Total de productos</div>
@@ -309,7 +323,6 @@
             </div>
         </div>
 
-        <!-- Tabla -->
         <div class="inventory-card">
             <h3 class="inventory-card-title">Listado de productos</h3>
 
@@ -322,8 +335,10 @@
                             <th>Stock</th>
                             <th>Precio</th>
                             <th>Imagen</th>
-                            <th>Categoría</th>
-                            <th style="width: 150px;">Acciones</th>
+                            <th>ID Categoría</th>
+                            <th>Proveedor</th>
+                            <th>Estado</th>
+                            <th style="width: 220px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -332,6 +347,7 @@
                             <tr>
                                 <td>@producto.Nombre</td>
                                 <td>@producto.Descripcion</td>
+
                                 <td>
                                     @if (producto.Stock <= 5)
                                     {
@@ -342,34 +358,58 @@
                                         <span class="stock-normal">@producto.Stock</span>
                                     }
                                 </td>
+
                                 <td>₡ @producto.Precio.ToString("N2")</td>
+
                                 <td>
                                     @if (!string.IsNullOrEmpty(producto.Imagen))
                                     {
-                                        <img src="@Url.Content("~/" + producto.Imagen)"
+                                        <img src="@Url.Content("~/StaticFiles/images/" + producto.Imagen)"
                                              alt="@producto.Nombre"
                                              width="55"
                                              height="55"
                                              class="inventory-thumb" />
                                     }
                                 </td>
+
                                 <td>@producto.CategoriaID</td>
+
+                                <td>@producto.NombreEmpresa</td>
+
+                                <td>
+                                    @if (producto.Estado)
+                                    {
+                                        <span class="estado-activo">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="estado-inactivo">Inactivo</span>
+                                    }
+                                </td>
+
                                 <td>
                                     <a href="@Url.Action("ActualizarProducto", "Inventario", new { q = producto.ProductoID })"
                                        class="btn btn-sm btn-warning">
                                         Editar
                                     </a>
 
-                                    @using (Html.BeginForm("EliminarProducto", "Inventario", FormMethod.Post, new { style = "display:inline;" }))
+                                    @using (Html.BeginForm("CambiarEstadoProducto", "Inventario", FormMethod.Post, new { style = "display:inline;" }))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.Hidden("q", producto.ProductoID)
 
-                                        <button type="submit"
-                                                class="btn btn-sm btn-danger"
-                                                onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
-                                            Eliminar
-                                        </button>
+                                        if (producto.Estado)
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                Desactivar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                Activar
+                                            </button>
+                                        }
                                     }
                                 </td>
                             </tr>
@@ -394,7 +434,7 @@
                 pageLength: 10,
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { orderable: false, targets: [4, 6] }
+                    { orderable: false, targets: [4, 8] }
                 ]
             });
         });

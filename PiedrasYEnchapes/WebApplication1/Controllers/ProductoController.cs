@@ -29,7 +29,8 @@ namespace WebApplication1.Controllers
                         Stock = p.Stock,
                         Imagen = p.Imagen,
                         CategoriaID = p.CategoriaID,
-                        ProveedorID = p.ProveedorID
+                        ProveedorID = p.ProveedorID,
+                        Estado = p.Estado
                     })
                     .ToList();
 

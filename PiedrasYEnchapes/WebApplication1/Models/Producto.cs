@@ -26,12 +26,15 @@ namespace WebApplication1.Models
         [Range(0, double.MaxValue, ErrorMessage = "El precio debe ser un valor positivo.")]
         public decimal Precio { get; set; }  // Precio del producto
 
+        public bool Estado { get; set; }
+         
         public string Imagen { get; set; }  // Ruta o nombre de la imagen
 
         // Relación con la categoría
         public int? CategoriaID { get; set; }  // Guardar el ID de la categoría
         public virtual Categoria Categoria { get; set; }
 
-        public int? ProveedorID { get; set; } 
+        public int? ProveedorID { get; set; }
+        public string NombreEmpresa { get; set; }
     }
 }
