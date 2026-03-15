@@ -22,5 +22,7 @@ namespace WebApplication1.Models
         public decimal Total { get; set; }
 
         public bool Estado { get; set; }
+
+        public string EstadoRecepcion { get; set; }
     }
 }

@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="fb3a980b6f2e493e929ea1d004256152" Name="Diagram1">
+      <Diagram DiagramId="8fca882e7a894c99b48cb46894683734" Name="Diagram1">
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbCategorias" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbClientes" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbCotizaciones" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleCotizacion" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleOrdenCompra" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbEmpleados" Width="1.5" PointX="10.75" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbOrdenesCompra" Width="1.5" PointX="6" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbOrdenesCompra" Width="1.5" PointX="6" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbPerfil" Width="1.5" PointX="5.75" PointY="9.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbProductos" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbProveedores" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />

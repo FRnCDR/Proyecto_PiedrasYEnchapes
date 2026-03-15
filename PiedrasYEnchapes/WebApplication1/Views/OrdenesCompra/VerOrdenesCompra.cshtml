@@ -3,115 +3,398 @@
 @{
     ViewBag.Title = "Órdenes de Compra";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var totalOrdenes = Model != null ? Model.Count : 0;
+    var ordenesActivas = Model != null ? Model.Count(x => x.Estado) : 0;
+    var ordenesPendientes = Model != null ? Model.Count(x => x.EstadoRecepcion == "Pendiente") : 0;
+    var montoTotal = Model != null ? Model.Sum(x => x.Total) : 0;
 }
 
-<!-- ordenes section -->
-<section class="food_section layout_padding-bottom layout_padding-top">
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
 
-    <div class="container">
+<style>
+    .ordenes-section {
+        padding: 30px 0 40px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
 
-        <!-- ENCABEZADO -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+    .ordenes-container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
 
-            <div class="heading_container">
-                <h2>Órdenes de Compra</h2>
-                <p>Listado general de órdenes registradas en el sistema</p>
+    .ordenes-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+    }
+
+    .ordenes-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .ordenes-subtitle {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .ordenes-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .btn-ordenes-primary {
+        background: #111827;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+    }
+
+        .btn-ordenes-primary:hover {
+            background: #000;
+            color: #fff;
+        }
+
+    .btn-ordenes-secondary {
+        background: #16a34a;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+    }
+
+        .btn-ordenes-secondary:hover {
+            background: #15803d;
+            color: #fff;
+        }
+
+    .ordenes-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .ordenes-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .ordenes-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+    .card-total::before {
+        background: #2563eb;
+    }
+
+    .card-activas::before {
+        background: #16a34a;
+    }
+
+    .card-pendientes::before {
+        background: #f59e0b;
+    }
+
+    .card-monto::before {
+        background: #7c3aed;
+    }
+
+    .ordenes-label {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .ordenes-value {
+        font-size: 30px;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.1;
+    }
+
+    .ordenes-extra {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .ordenes-alert {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #86efac;
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .ordenes-table-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        padding: 18px;
+    }
+
+    .ordenes-table-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 14px;
+    }
+
+    .estado-activo {
+        background: #dcfce7;
+        color: #166534;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .estado-inactivo {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .recepcion-pendiente {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .recepcion-recibida {
+        background: #dbeafe;
+        color: #1d4ed8;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    table.dataTable thead th {
+        background: #111827;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        border-bottom: none;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        padding: 4px 10px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 999px !important;
+        padding: 4px 9px;
+        margin: 0 2px;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #facc15 !important;
+            border-color: #facc15 !important;
+            color: #111827 !important;
+        }
+
+    @@media (max-width: 992px) {
+        .ordenes-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .ordenes-head {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .ordenes-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ordenes-table-card {
+            padding: 12px;
+        }
+    }
+</style>
+
+<section class="ordenes-section">
+    <div class="ordenes-container">
+
+        <div class="ordenes-head">
+            <div>
+                <h2 class="ordenes-title">Órdenes de Compra</h2>
+                <p class="ordenes-subtitle">
+                    Administra las órdenes registradas y controla su recepción en inventario.
+                </p>
             </div>
 
-            <a href="@Url.Action("AgregarOrdenCompra", "OrdenesCompra")"
-               class="btn btn-success shadow-sm">
-                Crear Orden
-            </a>
+            <div class="ordenes-actions">
+                <a href="@Url.Action("AgregarOrdenCompra", "OrdenesCompra")" class="btn btn-ordenes-primary">
+                    Crear Orden
+                </a>
 
+                <a href="@Url.Action("VerProveedores", "Proveedor")" class="btn btn-ordenes-secondary">
+                    Ver Proveedores
+                </a>
+            </div>
         </div>
 
-        <!-- MENSAJES -->
         @if (TempData["Mensaje"] != null)
         {
-            <div class="alert alert-success">
+            <div class="ordenes-alert">
                 @TempData["Mensaje"]
             </div>
         }
 
-        <!-- TABLA -->
-        <div class="card shadow-sm">
-            <div class="card-body">
+        <div class="ordenes-grid">
+            <div class="ordenes-card card-total">
+                <div class="ordenes-label">Total de órdenes</div>
+                <div class="ordenes-value">@totalOrdenes</div>
+                <div class="ordenes-extra">Órdenes registradas en el sistema</div>
+            </div>
 
-                <div class="table-responsive">
+            <div class="ordenes-card card-activas">
+                <div class="ordenes-label">Órdenes activas</div>
+                <div class="ordenes-value">@ordenesActivas</div>
+                <div class="ordenes-extra">Órdenes habilitadas actualmente</div>
+            </div>
 
-                    <table class="table table-striped table-hover align-middle">
+            <div class="ordenes-card card-pendientes">
+                <div class="ordenes-label">Pendientes por recibir</div>
+                <div class="ordenes-value">@ordenesPendientes</div>
+                <div class="ordenes-extra">Órdenes aún no aplicadas a inventario</div>
+            </div>
 
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Proveedor</th>
-                                <th>Fecha</th>
-                                <th>Total</th>
-                                <th>Estado</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
+            <div class="ordenes-card card-monto">
+                <div class="ordenes-label">Monto total</div>
+                <div class="ordenes-value">₡ @montoTotal.ToString("N2")</div>
+                <div class="ordenes-extra">Suma total de órdenes registradas</div>
+            </div>
+        </div>
 
-                        <tbody>
+        <div class="ordenes-table-card">
+            <h3 class="ordenes-table-title">Listado de órdenes de compra</h3>
 
-                            @foreach (var item in Model)
+            <div class="table-responsive">
+                <table id="tablaOrdenesCompra" class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Proveedor</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Recepción</th>
+                            <th style="width: 360px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
                             {
                                 <tr>
-
                                     <td>@item.OrdenCompraID</td>
-
                                     <td>@item.NombreProveedor</td>
+                                    <td>@item.FechaOrden.ToString("dd/MM/yyyy")</td>
+                                    <td>₡ @item.Total.ToString("N2")</td>
 
                                     <td>
-                                        @item.FechaOrden.ToString("dd/MM/yyyy")
-                                    </td>
-
-                                    <td>
-                                        ₡ @item.Total.ToString("N2")
-                                    </td>
-
-                                    <td>
-
                                         @if (item.Estado)
                                         {
-                                            <span class="badge bg-success p-2">
-                                                Activo
-                                            </span>
+                                            <span class="estado-activo">Activo</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-danger p-2">
-                                                Inactivo
-                                            </span>
+                                            <span class="estado-inactivo">Inactivo</span>
                                         }
+                                    </td>
 
+                                    <td>
+                                        @if (item.EstadoRecepcion == "Recibida")
+                                        {
+                                            <span class="recepcion-recibida">Recibida</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="recepcion-pendiente">Pendiente</span>
+                                        }
                                     </td>
 
                                     <td class="text-center">
-
-                                        <!-- EDITAR -->
-                                        <a href="@Url.Action("ActualizarOrdenCompra",
-                                            "OrdenesCompra",
-                                            new { q = item.OrdenCompraID })"
-                                           class="btn btn-warning btn-sm me-2">
-                                            Editar
-                                        </a>
-
                                         <a href="@Url.Action("VerDetalleOrdenCompra", "DetalleOrdenCompra", new { q = item.OrdenCompraID })"
-                                           class="btn btn-info btn-sm me-2">
+                                           class="btn btn-info btn-sm me-1">
                                             Detalle
                                         </a>
 
-                                        <!-- ACTIVAR / DESACTIVAR -->
-                                        @using (Html.BeginForm("CambiarEstadoOrdenCompra",
-                                            "OrdenesCompra",
-                                            FormMethod.Post))
+                                        <a href="@Url.Action("ActualizarOrdenCompra", "OrdenesCompra", new { q = item.OrdenCompraID })"
+                                           class="btn btn-warning btn-sm me-1">
+                                            Editar
+                                        </a>
+
+                                        @if (item.Estado && item.EstadoRecepcion == "Pendiente")
+                                        {
+                                            using (Html.BeginForm("RecibirOrdenCompra", "OrdenesCompra", FormMethod.Post, new { style = "display:inline;" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("q", item.OrdenCompraID)
+
+                                                <button type="submit"
+                                                        class="btn btn-primary btn-sm me-1"
+                                                        onclick="return confirm('¿Seguro que deseas recibir esta orden y actualizar el inventario?')">
+                                                    Recibir
+                                                </button>
+                                            }
+                                        }
+
+                                        @using (Html.BeginForm("CambiarEstadoOrdenCompra", "OrdenesCompra", FormMethod.Post, new { style = "display:inline;" }))
                                         {
                                             @Html.AntiForgeryToken()
-
-                                            <input type="hidden"
-                                                   name="q"
-                                                   value="@item.OrdenCompraID" />
+                                            @Html.Hidden("q", item.OrdenCompraID)
 
                                             if (item.Estado)
                                             {
@@ -128,22 +411,31 @@
                                                 </button>
                                             }
                                         }
-
                                     </td>
-
                                 </tr>
                             }
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
 
     </div>
-
 </section>
 
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>$(document).ready(function () {
+            $('#tablaOrdenesCompra').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+                pageLength: 10,
+                order: [[0, 'desc']],
+                columnDefs: [
+                    { orderable: false, targets: [6] }
+                ]
+            });
+        });</script>
+}

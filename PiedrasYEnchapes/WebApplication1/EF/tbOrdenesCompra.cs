@@ -25,6 +25,7 @@ namespace WebApplication1.EF
         public System.DateTime FechaOrden { get; set; }
         public decimal Total { get; set; }
         public bool Estado { get; set; }
+        public string EstadoRecepcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }

@@ -76,7 +76,8 @@ namespace WebApplication1.Controllers
                         ProveedorID = ordenCompra.ProveedorID,
                         FechaOrden = ordenCompra.FechaOrden,
                         Total = ordenCompra.Total,
-                        Estado = true
+                        Estado = true,
+                        EstadoRecepcion = "Pendiente"
                     };
 
                     context.tbOrdenesCompra.Add(nuevaOrden);
@@ -218,7 +219,8 @@ namespace WebApplication1.Controllers
                                      NombreProveedor = p.NombreEmpresa,
                                      FechaOrden = o.FechaOrden,
                                      Total = o.Total,
-                                     Estado = o.Estado
+                                     Estado = o.Estado,
+                                     EstadoRecepcion = o.EstadoRecepcion
                                  })
                                  .ToList();
 
@@ -241,5 +243,58 @@ namespace WebApplication1.Controllers
                 );
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RecibirOrdenCompra(int q)
+        {
+            try
+            {
+                using (var context = new DATABASE_PYEEntities())
+                {
+                    var orden = context.tbOrdenesCompra
+                        .FirstOrDefault(o => o.OrdenCompraID == q);
+
+                    if (orden == null)
+                    {
+                        TempData["Mensaje"] = "Orden no encontrada.";
+                        return RedirectToAction("VerOrdenesCompra", "OrdenesCompra");
+                    }
+
+                    if (orden.EstadoRecepcion == "Recibida")
+                    {
+                        TempData["Mensaje"] = "La orden ya fue recibida anteriormente.";
+                        return RedirectToAction("VerOrdenesCompra", "OrdenesCompra");
+                    }
+
+                    var detalles = context.tbDetalleOrdenCompra
+                        .Where(d => d.OrdenCompraID == q)
+                        .ToList();
+
+                    foreach (var detalle in detalles)
+                    {
+                        var producto = context.tbProductos
+                            .FirstOrDefault(p => p.ProductoID == detalle.ProductoID);
+
+                        if (producto != null)
+                        {
+                            producto.Stock += detalle.Cantidad;
+                        }
+                    }
+
+                    orden.EstadoRecepcion = "Recibida";
+                    context.SaveChanges();
+
+                    TempData["Mensaje"] = "Orden recibida correctamente y stock actualizado.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "Error al recibir la orden: " + ex.Message;
+            }
+
+            return RedirectToAction("VerOrdenesCompra", "OrdenesCompra");
+        }
+
     }
 }

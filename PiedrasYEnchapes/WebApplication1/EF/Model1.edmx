@@ -82,6 +82,7 @@
           <Property Name="FechaOrden" Type="datetime" Nullable="false" />
           <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="EstadoRecepcion" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
@@ -371,6 +372,7 @@
           <Property Name="FechaOrden" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="EstadoRecepcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Orden__74AE54BC" FromRole="tbOrdenesCompra" ToRole="tbDetalleOrdenCompra" />
         </EntityType>
         <EntityType Name="tbPerfil">
@@ -666,6 +668,7 @@
                 <ScalarProperty Name="FechaOrden" ColumnName="FechaOrden" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="EstadoRecepcion" ColumnName="EstadoRecepcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
