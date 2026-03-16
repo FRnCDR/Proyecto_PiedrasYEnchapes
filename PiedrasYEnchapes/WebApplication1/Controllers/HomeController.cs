@@ -50,11 +50,15 @@ namespace WebApplication1.Controllers
 
                 if (resultado == 1)
                 {
+                    var usuarioDb = context.tbUsuario
+                        .FirstOrDefault(u => u.CorreoElectronico == usuario.CorreoElectronico);
+
                     Session["UsuarioCorreo"] = usuario.CorreoElectronico;
+                    Session["Nombre"] = usuarioDb != null ? usuarioDb.Nombre : "Usuario";
+
                     return RedirectToAction("Index", "Home");
                 }
 
-                // ⚠ Login fallido
                 ViewBag.Mensaje = "Correo o contraseña incorrectos.";
                 return View(usuario);
             }

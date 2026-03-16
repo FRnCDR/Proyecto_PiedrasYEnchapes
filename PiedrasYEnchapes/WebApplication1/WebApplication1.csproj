@@ -224,6 +224,7 @@
     <Content Include="StaticFiles\cssEx\style.css" />
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
     <Content Include="StaticFiles\css\about-modern.css" />
+    <Content Include="StaticFiles\css\asistente-virtual.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
     <Content Include="StaticFiles\css\CambiarContrasenna.css" />
     <Content Include="StaticFiles\css\carrito.css" />
@@ -270,6 +271,7 @@
     <Content Include="StaticFiles\jsEx\misc.js" />
     <Content Include="StaticFiles\jsEx\off-canvas.js" />
     <Content Include="StaticFiles\jsEx\vendor.bundle.base.js" />
+    <Content Include="StaticFiles\js\asistente-virtual.js" />
     <Content Include="StaticFiles\js\bootstrap.js" />
     <Content Include="StaticFiles\js\cotizaciones-cliente.js" />
     <Content Include="StaticFiles\js\custom.js" />

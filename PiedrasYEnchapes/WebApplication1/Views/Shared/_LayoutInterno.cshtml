@@ -1,4 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization
+
+@{
+    var nombreCompleto = Session["Nombre"] != null ? Session["Nombre"].ToString().Trim() : "usuario";
+
+    var partesNombre = nombreCompleto.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+    string primerNombre = "usuario";
+
+    if (partesNombre.Length >= 3)
+    {
+        primerNombre = partesNombre[2];
+    }
+
+    primerNombre = primerNombre.ToLower();
+    primerNombre = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(primerNombre);
+}
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,6 +47,7 @@
     <link href="~/StaticFiles/css/toast-perfil.css" rel="stylesheet" />
     <link href="~/StaticFiles/css/CambiarContrasenna.css" rel="stylesheet" />
     <link href="~/StaticFiles/css/cotizaciones-clientes.css" rel="stylesheet" />
+    <link href="~/StaticFiles/css/asistente-virtual.css" rel="stylesheet" />
 
 
 
@@ -118,6 +138,64 @@
     @RenderBody()
 
 
+
+    <!-- ASISTENTE VIRTUAL VERSION BETA -->
+    <div id="petraAssistant" class="assistant-wrapper">
+        <div class="assistant-bubble" id="assistantBubble">
+            Hola @primerNombre, si necesitas ayuda, hablemos.
+        </div>
+
+        <button type="button" id="assistantToggle" class="assistant-fab" aria-label="Abrir asistente virtual">
+            <i class="fa fa-user-circle"></i>
+        </button>
+
+        <div id="assistantPanel" class="assistant-panel">
+            <div class="assistant-header">
+                <div class="assistant-header-info">
+                    <div class="assistant-avatar">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div>
+                        <h5>Lito</h5>
+                        <span>Asistente virtual</span>
+                    </div>
+                </div>
+
+                <button type="button" id="assistantClose" class="assistant-close">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div class="assistant-body" id="assistantMessages">
+                <div class="assistant-message bot">
+                    ¡Hola! Soy Lito. Estoy aquí para ayudarte con información sobre productos, cotizaciones y servicios.
+                </div>
+
+                <div class="assistant-message bot">
+                    Podés seleccionar una opción rápida o escribir una consulta sencilla.
+                </div>
+            </div>
+
+            <div class="assistant-quick-actions">
+                <button type="button" class="quick-question" data-question="productos">Ver productos</button>
+                <button type="button" class="quick-question" data-question="cotizar">Cómo cotizar</button>
+                <button type="button" class="quick-question" data-question="pagos">Métodos de pago</button>
+                <button type="button" class="quick-question" data-question="envios">Envíos</button>
+                <button type="button" class="quick-question" data-question="horario">Horarios</button>
+                <button type="button" class="quick-question" data-question="contacto">Contacto</button>
+            </div>
+
+            <div class="assistant-footer">
+                <input type="text" id="assistantInput" class="assistant-input" placeholder="Escribí tu consulta..." />
+                <button type="button" id="assistantSend" class="assistant-send">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
     <footer class="footer_modern">
         <div class="container">
 
@@ -201,10 +279,20 @@
     </footer>
 
 
+
+
+
+
+
+
+
+
+
     <!-- JS -->
     <script src="~/StaticFiles/js/jquery-3.4.1.min.js"></script>
     <script src="~/StaticFiles/js/bootstrap.js"></script>
     <script src="~/StaticFiles/js/cotizaciones-cliente.js"></script>
+    <script src="~/StaticFiles/js/asistente-virtual.js"></script>
 
 
     @RenderSection("Scripts", required: false)
