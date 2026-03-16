@@ -20,10 +20,17 @@ namespace WebApplication1.Controllers
         [ValidarSesion]
         public ActionResult Index()
         {
-            return View();
-        }
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var productos = context.tbProductos
+                    .Where(p => p.Estado == true) // si manejas estado
+                    .OrderByDescending(p => p.ProductoID)
+                    .Take(9)
+                    .ToList();
 
-      
+                return View(productos);
+            }
+        }
         [HttpGet]
         public ActionResult Login()
         {

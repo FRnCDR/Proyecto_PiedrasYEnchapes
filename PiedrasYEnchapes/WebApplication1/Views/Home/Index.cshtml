@@ -1,7 +1,10 @@
-﻿@{
+﻿@model List<WebApplication1.EF.tbProductos>
+
+@{
     ViewBag.Title = "Inicio";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
+
 <!-- HERO + FONDO + CARRUSEL (VERSIÓN ORIGINAL) -->
 <div class="hero_area">
     <div class="bg-box">
@@ -41,7 +44,7 @@
                                         Dale un toque natural y moderno a tu hogar con piedra decorativa.
                                     </p>
                                     <div class="btn-box">
-                                        <a href="#" class="btn1">¡Cotiza ya!</a>
+                                        <a href="@Url.Action("VerCotizaciones", "Cotizacion")" class="btn1">¡Cotiza ya!</a>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +62,7 @@
                                         Materiales seleccionados para todo tipo de proyectos.
                                     </p>
                                     <div class="btn-box">
-                                        <a href="#" class="btn1">¡Cotiza ya!</a>
+                                        <a href="@Url.Action("VerCotizaciones", "Cotizacion")" class="btn1">¡Cotiza ya!</a>
                                     </div>
                                 </div>
                             </div>
@@ -87,213 +90,63 @@
         <div class="section-head">
             <div>
                 <h2 class="section-title">Algunos de nuestros productos</h2>
-                <p class="section-subtitle">Elegí la categoría y encontrá el estilo perfecto para tu proyecto.</p>
+                <p class="section-subtitle">Descubrí opciones reales para tu proyecto y cotizá fácilmente.</p>
             </div>
             <a class="section-link" href="@Url.Action("VerProductos", "Productos")">Ver catálogo completo <span>→</span></a>
         </div>
 
-        <!-- filtros -->
         <ul class="filters_menu filters-modern">
             <li class="active" data-filter="*">Todos</li>
-            <li data-filter=".enchapes">Enchapes</li>
-            <li data-filter=".piedraRoja">Piedra Roja</li>
-            <li data-filter=".piedraAmarilla">Piedra Amarilla</li>
-            <li data-filter=".piedraBlanca">Piedra Blanca</li>
         </ul>
 
-        <!-- cards -->
         <div class="filters-content">
             <div class="row grid">
 
-                <div class="col-sm-6 col-lg-4 all enchapes">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/mollejon.jpg" alt="Mollejón" />
-                            <span class="product-badge">Top</span>
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Mollejón</h5>
-                                <div class="product-price">$200</div>
-                            </div>
-                            <p class="product-desc">Mollejón amarillo semi rústico irregular</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        var rutaImagen = !string.IsNullOrEmpty(item.Imagen)
+                            ? Url.Content("~/StaticFiles/images/" + item.Imagen)
+                            : Url.Content("~/StaticFiles/images/no-image.png");
 
-                <div class="col-sm-6 col-lg-4 all piedraRoja">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/cuartaRoja.jpg" alt="Piedra Roja" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Roja</h5>
-                                <div class="product-price">$55</div>
-                            </div>
-                            <p class="product-desc">Piedra roja de cuarta</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        <div class="col-sm-6 col-lg-4 all">
+                            <div class="product-card">
+                                <div class="product-img">
+                                    <img src="@rutaImagen" alt="@item.Nombre" />
+                                    <span class="product-badge">Disponible</span>
+                                </div>
 
-                <div class="col-sm-6 col-lg-4 all enchapes">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/piedraSanchezSemiRusticoIrregular.jpg" alt="Piedra Sanchez" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Sanchez</h5>
-                                <div class="product-price">$250</div>
-                            </div>
-                            <p class="product-desc">Enchape de piedra sanchez semi rústico irregular</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <div class="product-body">
+                                    <div class="product-top">
+                                        <h5 class="product-title">@item.Nombre</h5>
+                                        <div class="product-price">₡@item.Precio</div>
+                                    </div>
 
-                <div class="col-sm-6 col-lg-4 all piedraAmarilla">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/cuartaAmarilla.jpg" alt="Piedra Amarilla" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Amarilla</h5>
-                                <div class="product-price">$77</div>
-                            </div>
-                            <p class="product-desc">Piedra amarilla de cuarta</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    <p class="product-desc">@item.Descripcion</p>
 
-                <div class="col-sm-6 col-lg-4 all piedraBlanca">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/cuartaBlanca.jpg" alt="Piedra Blanca" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Blanca</h5>
-                                <div class="product-price">$80</div>
-                            </div>
-                            <p class="product-desc">Piedra blanca de cuarta</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    <div class="product-actions">
+                                        <a href="@Url.Action("CrearCotizacion", "Cotizacion")" class="btn product-btn">
+                                            Cotizar
+                                        </a>
 
-                <div class="col-sm-6 col-lg-4 all enchapes">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/piedraSanchezSemiRusticaFachaleta.jpg" alt="Piedra Sanchez Fachaleta" />
+                                        <a href="@Url.Action("VerProductos", "Productos")" class="product-icon" title="Ver catálogo">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Sanchez</h5>
-                                <div class="product-price">$65</div>
-                            </div>
-                            <p class="product-desc">Piedra sanchez semi rústica fachaleta</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div class="alert alert-info text-center">
+                            No hay productos disponibles en este momento.
                         </div>
                     </div>
-                </div>
-
-                <div class="col-sm-6 col-lg-4 all piedraRoja">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/quintaRoja.jpg" alt="Piedra Roja Quinta" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Roja</h5>
-                                <div class="product-price">$20</div>
-                            </div>
-                            <p class="product-desc">Piedra roja de quinta</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-lg-4 all enchapes">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/lajaGrisIrregularSemiRustica.jpg" alt="Laja Gris" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Laja Gris</h5>
-                                <div class="product-price">$140</div>
-                            </div>
-                            <p class="product-desc">Laja gris irregular semi rústica</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-lg-4 all piedraAmarilla">
-                    <div class="product-card">
-                        <div class="product-img">
-                            <img src="~/StaticFiles/images/quintaAmarilla.jpg" alt="Piedra Amarilla Quinta" />
-                        </div>
-                        <div class="product-body">
-                            <div class="product-top">
-                                <h5 class="product-title">Piedra Amarilla</h5>
-                                <div class="product-price">$100</div>
-                            </div>
-                            <p class="product-desc">Piedra amarilla de quinta</p>
-                            <div class="product-actions">
-                                <a href="#" class="btn product-btn">Cotizar</a>
-                                <a href="#" class="product-icon" title="Agregar al carrito">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
 
             </div>
         </div>
@@ -341,7 +194,7 @@
 
                     <div class="about-actions">
                         <a href="@Url.Action("VerNosotros", "SobreNosotros")" class="btn about-btn">Leer más</a>
-                        <a href="#" class="btn about-btn-ghost">Cotizar</a>
+                        <a href="@Url.Action("CrearCotizacion", "Cotizacion")" class="btn about-btn-ghost">Cotizar</a>
                     </div>
                 </div>
             </div>
