@@ -36,7 +36,7 @@
 
             <div class="catalog-search">
                 <i class="fa fa-search"></i>
-                <input type="text" placeholder="Buscar producto..." />
+                <input type="text" id="buscarProducto" placeholder="Buscar producto..." />
             </div>
         </div>
 
@@ -58,7 +58,7 @@
                             ? Url.Content("~/StaticFiles/images/" + item.Imagen)
                             : Url.Content("~/StaticFiles/images/no-image.png");
 
-                        <div class="col-sm-6 col-lg-4 all">
+                        <div class="col-sm-6 col-lg-4 all producto-item">
                             <article class="catalog-card">
                                 <a class="catalog-img" href="#">
                                     <img src="@rutaImagen" alt="@item.Nombre" />
@@ -104,3 +104,27 @@
 
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("buscarProducto");
+            const productos = document.querySelectorAll(".producto-item");
+
+            input.addEventListener("keyup", function () {
+                const texto = input.value.toLowerCase().trim();
+
+                productos.forEach(function (producto) {
+                    const nombre = producto.querySelector(".catalog-name")?.textContent.toLowerCase() || "";
+                    const descripcion = producto.querySelector(".catalog-desc")?.textContent.toLowerCase() || "";
+
+                    if (nombre.includes(texto) || descripcion.includes(texto)) {
+                        producto.style.display = "";
+                    } else {
+                        producto.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+}
