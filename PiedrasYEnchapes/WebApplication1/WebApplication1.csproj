@@ -229,6 +229,7 @@
     <Content Include="StaticFiles\css\carrito.css" />
     <Content Include="StaticFiles\css\catalogo-minimal.css" />
     <Content Include="StaticFiles\css\catalogo-productos.css" />
+    <Content Include="StaticFiles\css\cotizaciones-clientes.css" />
     <Content Include="StaticFiles\css\editar-perfil.css" />
     <Content Include="StaticFiles\css\font-awesome.min.css" />
     <Content Include="StaticFiles\css\index-moderno.css" />
@@ -270,6 +271,7 @@
     <Content Include="StaticFiles\jsEx\off-canvas.js" />
     <Content Include="StaticFiles\jsEx\vendor.bundle.base.js" />
     <Content Include="StaticFiles\js\bootstrap.js" />
+    <Content Include="StaticFiles\js\cotizaciones-cliente.js" />
     <Content Include="StaticFiles\js\custom.js" />
     <Content Include="StaticFiles\js\EditarPerfil.js" />
     <Content Include="StaticFiles\js\jquery-3.4.1.min.js" />
