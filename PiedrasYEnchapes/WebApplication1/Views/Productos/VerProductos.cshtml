@@ -60,7 +60,7 @@
 
                         <div class="col-sm-6 col-lg-4 all producto-item">
                             <article class="catalog-card">
-                                <a class="catalog-img" href="#">
+                                <a class="catalog-img" href="@Url.Action("DetalleProducto", "Productos", new { id = item.ProductoID })">
                                     <img src="@rutaImagen" alt="@item.Nombre" />
                                 </a>
 
@@ -75,7 +75,7 @@
 
                                     <div class="catalog-bottom">
                                         <span class="catalog-price">₡@item.Precio</span>
-                                        <a class="catalog-link" href="#">
+                                        <a class="catalog-link" href="@Url.Action("DetalleProducto", "Productos", new { id = item.ProductoID })">
                                             Ver detalle <span class="arrow">→</span>
                                         </a>
                                     </div>

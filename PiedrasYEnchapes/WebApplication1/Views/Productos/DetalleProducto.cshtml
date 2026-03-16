@@ -1,0 +1,328 @@
+﻿@model WebApplication1.Models.Producto
+
+@{
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+    ViewBag.Title = "Detalle del producto";
+
+    var rutaImagen = !string.IsNullOrEmpty(Model.Imagen)
+        ? Url.Content("~/StaticFiles/images/" + Model.Imagen)
+        : Url.Content("~/StaticFiles/images/no-image.png");
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<section class="detalle-producto-section">
+    <div class="container">
+
+        <div class="detalle-breadcrumb">
+            <a href="@Url.Action("VerProductos", "Productos")">
+                <i class="fa fa-arrow-left"></i> Volver a productos
+            </a>
+        </div>
+
+        <div class="detalle-card">
+            <div class="row align-items-center g-0">
+
+                <div class="col-lg-6">
+                    <div class="detalle-imagen-box @(Model.Estado ? "" : "producto-inactivo")">
+                        <img src="@rutaImagen" alt="@Model.Nombre" class="detalle-imagen img-fluid" />
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="detalle-info">
+
+                        <span class="detalle-etiqueta">Catálogo Premium</span>
+
+                        <h1 class="detalle-titulo">@Model.Nombre</h1>
+
+                        <p class="detalle-descripcion">
+                            @Model.Descripcion
+                        </p>
+
+                        <div class="detalle-precio-box">
+                            <span class="detalle-precio-label">Precio</span>
+                            <h2 class="detalle-precio">₡@Model.Precio.ToString("N2")</h2>
+                        </div>
+
+                        <div class="detalle-extra-info">
+                            <div class="detalle-info-item">
+                                <span class="detalle-info-title">Disponibilidad</span>
+
+                                @if (!Model.Estado)
+                                {
+                                    <span class="detalle-stock no-disponible">
+                                        <i class="fa fa-times-circle"></i> No disponible en este momento
+                                    </span>
+                                }
+                                else if (Model.Stock > 0)
+                                {
+                                    <span class="detalle-stock disponible">
+                                        <i class="fa fa-check-circle"></i> En stock (@Model.Stock disponibles)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="detalle-stock agotado">
+                                        <i class="fa fa-exclamation-circle"></i> Temporalmente agotado
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="detalle-botones">
+                            <a href="@Url.Action("VerProductos", "Productos")" class="btn-detalle-secundario">
+                                Seguir viendo productos
+                            </a>
+                            <a href="@Url.Action("Index", "Home")" class="btn-detalle-principal">
+                                Ir al inicio
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<style>
+    .producto-inactivo img {
+        opacity: 0.5;
+        filter: grayscale(40%);
+    }
+
+    .detalle-stock.no-disponible {
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .detalle-stock.disponible {
+        color: #198754;
+        font-weight: 600;
+    }
+
+    .detalle-stock.agotado {
+        color: #ffc107;
+        font-weight: 600;
+    }
+    .detalle-producto-section {
+        padding: 70px 0 90px 0;
+        background: #f8f8f8;
+    }
+
+    .detalle-breadcrumb {
+        margin-bottom: 30px;
+    }
+
+        .detalle-breadcrumb a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #222831;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: 0.3s ease;
+        }
+
+            .detalle-breadcrumb a:hover {
+                color: #c49b63;
+                text-decoration: none;
+            }
+
+    .detalle-card {
+        background: #ffffff;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+    }
+
+    .detalle-imagen-box {
+        min-height: 100%;
+        background: linear-gradient(135deg, #f4f1eb, #ece7df);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px;
+        height: 100%;
+    }
+
+    .detalle-imagen {
+        max-height: 500px;
+        width: 100%;
+        object-fit: contain;
+        border-radius: 18px;
+    }
+
+    .detalle-info {
+        padding: 55px 45px;
+    }
+
+    .detalle-etiqueta {
+        display: inline-block;
+        padding: 8px 18px;
+        border-radius: 50px;
+        background: #222831;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .detalle-titulo {
+        font-size: 42px;
+        font-weight: 700;
+        color: #222831;
+        margin-bottom: 18px;
+        line-height: 1.15;
+    }
+
+    .detalle-descripcion {
+        font-size: 16px;
+        color: #6c757d;
+        line-height: 1.9;
+        margin-bottom: 30px;
+    }
+
+    .detalle-precio-box {
+        margin-bottom: 28px;
+        padding: 22px 24px;
+        background: #f8f8f8;
+        border-radius: 18px;
+        border: 1px solid #ececec;
+    }
+
+    .detalle-precio-label {
+        display: block;
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .detalle-precio {
+        margin: 0;
+        font-size: 34px;
+        font-weight: 700;
+        color: #111;
+    }
+
+    .detalle-extra-info {
+        margin-bottom: 35px;
+    }
+
+    .detalle-info-item {
+        padding: 18px 22px;
+        border: 1px solid #ededed;
+        border-radius: 18px;
+        background: #fff;
+    }
+
+    .detalle-info-title {
+        display: block;
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .detalle-stock {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+        .detalle-stock.disponible {
+            color: #198754;
+        }
+
+        .detalle-stock.agotado {
+            color: #dc3545;
+        }
+
+    .detalle-botones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .btn-detalle-principal,
+    .btn-detalle-secundario {
+        padding: 14px 26px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s ease;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-detalle-principal {
+        background: #222831;
+        color: #fff;
+        border: 1px solid #222831;
+    }
+
+        .btn-detalle-principal:hover {
+            background: #c49b63;
+            border-color: #c49b63;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .btn-detalle-secundario {
+        background: transparent;
+        color: #222831;
+        border: 1px solid #d8d8d8;
+    }
+
+        .btn-detalle-secundario:hover {
+            background: #f1f1f1;
+            color: #222831;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 991px) {
+        .detalle-info {
+            padding: 35px 25px;
+        }
+
+        .detalle-titulo {
+            font-size: 32px;
+        }
+
+        .detalle-precio {
+            font-size: 28px;
+        }
+
+        .detalle-imagen-box {
+            padding: 30px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .detalle-producto-section {
+            padding: 45px 0 65px 0;
+        }
+
+        .detalle-titulo {
+            font-size: 28px;
+        }
+
+        .detalle-botones {
+            flex-direction: column;
+        }
+
+        .btn-detalle-principal,
+        .btn-detalle-secundario {
+            width: 100%;
+        }
+    }
+</style>

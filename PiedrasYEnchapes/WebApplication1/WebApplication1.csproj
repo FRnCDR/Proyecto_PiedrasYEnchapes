@@ -243,6 +243,7 @@
     <Content Include="StaticFiles\css\toast.css" />
     <Content Include="StaticFiles\images\7PPV6LHMMJEPREAIQ7WNC7I6XI.jpg" />
     <Content Include="StaticFiles\images\about-img.png" />
+    <Content Include="StaticFiles\images\Camion.jpg" />
     <Content Include="StaticFiles\images\client1.jpg" />
     <Content Include="StaticFiles\images\client2.jpg" />
     <Content Include="StaticFiles\images\cuartaAmarilla.jpg" />
@@ -267,6 +268,7 @@
     <Content Include="StaticFiles\images\piedraSanchezSemiRusticoIrregular.jpg" />
     <Content Include="StaticFiles\images\quintaAmarilla.jpg" />
     <Content Include="StaticFiles\images\quintaRoja.jpg" />
+    <Content Include="StaticFiles\images\Textura.png" />
     <Content Include="StaticFiles\jsEx\hoverable-collapse.js" />
     <Content Include="StaticFiles\jsEx\misc.js" />
     <Content Include="StaticFiles\jsEx\off-canvas.js" />
@@ -340,6 +342,7 @@
     <Content Include="Views\OrdenesCompra\ActualizarOrdenCompra.cshtml" />
     <Content Include="Views\DetalleOrdenCompra\VerDetalleOrdenCompra.cshtml" />
     <Content Include="Views\DetalleOrdenCompra\AgregarDetalleOrdenCompra.cshtml" />
+    <Content Include="Views\Productos\DetalleProducto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

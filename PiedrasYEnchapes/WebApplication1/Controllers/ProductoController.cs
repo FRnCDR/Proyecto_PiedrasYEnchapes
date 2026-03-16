@@ -37,5 +37,38 @@ namespace WebApplication1.Controllers
                 return View(lista);
             }
         }
+
+        //Para ver el detalle de los productos
+
+        public ActionResult DetalleProducto(int id)
+        {
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var producto = context.tbProductos
+                    .Where(p => p.ProductoID == id)
+                    .Select(p => new WebApplication1.Models.Producto
+                    {
+                        ProductoID = p.ProductoID,
+                        Nombre = p.Nombre,
+                        Descripcion = p.Descripcion,
+                        Precio = p.Precio,
+                        Stock = p.Stock,
+                        Imagen = p.Imagen,
+                        CategoriaID = p.CategoriaID,
+                        ProveedorID = p.ProveedorID,
+                        Estado = p.Estado
+                    })
+                    .FirstOrDefault();
+
+                if (producto == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(producto);
+            }
+        }
     }
+
+
 }
