@@ -126,6 +126,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CarritoController .cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\DetalleOrdenCompraController.cs" />
@@ -159,7 +160,13 @@
     <Compile Include="EF\tbClientes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tbCompras.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tbCotizaciones.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tbDetalleCompra.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tbDetalleCotizacion.cs">
@@ -169,6 +176,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tbEmpleados.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tbFacturasCompra.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tbOrdenesCompra.cs">
@@ -191,6 +201,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CambiarContrasennaViewModel.cs" />
+    <Compile Include="Models\CarritoItem.cs" />
+    <Compile Include="Models\DetalleCompraModel.cs" />
+    <Compile Include="Models\HistorialCompra.cs" />
+    <Compile Include="Models\FacturaCompra.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
     <Compile Include="Models\DetalleOrdenCompra.cs" />
@@ -343,6 +357,10 @@
     <Content Include="Views\DetalleOrdenCompra\VerDetalleOrdenCompra.cshtml" />
     <Content Include="Views\DetalleOrdenCompra\AgregarDetalleOrdenCompra.cshtml" />
     <Content Include="Views\Productos\DetalleProducto.cshtml" />
+    <Content Include="Views\Proveedor\FacturaPendientes.cshtml" />
+    <Content Include="Views\Proveedor\TodasLasFacturas.cshtml" />
+    <Content Include="Views\Cliente\HistorialCompras.cshtml" />
+    <Content Include="Views\Cliente\DetalleCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tbCategorias">
           <Key>
             <PropertyRef Name="CategoriaID" />
@@ -27,6 +27,16 @@
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbCompras">
+          <Key>
+            <PropertyRef Name="CompraID" />
+          </Key>
+          <Property Name="CompraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+          <Property Name="FechaCompra" Type="datetime" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbCotizaciones">
           <Key>
             <PropertyRef Name="CotizacionID" />
@@ -37,6 +47,17 @@
           <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Observaciones" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="tbDetalleCompra">
+          <Key>
+            <PropertyRef Name="DetalleCompraID" />
+          </Key>
+          <Property Name="DetalleCompraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompraID" Type="int" Nullable="false" />
+          <Property Name="ProductoID" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="tbDetalleCotizacion">
           <Key>
@@ -72,6 +93,19 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="IdPerfil" Type="int" />
+        </EntityType>
+        <EntityType Name="tbFacturasCompra">
+          <Key>
+            <PropertyRef Name="FacturaCompraID" />
+          </Key>
+          <Property Name="FacturaCompraID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrdenCompraID" Type="int" Nullable="false" />
+          <Property Name="ProveedorID" Type="int" Nullable="false" />
+          <Property Name="FechaFactura" Type="datetime" Nullable="false" />
+          <Property Name="FechaVencimiento" Type="datetime" Nullable="false" />
+          <Property Name="MontoTotal" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MontoPagado" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="tbOrdenesCompra">
           <Key>
@@ -131,7 +165,7 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__tbDetalle__Orden__5CD6CB2B">
+        <Association Name="FK__tbDetalle__Orden__6FE99F9F">
           <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -143,7 +177,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbDetalle__Produ__5DCAEF64">
+        <Association Name="FK__tbDetalle__Produ__70DDC3D8">
           <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -167,6 +201,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbCompras_tbUsuario">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="1" />
+          <End Role="tbCompras" Type="Self.tbCompras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tbCompras">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbCotizaciones_tbClientes">
           <End Role="tbClientes" Type="Self.tbClientes" Multiplicity="0..1" />
           <End Role="tbCotizaciones" Type="Self.tbCotizaciones" Multiplicity="*" />
@@ -176,6 +222,30 @@
             </Principal>
             <Dependent Role="tbCotizaciones">
               <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbDetalleCompra_tbCompras">
+          <End Role="tbCompras" Type="Self.tbCompras" Multiplicity="1" />
+          <End Role="tbDetalleCompra" Type="Self.tbDetalleCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbCompras">
+              <PropertyRef Name="CompraID" />
+            </Principal>
+            <Dependent Role="tbDetalleCompra">
+              <PropertyRef Name="CompraID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbDetalleCompra_tbProductos">
+          <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
+          <End Role="tbDetalleCompra" Type="Self.tbDetalleCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProductos">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="tbDetalleCompra">
+              <PropertyRef Name="ProductoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -200,6 +270,30 @@
             </Principal>
             <Dependent Role="tbDetalleCotizacion">
               <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbFacturasCompra_OrdenCompra">
+          <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
+          <End Role="tbFacturasCompra" Type="Self.tbFacturasCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbOrdenesCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Principal>
+            <Dependent Role="tbFacturasCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbFacturasCompra_Proveedor">
+          <End Role="tbProveedores" Type="Self.tbProveedores" Multiplicity="1" />
+          <End Role="tbFacturasCompra" Type="Self.tbFacturasCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProveedores">
+              <PropertyRef Name="ProveedorID" />
+            </Principal>
+            <Dependent Role="tbFacturasCompra">
+              <PropertyRef Name="ProveedorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -240,20 +334,23 @@
         <EntityContainer Name="DATABASE_PYEModelStoreContainer">
           <EntitySet Name="tbCategorias" EntityType="Self.tbCategorias" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbClientes" EntityType="Self.tbClientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbCompras" EntityType="Self.tbCompras" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbCotizaciones" EntityType="Self.tbCotizaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbDetalleCompra" EntityType="Self.tbDetalleCompra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbDetalleCotizacion" EntityType="Self.tbDetalleCotizacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbDetalleOrdenCompra" EntityType="Self.tbDetalleOrdenCompra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbEmpleados" EntityType="Self.tbEmpleados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbFacturasCompra" EntityType="Self.tbFacturasCompra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbOrdenesCompra" EntityType="Self.tbOrdenesCompra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbPerfil" EntityType="Self.tbPerfil" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__tbDetalle__Orden__5CD6CB2B" Association="Self.FK__tbDetalle__Orden__5CD6CB2B">
+          <AssociationSet Name="FK__tbDetalle__Orden__6FE99F9F" Association="Self.FK__tbDetalle__Orden__6FE99F9F">
             <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
-          <AssociationSet Name="FK__tbDetalle__Produ__5DCAEF64" Association="Self.FK__tbDetalle__Produ__5DCAEF64">
+          <AssociationSet Name="FK__tbDetalle__Produ__70DDC3D8" Association="Self.FK__tbDetalle__Produ__70DDC3D8">
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
@@ -261,9 +358,21 @@
             <End Role="tbCategorias" EntitySet="tbCategorias" />
             <End Role="tbProductos" EntitySet="tbProductos" />
           </AssociationSet>
+          <AssociationSet Name="FK_tbCompras_tbUsuario" Association="Self.FK_tbCompras_tbUsuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbCompras" EntitySet="tbCompras" />
+          </AssociationSet>
           <AssociationSet Name="FK_tbCotizaciones_tbClientes" Association="Self.FK_tbCotizaciones_tbClientes">
             <End Role="tbClientes" EntitySet="tbClientes" />
             <End Role="tbCotizaciones" EntitySet="tbCotizaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbDetalleCompra_tbCompras" Association="Self.FK_tbDetalleCompra_tbCompras">
+            <End Role="tbCompras" EntitySet="tbCompras" />
+            <End Role="tbDetalleCompra" EntitySet="tbDetalleCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbDetalleCompra_tbProductos" Association="Self.FK_tbDetalleCompra_tbProductos">
+            <End Role="tbProductos" EntitySet="tbProductos" />
+            <End Role="tbDetalleCompra" EntitySet="tbDetalleCompra" />
           </AssociationSet>
           <AssociationSet Name="FK_tbDetalleCotizacion_tbCotizaciones" Association="Self.FK_tbDetalleCotizacion_tbCotizaciones">
             <End Role="tbCotizaciones" EntitySet="tbCotizaciones" />
@@ -272,6 +381,14 @@
           <AssociationSet Name="FK_tbDetalleCotizacion_tbProductos" Association="Self.FK_tbDetalleCotizacion_tbProductos">
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleCotizacion" EntitySet="tbDetalleCotizacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbFacturasCompra_OrdenCompra" Association="Self.FK_tbFacturasCompra_OrdenCompra">
+            <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
+            <End Role="tbFacturasCompra" EntitySet="tbFacturasCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbFacturasCompra_Proveedor" Association="Self.FK_tbFacturasCompra_Proveedor">
+            <End Role="tbProveedores" EntitySet="tbProveedores" />
+            <End Role="tbFacturasCompra" EntitySet="tbFacturasCompra" />
           </AssociationSet>
           <AssociationSet Name="FK_tbProductos_tbProveedores" Association="Self.FK_tbProductos_tbProveedores">
             <End Role="tbProveedores" EntitySet="tbProveedores" />
@@ -282,8 +399,7 @@
             <End Role="tbUsuario" EntitySet="tbUsuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DATABASE_PYEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -374,6 +490,7 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="EstadoRecepcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Orden__5CD6CB2B" FromRole="tbOrdenesCompra" ToRole="tbDetalleOrdenCompra" />
+          <NavigationProperty Name="tbFacturasCompra" Relationship="DATABASE_PYEModel.FK_tbFacturasCompra_OrdenCompra" FromRole="tbOrdenesCompra" ToRole="tbFacturasCompra" />
         </EntityType>
         <EntityType Name="tbPerfil">
           <Key>
@@ -400,6 +517,7 @@
           <NavigationProperty Name="tbDetalleCotizacion" Relationship="Self.FK_tbDetalleCotizacion_tbProductos" FromRole="tbProductos" ToRole="tbDetalleCotizacion" />
           <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Produ__5DCAEF64" FromRole="tbProductos" ToRole="tbDetalleOrdenCompra" />
           <NavigationProperty Name="tbProveedores" Relationship="Self.FK_tbProductos_tbProveedores" FromRole="tbProductos" ToRole="tbProveedores" />
+          <NavigationProperty Name="tbDetalleCompra" Relationship="DATABASE_PYEModel.FK_tbDetalleCompra_tbProductos" FromRole="tbProductos" ToRole="tbDetalleCompra" />
         </EntityType>
         <EntityType Name="tbProveedores">
           <Key>
@@ -415,6 +533,7 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="Tipo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="tbProductos" Relationship="Self.FK_tbProductos_tbProveedores" FromRole="tbProveedores" ToRole="tbProductos" />
+          <NavigationProperty Name="tbFacturasCompra" Relationship="DATABASE_PYEModel.FK_tbFacturasCompra_Proveedor" FromRole="tbProveedores" ToRole="tbFacturasCompra" />
         </EntityType>
         <EntityType Name="tbUsuario">
           <Key>
@@ -428,6 +547,7 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="IdPerfil" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbPerfil" Relationship="Self.FK_Usuario_Perfil" FromRole="tbUsuario" ToRole="tbPerfil" />
+          <NavigationProperty Name="tbCompras" Relationship="DATABASE_PYEModel.FK_tbCompras_tbUsuario" FromRole="tbUsuario" ToRole="tbCompras" />
         </EntityType>
         <Association Name="FK_Categoria">
           <End Role="tbCategorias" Type="Self.tbCategorias" Multiplicity="0..1" />
@@ -579,155 +699,314 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tbFacturasCompra" EntityType="DATABASE_PYEModel.tbFacturasCompra" />
+          <AssociationSet Name="FK_tbFacturasCompra_OrdenCompra" Association="DATABASE_PYEModel.FK_tbFacturasCompra_OrdenCompra">
+            <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
+            <End Role="tbFacturasCompra" EntitySet="tbFacturasCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbFacturasCompra_Proveedor" Association="DATABASE_PYEModel.FK_tbFacturasCompra_Proveedor">
+            <End Role="tbProveedores" EntitySet="tbProveedores" />
+            <End Role="tbFacturasCompra" EntitySet="tbFacturasCompra" />
+          </AssociationSet>
+          <EntitySet Name="tbCompras" EntityType="DATABASE_PYEModel.tbCompras" />
+          <EntitySet Name="tbDetalleCompra" EntityType="DATABASE_PYEModel.tbDetalleCompra" />
+          <AssociationSet Name="FK_tbDetalleCompra_tbCompras" Association="DATABASE_PYEModel.FK_tbDetalleCompra_tbCompras">
+            <End Role="tbCompras" EntitySet="tbCompras" />
+            <End Role="tbDetalleCompra" EntitySet="tbDetalleCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbDetalleCompra_tbProductos" Association="DATABASE_PYEModel.FK_tbDetalleCompra_tbProductos">
+            <End Role="tbProductos" EntitySet="tbProductos" />
+            <End Role="tbDetalleCompra" EntitySet="tbDetalleCompra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbCompras_tbUsuario" Association="DATABASE_PYEModel.FK_tbCompras_tbUsuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbCompras" EntitySet="tbCompras" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="tbFacturasCompra">
+          <Key>
+            <PropertyRef Name="FacturaCompraID" />
+          </Key>
+          <Property Name="FacturaCompraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrdenCompraID" Type="Int32" Nullable="false" />
+          <Property Name="ProveedorID" Type="Int32" Nullable="false" />
+          <Property Name="FechaFactura" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaVencimiento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MontoTotal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MontoPagado" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbOrdenesCompra" Relationship="DATABASE_PYEModel.FK_tbFacturasCompra_OrdenCompra" FromRole="tbFacturasCompra" ToRole="tbOrdenesCompra" />
+          <NavigationProperty Name="tbProveedores" Relationship="DATABASE_PYEModel.FK_tbFacturasCompra_Proveedor" FromRole="tbFacturasCompra" ToRole="tbProveedores" />
+        </EntityType>
+        <Association Name="FK_tbFacturasCompra_OrdenCompra">
+          <End Type="DATABASE_PYEModel.tbOrdenesCompra" Role="tbOrdenesCompra" Multiplicity="1" />
+          <End Type="DATABASE_PYEModel.tbFacturasCompra" Role="tbFacturasCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbOrdenesCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Principal>
+            <Dependent Role="tbFacturasCompra">
+              <PropertyRef Name="OrdenCompraID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbFacturasCompra_Proveedor">
+          <End Type="DATABASE_PYEModel.tbProveedores" Role="tbProveedores" Multiplicity="1" />
+          <End Type="DATABASE_PYEModel.tbFacturasCompra" Role="tbFacturasCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProveedores">
+              <PropertyRef Name="ProveedorID" />
+            </Principal>
+            <Dependent Role="tbFacturasCompra">
+              <PropertyRef Name="ProveedorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tbCompras">
+          <Key>
+            <PropertyRef Name="CompraID" />
+          </Key>
+          <Property Name="CompraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaCompra" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbDetalleCompra" Relationship="DATABASE_PYEModel.FK_tbDetalleCompra_tbCompras" FromRole="tbCompras" ToRole="tbDetalleCompra" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbUsuario" Relationship="DATABASE_PYEModel.FK_tbCompras_tbUsuario" FromRole="tbCompras" ToRole="tbUsuario" />
+        </EntityType>
+        <EntityType Name="tbDetalleCompra">
+          <Key>
+            <PropertyRef Name="DetalleCompraID" />
+          </Key>
+          <Property Name="DetalleCompraID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompraID" Type="Int32" Nullable="false" />
+          <Property Name="ProductoID" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Subtotal" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="tbCompras" Relationship="DATABASE_PYEModel.FK_tbDetalleCompra_tbCompras" FromRole="tbDetalleCompra" ToRole="tbCompras" />
+          <NavigationProperty Name="tbProductos" Relationship="DATABASE_PYEModel.FK_tbDetalleCompra_tbProductos" FromRole="tbDetalleCompra" ToRole="tbProductos" />
+        </EntityType>
+        <Association Name="FK_tbDetalleCompra_tbCompras">
+          <End Type="DATABASE_PYEModel.tbCompras" Role="tbCompras" Multiplicity="1" />
+          <End Type="DATABASE_PYEModel.tbDetalleCompra" Role="tbDetalleCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbCompras">
+              <PropertyRef Name="CompraID" />
+            </Principal>
+            <Dependent Role="tbDetalleCompra">
+              <PropertyRef Name="CompraID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbDetalleCompra_tbProductos">
+          <End Type="DATABASE_PYEModel.tbProductos" Role="tbProductos" Multiplicity="1" />
+          <End Type="DATABASE_PYEModel.tbDetalleCompra" Role="tbDetalleCompra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbProductos">
+              <PropertyRef Name="ProductoID" />
+            </Principal>
+            <Dependent Role="tbDetalleCompra">
+              <PropertyRef Name="ProductoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbCompras_tbUsuario">
+          <End Type="DATABASE_PYEModel.tbUsuario" Role="tbUsuario" Multiplicity="1" />
+          <End Type="DATABASE_PYEModel.tbCompras" Role="tbCompras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tbCompras">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities">
-          <EntitySetMapping Name="tbCategorias">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbCategorias">
-              <MappingFragment StoreEntitySet="tbCategorias">
-                <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbClientes">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbClientes">
-              <MappingFragment StoreEntitySet="tbClientes">
-                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
-                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbCotizaciones">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbCotizaciones">
-              <MappingFragment StoreEntitySet="tbCotizaciones">
-                <ScalarProperty Name="CotizacionID" ColumnName="CotizacionID" />
-                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
-                <ScalarProperty Name="FechaCotizacion" ColumnName="FechaCotizacion" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbDetalleCotizacion">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbDetalleCotizacion">
-              <MappingFragment StoreEntitySet="tbDetalleCotizacion">
-                <ScalarProperty Name="DetalleCotizacionID" ColumnName="DetalleCotizacionID" />
-                <ScalarProperty Name="CotizacionID" ColumnName="CotizacionID" />
-                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
-                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
-                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbDetalleOrdenCompra">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbDetalleOrdenCompra">
-              <MappingFragment StoreEntitySet="tbDetalleOrdenCompra">
-                <ScalarProperty Name="DetalleOrdenCompraID" ColumnName="DetalleOrdenCompraID" />
-                <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
-                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
-                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="PrecioCompra" ColumnName="PrecioCompra" />
-                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbEmpleados">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbEmpleados">
-              <MappingFragment StoreEntitySet="tbEmpleados">
-                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
-                <ScalarProperty Name="Correo" ColumnName="Correo" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbOrdenesCompra">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbOrdenesCompra">
-              <MappingFragment StoreEntitySet="tbOrdenesCompra">
-                <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
-                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
-                <ScalarProperty Name="FechaOrden" ColumnName="FechaOrden" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="EstadoRecepcion" ColumnName="EstadoRecepcion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbPerfil">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbPerfil">
-              <MappingFragment StoreEntitySet="tbPerfil">
-                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbProductos">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbProductos">
-              <MappingFragment StoreEntitySet="tbProductos">
-                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
-                <ScalarProperty Name="Precio" ColumnName="Precio" />
-                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
-                <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
-                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbProveedores">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbProveedores">
-              <MappingFragment StoreEntitySet="tbProveedores">
-                <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
-                <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
-                <ScalarProperty Name="Contacto" ColumnName="Contacto" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbUsuario">
-            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbUsuario">
-              <MappingFragment StoreEntitySet="tbUsuario">
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
-                <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DATABASE_PYEModelStoreContainer" CdmEntityContainer="DATABASE_PYEEntities">
+    <EntitySetMapping Name="tbCategorias">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbCategorias)">
+        <MappingFragment StoreEntitySet="tbCategorias">
+          <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbClientes">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbClientes)">
+        <MappingFragment StoreEntitySet="tbClientes">
+          <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+          <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbCotizaciones">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbCotizaciones)">
+        <MappingFragment StoreEntitySet="tbCotizaciones">
+          <ScalarProperty Name="CotizacionID" ColumnName="CotizacionID" />
+          <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+          <ScalarProperty Name="FechaCotizacion" ColumnName="FechaCotizacion" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbDetalleCotizacion">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbDetalleCotizacion)">
+        <MappingFragment StoreEntitySet="tbDetalleCotizacion">
+          <ScalarProperty Name="DetalleCotizacionID" ColumnName="DetalleCotizacionID" />
+          <ScalarProperty Name="CotizacionID" ColumnName="CotizacionID" />
+          <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+          <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
+          <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbDetalleOrdenCompra">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbDetalleOrdenCompra)">
+        <MappingFragment StoreEntitySet="tbDetalleOrdenCompra">
+          <ScalarProperty Name="DetalleOrdenCompraID" ColumnName="DetalleOrdenCompraID" />
+          <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
+          <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+          <ScalarProperty Name="PrecioCompra" ColumnName="PrecioCompra" />
+          <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbEmpleados">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbEmpleados)">
+        <MappingFragment StoreEntitySet="tbEmpleados">
+          <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+          <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbOrdenesCompra">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbOrdenesCompra)">
+        <MappingFragment StoreEntitySet="tbOrdenesCompra">
+          <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
+          <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+          <ScalarProperty Name="FechaOrden" ColumnName="FechaOrden" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="EstadoRecepcion" ColumnName="EstadoRecepcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbPerfil">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbPerfil)">
+        <MappingFragment StoreEntitySet="tbPerfil">
+          <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProductos">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbProductos)">
+        <MappingFragment StoreEntitySet="tbProductos">
+          <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="Precio" ColumnName="Precio" />
+          <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+          <ScalarProperty Name="CategoriaID" ColumnName="CategoriaID" />
+          <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbProveedores">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbProveedores)">
+        <MappingFragment StoreEntitySet="tbProveedores">
+          <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+          <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
+          <ScalarProperty Name="Contacto" ColumnName="Contacto" />
+          <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+          <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+          <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+          <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbUsuario">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbUsuario)">
+        <MappingFragment StoreEntitySet="tbUsuario">
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+          <ScalarProperty Name="Identificacion" ColumnName="Identificacion" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
+          <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbFacturasCompra">
+      <EntityTypeMapping TypeName="IsTypeOf(DATABASE_PYEModel.tbFacturasCompra)">
+        <MappingFragment StoreEntitySet="tbFacturasCompra">
+          <ScalarProperty Name="FacturaCompraID" ColumnName="FacturaCompraID" />
+          <ScalarProperty Name="OrdenCompraID" ColumnName="OrdenCompraID" />
+          <ScalarProperty Name="ProveedorID" ColumnName="ProveedorID" />
+          <ScalarProperty Name="FechaFactura" ColumnName="FechaFactura" />
+          <ScalarProperty Name="FechaVencimiento" ColumnName="FechaVencimiento" />
+          <ScalarProperty Name="MontoTotal" ColumnName="MontoTotal" />
+          <ScalarProperty Name="MontoPagado" ColumnName="MontoPagado" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CrearUsuarios" FunctionName="DATABASE_PYEModel.Store.CrearUsuarios" />
           <FunctionImportMapping FunctionImportName="LoginUsuario" FunctionName="DATABASE_PYEModel.Store.LoginUsuario" />
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+          <EntitySetMapping Name="tbCompras">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbCompras">
+              <MappingFragment StoreEntitySet="tbCompras">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="FechaCompra" ColumnName="FechaCompra" />
+                <ScalarProperty Name="CompraID" ColumnName="CompraID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbDetalleCompra">
+            <EntityTypeMapping TypeName="DATABASE_PYEModel.tbDetalleCompra">
+              <MappingFragment StoreEntitySet="tbDetalleCompra">
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="ProductoID" ColumnName="ProductoID" />
+                <ScalarProperty Name="CompraID" ColumnName="CompraID" />
+                <ScalarProperty Name="DetalleCompraID" ColumnName="DetalleCompraID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -741,7 +1020,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>

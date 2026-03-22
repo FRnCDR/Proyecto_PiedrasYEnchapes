@@ -12,24 +12,22 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbUsuario
+    public partial class tbCompras
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbUsuario()
+        public tbCompras()
         {
-            this.tbCompras = new HashSet<tbCompras>();
+            this.tbDetalleCompra = new HashSet<tbDetalleCompra>();
         }
     
+        public int CompraID { get; set; }
+        public System.DateTime FechaCompra { get; set; }
+        public decimal Total { get; set; }
+        public string Estado { get; set; }
         public int IdUsuario { get; set; }
-        public string Identificacion { get; set; }
-        public string Nombre { get; set; }
-        public string CorreoElectronico { get; set; }
-        public string Contrasenna { get; set; }
-        public bool Estado { get; set; }
-        public int IdPerfil { get; set; }
     
-        public virtual tbPerfil tbPerfil { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbCompras> tbCompras { get; set; }
+        public virtual ICollection<tbDetalleCompra> tbDetalleCompra { get; set; }
+        public virtual tbUsuario tbUsuario { get; set; }
     }
 }

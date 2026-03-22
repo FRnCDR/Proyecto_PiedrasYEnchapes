@@ -18,6 +18,7 @@ namespace WebApplication1.EF
         public tbOrdenesCompra()
         {
             this.tbDetalleOrdenCompra = new HashSet<tbDetalleOrdenCompra>();
+            this.tbFacturasCompra = new HashSet<tbFacturasCompra>();
         }
     
         public int OrdenCompraID { get; set; }
@@ -29,5 +30,7 @@ namespace WebApplication1.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbFacturasCompra> tbFacturasCompra { get; set; }
     }
 }

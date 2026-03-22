@@ -19,6 +19,7 @@ namespace WebApplication1.EF
         {
             this.tbDetalleCotizacion = new HashSet<tbDetalleCotizacion>();
             this.tbDetalleOrdenCompra = new HashSet<tbDetalleOrdenCompra>();
+            this.tbDetalleCompra = new HashSet<tbDetalleCompra>();
         }
     
         public int ProductoID { get; set; }
@@ -37,5 +38,7 @@ namespace WebApplication1.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
         public virtual tbProveedores tbProveedores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDetalleCompra> tbDetalleCompra { get; set; }
     }
 }

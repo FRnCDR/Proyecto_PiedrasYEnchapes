@@ -9,6 +9,21 @@
         : Url.Content("~/StaticFiles/images/no-image.png");
 }
 
+<style>
+    .btn-disabled {
+        background: #d1d5db !important;
+        border: 1px solid #d1d5db !important;
+        color: #6b7280 !important;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+        .btn-disabled:hover {
+            background: #d1d5db !important;
+            transform: none !important;
+        }
+</style>
+
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
@@ -75,10 +90,56 @@
                         </div>
 
                         <div class="detalle-botones">
+                            <div class="detalle-botones">
+
+                                @if (Model.Estado && Model.Stock > 0)
+                                {
+                                    using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("productoId", Model.ProductoID)
+                                        @Html.Hidden("cantidad", 1)
+
+                                        <button type="submit" class="btn-detalle-principal">
+                                            <i class="fa fa-shopping-cart"></i> Agregar al carrito
+                                        </button>
+                                    }
+                                }
+
+                                // Boton para agregar al carrito solo si el producto está activo y tiene stock disponible
+
+
+                                // Botón deshabilitado para productos agotados pero activos
+
+                                else if (Model.Estado && Model.Stock == 0)
+                                {
+                                <button class="btn-detalle-principal btn-disabled">
+                                    <i class="fa fa-exclamation-circle"></i> Producto agotado
+                                </button>
+                                }
+
+                                // Botón no disponible para productos inactivos
+                                else
+                                {
+                                <button class="btn-detalle-principal btn-disabled">
+                                    <i class="fa fa-times-circle"></i> No disponible
+                                </button>
+                                }
+
+                                <a href="@Url.Action("VerProductos", "Productos")" class="btn-detalle-secundario">
+                                    Seguir viendo productos
+                                </a>
+
+                                <a href="@Url.Action("Index", "Home")" class="btn-detalle-secundario">
+                                    Ir al inicio
+                                </a>
+
+                            </div>
+
                             <a href="@Url.Action("VerProductos", "Productos")" class="btn-detalle-secundario">
                                 Seguir viendo productos
                             </a>
-                            <a href="@Url.Action("Index", "Home")" class="btn-detalle-principal">
+
+                            <a href="@Url.Action("Index", "Home")" class="btn-detalle-secundario">
                                 Ir al inicio
                             </a>
                         </div>

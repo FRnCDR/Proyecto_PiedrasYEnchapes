@@ -10,7 +10,6 @@
     var valorInventario = Model != null ? Model.Sum(p => p.Stock * p.Precio) : 0;
 }
 
-<!-- HERO GENERAL -->
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
@@ -159,6 +158,22 @@
         font-weight: 600;
     }
 
+    .inventory-filtros {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+        .inventory-filtros input,
+        .inventory-filtros select {
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            padding: 8px 14px;
+            font-size: 14px;
+            background: #fff;
+        }
+
     .inventory-card {
         background: #fff;
         border-radius: 16px;
@@ -192,23 +207,46 @@
         font-size: 14px;
     }
 
-    .dataTables_wrapper .dataTables_filter input {
-        border-radius: 999px;
-        border: 1px solid #d1d5db;
-        padding: 4px 10px;
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 15px;
+        text-align: center;
     }
 
-    .dataTables_wrapper .dataTables_paginate .paginate_button {
-        border-radius: 999px !important;
-        padding: 4px 9px;
-        margin: 0 2px;
-    }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: #facc15 !important;
-            border-color: #facc15 !important;
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            background: #f3f4f6 !important;
+            border: none !important;
+            border-radius: 999px !important;
+            padding: 6px 14px !important;
+            margin: 0 4px;
+            font-size: 14px;
+            font-weight: 600;
             color: #111827 !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease-in-out;
         }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background: #111827 !important;
+                color: #fff !important;
+                transform: translateY(-1px);
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background: #facc15 !important;
+                color: #111827 !important;
+                font-weight: 700;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+                background: #e5e7eb !important;
+                color: #9ca3af !important;
+                cursor: not-allowed !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+                font-weight: 700;
+            }
 
     .stock-bajo {
         background: #fef3c7;
@@ -245,6 +283,61 @@
         font-weight: 700;
         display: inline-block;
     }
+
+    .actions-cell {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-action-table {
+        min-width: 95px;
+        height: 36px;
+        border: none;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        padding: 0 14px;
+        color: #fff;
+    }
+
+        .btn-action-table:hover {
+            transform: translateY(-1px);
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .btn-action-edit {
+        background: #f59e0b;
+    }
+
+        .btn-action-edit:hover {
+            background: #d97706;
+        }
+
+    .btn-action-disable {
+        background: #dc2626;
+    }
+
+        .btn-action-disable:hover {
+            background: #b91c1c;
+        }
+
+    .btn-action-enable {
+        background: #16a34a;
+    }
+
+        .btn-action-enable:hover {
+            background: #15803d;
+        }
 
     @@media (max-width: 992px) {
         .dashboard-grid {
@@ -323,10 +416,26 @@
             </div>
         </div>
 
+        <div class="inventory-filtros">
+            <input type="text" id="filtroBusquedaProducto" placeholder="Buscar nombre, descripción o proveedor..." />
+
+            <select id="filtroEstadoProducto">
+                <option value="">Todos los estados</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+
+            <select id="filtroStockProducto">
+                <option value="">Todo el stock</option>
+                <option value="StockBajo">Stock bajo</option>
+                <option value="StockNormal">Stock normal</option>
+            </select>
+        </div>
+
         <div class="inventory-card">
             <h3 class="inventory-card-title">Listado de productos</h3>
 
-            <div class="table-responsive">
+            <div class="table-responsive" style="overflow: visible;">
                 <table id="tablaInventario" class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
@@ -348,7 +457,7 @@
                                 <td>@producto.Nombre</td>
                                 <td>@producto.Descripcion</td>
 
-                                <td>
+                                <td data-stock="@producto.Stock">
                                     @if (producto.Stock <= 5)
                                     {
                                         <span class="stock-bajo">@producto.Stock</span>
@@ -359,7 +468,9 @@
                                     }
                                 </td>
 
-                                <td>₡ @producto.Precio.ToString("N2")</td>
+                                <td data-precio="@producto.Precio.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                    ₡ @producto.Precio.ToString("N2")
+                                </td>
 
                                 <td>
                                     @if (!string.IsNullOrEmpty(producto.Imagen))
@@ -373,7 +484,6 @@
                                 </td>
 
                                 <td>@producto.CategoriaID</td>
-
                                 <td>@producto.NombreEmpresa</td>
 
                                 <td>
@@ -388,29 +498,31 @@
                                 </td>
 
                                 <td>
-                                    <a href="@Url.Action("ActualizarProducto", "Inventario", new { q = producto.ProductoID })"
-                                       class="btn btn-sm btn-warning">
-                                        Editar
-                                    </a>
+                                    <div class="actions-cell">
+                                        <a href="@Url.Action("ActualizarProducto", "Inventario", new { q = producto.ProductoID })"
+                                           class="btn-action-table btn-action-edit">
+                                            Editar
+                                        </a>
 
-                                    @using (Html.BeginForm("CambiarEstadoProducto", "Inventario", FormMethod.Post, new { style = "display:inline;" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("q", producto.ProductoID)
+                                        @using (Html.BeginForm("CambiarEstadoProducto", "Inventario", FormMethod.Post, new { style = "display:inline;" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.Hidden("q", producto.ProductoID)
 
-                                        if (producto.Estado)
-                                        {
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                Desactivar
-                                            </button>
+                                            if (producto.Estado)
+                                            {
+                                                <button type="submit" class="btn-action-table btn-action-disable">
+                                                    Desactivar
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn-action-table btn-action-enable">
+                                                    Activar
+                                                </button>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <button type="submit" class="btn btn-sm btn-success">
-                                                Activar
-                                            </button>
-                                        }
-                                    }
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -427,15 +539,105 @@
 
     <script>
         $(document).ready(function () {
-            $('#tablaInventario').DataTable({
+
+            if (!$('#tablaInventario').length) {
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable('#tablaInventario')) {
+                return;
+            }
+
+            var table = $('#tablaInventario').DataTable({
                 language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+                    paginate: {
+                        previous: "← Anterior",
+                        next: "Siguiente →"
+                    }
                 },
-                pageLength: 10,
+                pageLength: 5,
                 order: [[0, 'asc']],
                 columnDefs: [
                     { orderable: false, targets: [4, 8] }
-                ]
+                ],
+                dom: 't<"bottom"ip>'
+            });
+
+            function actualizarDashboard() {
+                let total = 0;
+                let stock = 0;
+                let stockBajo = 0;
+                let valor = 0;
+
+                table.rows({ search: 'applied' }).every(function () {
+                    let fila = $(this.node());
+                    let stockFila = parseInt(fila.find('td:eq(2)').attr('data-stock')) || 0;
+                    let precioFila = parseFloat(fila.find('td:eq(3)').attr('data-precio')) || 0;
+
+                    total++;
+                    stock += stockFila;
+                    if (stockFila <= 5) stockBajo++;
+                    valor += (stockFila * precioFila);
+                });
+
+                $(".card-total .dashboard-value").text(total);
+                $(".card-stock .dashboard-value").text(stock);
+                $(".card-low .dashboard-value").text(stockBajo);
+                $(".card-value .dashboard-value").text(
+                    "₡ " + valor.toLocaleString('es-CR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })
+                );
+            }
+
+            actualizarDashboard();
+
+            table.on('draw', function () {
+                actualizarDashboard();
+            });
+
+            $('#filtroBusquedaProducto').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+
+            $('#filtroEstadoProducto').on('change', function () {
+                table.column(7).search(this.value).draw();
+            });
+
+            $('#filtroStockProducto').on('change', function () {
+                var valor = $(this).val();
+
+                $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(function (fn) {
+                    return fn.name !== "filtroStockProductoFn";
+                });
+
+                if (valor !== "") {
+                    var filtroStockProductoFn = function (settings, data, dataIndex) {
+                        if (settings.nTable.id !== 'tablaInventario') {
+                            return true;
+                        }
+
+                        let fila = $(table.row(dataIndex).node());
+                        let stock = parseInt(fila.find('td:eq(2)').attr('data-stock')) || 0;
+
+                        if (valor === "StockBajo") {
+                            return stock <= 5;
+                        }
+
+                        if (valor === "StockNormal") {
+                            return stock > 5;
+                        }
+
+                        return true;
+                    };
+
+                    filtroStockProductoFn.name = "filtroStockProductoFn";
+                    $.fn.dataTable.ext.search.push(filtroStockProductoFn);
+                }
+
+                table.draw();
             });
         });
     </script>

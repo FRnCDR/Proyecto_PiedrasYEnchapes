@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9516f06ca30f44388646523b4a46656b" Name="Diagram1">
+      <Diagram DiagramId="9516f06ca30f44388646523b4a46656b" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbCategorias" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbClientes" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DATABASE_PYEModel.tbCotizaciones" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
@@ -24,6 +24,14 @@
         <AssociationConnector Association="DATABASE_PYEModel.FK__tbDetalle__Produ__5DCAEF64" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Usuario_Perfil" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_tbProductos_tbProveedores" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbFacturasCompra" Width="1.5" PointX="8.25" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbFacturasCompra_OrdenCompra" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbFacturasCompra_Proveedor" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbCompras" Width="1.5" PointX="8" PointY="13.125" />
+        <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleCompra" Width="1.5" PointX="10.25" PointY="9.125" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCompra_tbCompras" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCompra_tbProductos" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbCompras_tbUsuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

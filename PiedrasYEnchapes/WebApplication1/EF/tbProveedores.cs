@@ -18,6 +18,7 @@ namespace WebApplication1.EF
         public tbProveedores()
         {
             this.tbProductos = new HashSet<tbProductos>();
+            this.tbFacturasCompra = new HashSet<tbFacturasCompra>();
         }
     
         public int ProveedorID { get; set; }
@@ -32,5 +33,7 @@ namespace WebApplication1.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbProductos> tbProductos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbFacturasCompra> tbFacturasCompra { get; set; }
     }
 }

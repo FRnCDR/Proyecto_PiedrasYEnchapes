@@ -126,6 +126,32 @@
                                     <p class="product-desc">@item.Descripcion</p>
 
                                     <div class="product-actions">
+
+                                        @if (item.Estado && item.Stock > 0)
+                                        {
+                                            using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post))
+                                            {
+                                                @Html.Hidden("productoId", item.ProductoID)
+                                                @Html.Hidden("cantidad", 1)
+
+                                                <button type="submit" class="btn product-btn">
+                                                    <i class="fa fa-shopping-cart"></i> Agregar
+                                                </button>
+                                            }
+                                        }
+                                        else if (item.Estado && item.Stock == 0)
+                                        {
+                                            <button class="btn product-btn" disabled style="background:#ccc; cursor:not-allowed;">
+                                                Agotado
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn product-btn" disabled style="background:#999; cursor:not-allowed;">
+                                                No disponible
+                                            </button>
+                                        }
+
                                         <a href="@Url.Action("CrearCotizacion", "Cotizacion")" class="btn product-btn">
                                             Cotizar
                                         </a>
@@ -133,6 +159,7 @@
                                         <a href="@Url.Action("VerProductos", "Productos")" class="product-icon" title="Ver catálogo">
                                             <i class="fa fa-eye"></i>
                                         </a>
+
                                     </div>
                                 </div>
                             </div>

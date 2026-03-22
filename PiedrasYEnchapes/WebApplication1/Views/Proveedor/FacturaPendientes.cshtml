@@ -1,0 +1,62 @@
+﻿@model List<WebApplication1.Models.FacturaCompra>
+
+@{
+    ViewBag.Title = "Facturas Pendientes";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+<div style="min-height: 70vh; padding: 20px;">
+
+    <h2 style="margin-bottom: 20px;">Facturas Pendientes</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            Este proveedor no tiene facturas pendientes.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead style="background: #111827; color: white;">
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Fecha</th>
+                        <th>Vencimiento</th>
+                        <th>Monto</th>
+                        <th>Pagado</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var f in Model)
+                    {
+                        <tr>
+                            <td>@f.NombreProveedor</td>
+                            <td>@f.FechaFactura.ToString("dd/MM/yyyy")</td>
+                            <td>@f.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                            <td>₡ @f.MontoTotal.ToString("N2")</td>
+                            <td>₡ @f.MontoPagado.ToString("N2")</td>
+                            <td>
+                                @if (f.Estado == "Pendiente")
+                                {
+                                    <span style="background:#facc15; color:#111827; padding:5px 10px; border-radius:999px; font-weight:600;">
+                                        Pendiente
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="background:#16a34a; color:white; padding:5px 10px; border-radius:999px; font-weight:600;">
+                                        Pagada
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>

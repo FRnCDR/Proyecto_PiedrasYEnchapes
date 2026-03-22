@@ -235,5 +235,68 @@ namespace WebApplication1.Controllers
                 return resultado;
             }
         }
+
+        public ActionResult HistorialCompras()
+        {
+            if (Session["IdUsuario"] == null)
+            {
+                return RedirectToAction("Login", "Usuario");
+            }
+
+            int idUsuario = Convert.ToInt32(Session["IdUsuario"]);
+
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var historial = context.tbCompras
+                    .Where(c => c.IdUsuario == idUsuario)
+                    .OrderByDescending(c => c.FechaCompra)
+                    .Select(c => new HistorialCompra
+                    {
+                        CompraID = c.CompraID,
+                        FechaCompra = c.FechaCompra,
+                        Total = c.Total,
+                        Estado = c.Estado
+                    })
+                    .ToList();
+
+                return View(historial);
+            }
+        }
+
+        public ActionResult DetalleCompra(int id)
+        {
+            if (Session["IdUsuario"] == null)
+            {
+                return RedirectToAction("Login", "Usuario");
+            }
+
+            int idUsuario = Convert.ToInt32(Session["IdUsuario"]);
+
+            using (var context = new DATABASE_PYEEntities())
+            {
+                bool compraValida = context.tbCompras.Any(c => c.CompraID == id && c.IdUsuario == idUsuario);
+
+                if (!compraValida)
+                {
+                    return RedirectToAction("HistorialCompras");
+                }
+
+                var detalle = context.tbDetalleCompra
+                    .Where(d => d.CompraID == id)
+                    .Select(d => new DetalleCompraModel
+                    {
+                        DetalleCompraID = d.DetalleCompraID,
+                        NombreProducto = d.tbProductos.Nombre,
+                        Cantidad = d.Cantidad,
+                        PrecioUnitario = d.PrecioUnitario,
+                        Subtotal = d.Subtotal
+                    })
+                    .ToList();
+
+                ViewBag.CompraID = id;
+                return View(detalle);
+            }
+        }
+
     }
 }

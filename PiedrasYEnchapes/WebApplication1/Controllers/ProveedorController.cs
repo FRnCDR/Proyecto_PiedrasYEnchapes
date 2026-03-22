@@ -217,5 +217,50 @@ namespace WebApplication1.Controllers
                 return resultado;
             }
         }
+
+        public ActionResult FacturaPendientes(int proveedorId)
+        {
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var lista = context.tbFacturasCompra
+                    .Where(f => f.ProveedorID == proveedorId && f.Estado == "Pendiente")
+                    .Select(f => new FacturaCompra
+                    {
+                        FacturaCompraID = f.FacturaCompraID,
+                        FechaFactura = f.FechaFactura,
+                        FechaVencimiento = f.FechaVencimiento,
+                        MontoTotal = f.MontoTotal,
+                        MontoPagado = f.MontoPagado,
+                        Estado = f.Estado,
+                        NombreProveedor = f.tbProveedores.NombreEmpresa
+                    })
+                    .ToList();
+
+                return View(lista);
+            }
+        }
+
+        public ActionResult TodasLasFacturas()
+        {
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var lista = context.tbFacturasCompra
+                    .Select(f => new FacturaCompra
+                    {
+                        FacturaCompraID = f.FacturaCompraID,
+                        FechaFactura = f.FechaFactura,
+                        FechaVencimiento = f.FechaVencimiento,
+                        MontoTotal = f.MontoTotal,
+                        MontoPagado = f.MontoPagado,
+                        Estado = f.Estado,
+                        NombreProveedor = f.tbProveedores.NombreEmpresa
+                    })
+                    .OrderByDescending(f => f.FechaFactura)
+                    .ToList();
+
+                return View(lista);
+            }
+        }
+
     }
 }

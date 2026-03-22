@@ -55,7 +55,7 @@ namespace WebApplication1.Controllers
 
                     Session["UsuarioCorreo"] = usuario.CorreoElectronico;
                     Session["Nombre"] = usuarioDb != null ? usuarioDb.Nombre : "Usuario";
-
+                    Session["IdUsuario"] = usuarioDb.IdUsuario;
                     return RedirectToAction("Index", "Home");
                 }
 

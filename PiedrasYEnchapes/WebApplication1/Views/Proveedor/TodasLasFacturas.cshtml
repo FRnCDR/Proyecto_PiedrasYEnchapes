@@ -1,13 +1,13 @@
-﻿@model List<WebApplication1.Models.Proveedor>
+﻿@model List<WebApplication1.Models.FacturaCompra>
 
 @{
-    ViewBag.Title = "Proveedores";
+    ViewBag.Title = "Todas las Facturas";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 
-    var totalProveedores = Model != null ? Model.Count : 0;
-    var proveedoresActivos = Model != null ? Model.Count(p => p.Estado) : 0;
-    var proveedoresInactivos = Model != null ? Model.Count(p => !p.Estado) : 0;
-    var nacionales = Model != null ? Model.Count(p => p.Tipo == "Nacional") : 0;
+    var totalFacturas = Model != null ? Model.Count : 0;
+    var facturasPendientes = Model != null ? Model.Count(f => f.Estado == "Pendiente") : 0;
+    var facturasPagadas = Model != null ? Model.Count(f => f.Estado == "Pagada") : 0;
+    var montoTotal = Model != null ? Model.Sum(f => f.MontoTotal) : 0;
 }
 
 <div class="hero_general">
@@ -17,19 +17,19 @@
 </div>
 
 <style>
-    .provider-section {
+    .facturas-section {
         padding: 30px 0 40px;
         background: #f8fafc;
         min-height: 100vh;
     }
 
-    .provider-container {
+    .facturas-container {
         max-width: 1250px;
         margin: 0 auto;
         padding: 0 16px;
     }
 
-    .provider-head {
+    .facturas-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -38,26 +38,26 @@
         flex-wrap: wrap;
     }
 
-    .provider-title {
+    .facturas-title {
         margin: 0;
         font-size: 28px;
         font-weight: 700;
         color: #111827;
     }
 
-    .provider-subtitle {
+    .facturas-subtitle {
         margin: 5px 0 0;
         font-size: 14px;
         color: #6b7280;
     }
 
-    .provider-actions {
+    .facturas-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
     }
 
-    .btn-provider-primary {
+    .btn-facturas-primary {
         background: #111827;
         border: none;
         color: #fff;
@@ -67,12 +67,12 @@
         text-decoration: none;
     }
 
-        .btn-provider-primary:hover {
+        .btn-facturas-primary:hover {
             background: #000;
             color: #fff;
         }
 
-    .btn-provider-secondary {
+    .btn-facturas-secondary {
         background: #16a34a;
         border: none;
         color: #fff;
@@ -82,7 +82,7 @@
         text-decoration: none;
     }
 
-        .btn-provider-secondary:hover {
+        .btn-facturas-secondary:hover {
             background: #15803d;
             color: #fff;
         }
@@ -116,15 +116,15 @@
         background: #2563eb;
     }
 
-    .card-active::before {
+    .card-pendientes::before {
+        background: #f59e0b;
+    }
+
+    .card-pagadas::before {
         background: #16a34a;
     }
 
-    .card-inactive::before {
-        background: #dc2626;
-    }
-
-    .card-national::before {
+    .card-monto::before {
         background: #7c3aed;
     }
 
@@ -148,15 +148,15 @@
         color: #9ca3af;
     }
 
-    .provider-filtros {
+    .facturas-filtros {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         margin-bottom: 18px;
     }
 
-        .provider-filtros input,
-        .provider-filtros select {
+        .facturas-filtros input,
+        .facturas-filtros select {
             border-radius: 999px;
             border: 1px solid #d1d5db;
             padding: 8px 14px;
@@ -164,14 +164,14 @@
             background: #fff;
         }
 
-    .provider-card {
+    .facturas-card {
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         padding: 18px;
     }
 
-    .provider-card-title {
+    .facturas-card-title {
         font-size: 18px;
         font-weight: 700;
         color: #111827;
@@ -232,25 +232,16 @@
                 font-weight: 700;
             }
 
-    .estado-activo {
-        background: #28a745;
-        color: #fff;
-        padding: 6px 12px;
+    .estado-pendiente {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 5px 10px;
         border-radius: 999px;
         font-weight: 700;
         display: inline-block;
     }
 
-    .estado-inactivo {
-        background: #dc3545;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-weight: 700;
-        display: inline-block;
-    }
-
-    .tipo-nacional {
+    .estado-pagada {
         background: #dcfce7;
         color: #166534;
         padding: 5px 10px;
@@ -259,61 +250,15 @@
         display: inline-block;
     }
 
-    .tipo-internacional {
-        background: #dbeafe;
-        color: #1d4ed8;
-        padding: 5px 10px;
-        border-radius: 999px;
+    .monto-pendiente {
+        color: #b45309;
         font-weight: 700;
-        display: inline-block;
     }
 
-    .actions-cell {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
+    .monto-cubierto {
+        color: #166534;
+        font-weight: 700;
     }
-
-    .btn-action-table {
-        min-width: 90px;
-        height: 36px;
-        border: none;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 13px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: all 0.2s ease-in-out;
-        cursor: pointer;
-        padding: 0 14px;
-    }
-
-        .btn-action-table:hover {
-            transform: translateY(-1px);
-            color: #fff;
-        }
-
-    .btn-action-edit {
-        background: #f59e0b;
-        color: #fff;
-    }
-
-        .btn-action-edit:hover {
-            background: #d97706;
-        }
-
-    .btn-action-facturas {
-        background: #0ea5e9;
-        color: #fff;
-    }
-
-        .btn-action-facturas:hover {
-            background: #0284c7;
-        }
 
     @@media (max-width: 992px) {
         .dashboard-grid {
@@ -322,7 +267,7 @@
     }
 
     @@media (max-width: 768px) {
-        .provider-head {
+        .facturas-head {
             flex-direction: column;
             align-items: flex-start;
         }
@@ -331,29 +276,29 @@
             grid-template-columns: 1fr;
         }
 
-        .provider-card {
+        .facturas-card {
             padding: 12px;
         }
     }
 </style>
 
-<section class="provider-section">
-    <div class="provider-container">
+<section class="facturas-section">
+    <div class="facturas-container">
 
-        <div class="provider-head">
+        <div class="facturas-head">
             <div>
-                <h2 class="provider-title">Proveedores</h2>
-                <p class="provider-subtitle">
-                    Visualiza y administra el listado general de proveedores registrados en el sistema.
+                <h2 class="facturas-title">Todas las Facturas</h2>
+                <p class="facturas-subtitle">
+                    Visualiza y controla el historial general de facturas registradas con sus montos, fechas y estado.
                 </p>
             </div>
 
-            <div class="provider-actions">
-                <a href="@Url.Action("AgregarProveedor", "Proveedor")" class="btn btn-provider-primary">
-                    Agregar proveedor
+            <div class="facturas-actions">
+                <a href="@Url.Action("VerProveedores", "Proveedor")" class="btn btn-facturas-primary">
+                    Ver proveedores
                 </a>
 
-                <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")" class="btn btn-provider-secondary">
+                <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")" class="btn btn-facturas-secondary">
                     Ver órdenes
                 </a>
             </div>
@@ -361,65 +306,58 @@
 
         <div class="dashboard-grid">
             <div class="dashboard-card card-total">
-                <div class="dashboard-label">Total de proveedores</div>
-                <div class="dashboard-value">@totalProveedores</div>
-                <div class="dashboard-extra">Proveedores registrados en el sistema</div>
+                <div class="dashboard-label">Total de facturas</div>
+                <div class="dashboard-value">@totalFacturas</div>
+                <div class="dashboard-extra">Facturas registradas en el sistema</div>
             </div>
 
-            <div class="dashboard-card card-active">
-                <div class="dashboard-label">Activos</div>
-                <div class="dashboard-value">@proveedoresActivos</div>
-                <div class="dashboard-extra">Proveedores disponibles actualmente</div>
+            <div class="dashboard-card card-pendientes">
+                <div class="dashboard-label">Pendientes</div>
+                <div class="dashboard-value">@facturasPendientes</div>
+                <div class="dashboard-extra">Facturas con saldo pendiente</div>
             </div>
 
-            <div class="dashboard-card card-inactive">
-                <div class="dashboard-label">Inactivos</div>
-                <div class="dashboard-value">@proveedoresInactivos</div>
-                <div class="dashboard-extra">Proveedores deshabilitados</div>
+            <div class="dashboard-card card-pagadas">
+                <div class="dashboard-label">Pagadas</div>
+                <div class="dashboard-value">@facturasPagadas</div>
+                <div class="dashboard-extra">Facturas canceladas completamente</div>
             </div>
 
-            <div class="dashboard-card card-national">
-                <div class="dashboard-label">Nacionales</div>
-                <div class="dashboard-value">@nacionales</div>
-                <div class="dashboard-extra">Proveedores tipo nacional</div>
+            <div class="dashboard-card card-monto">
+                <div class="dashboard-label">Monto total</div>
+                <div class="dashboard-value">₡ @montoTotal.ToString("N2", new System.Globalization.CultureInfo("es-CR"))</div>
+                <div class="dashboard-extra">Suma total facturada</div>
             </div>
         </div>
 
-        <div class="provider-filtros">
-            <input type="text" id="filtroBusquedaProveedor" placeholder="Buscar nombre, contacto o correo..." />
+        <div class="facturas-filtros">
+            <input type="text" id="filtroProveedor" placeholder="Buscar proveedor..." />
 
-            <select id="filtroEstadoProveedor">
+            <select id="filtroEstado">
                 <option value="">Todos los estados</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Pagada">Pagada</option>
             </select>
 
-            <select id="filtroTipoProveedor">
-                <option value="">Todos los tipos</option>
-                <option value="Nacional">Nacional</option>
-                <option value="Internacional">Internacional</option>
-            </select>
-
-            <input type="date" id="filtroFechaDesdeProveedor" />
-            <input type="date" id="filtroFechaHastaProveedor" />
+            <input type="date" id="filtroFechaDesde" />
+            <input type="date" id="filtroFechaHasta" />
         </div>
 
-        <div class="provider-card">
-            <h3 class="provider-card-title">Listado de proveedores</h3>
+        <div class="facturas-card">
+            <h3 class="facturas-card-title">Listado de facturas</h3>
 
             <div class="table-responsive" style="overflow: visible;">
-                <table id="tablaProveedores" class="table table-striped table-hover align-middle">
+                <table id="tablaFacturas" class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Contacto</th>
-                            <th>Teléfono</th>
-                            <th>Email</th>
-                            <th>Dirección</th>
-                            <th>Tipo</th>
-                            <th>Fecha Registro</th>
+                            <th>ID</th>
+                            <th>Proveedor</th>
+                            <th>Fecha Factura</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Monto Total</th>
+                            <th>Monto Pagado</th>
+                            <th>Saldo Pendiente</th>
                             <th>Estado</th>
-                            <th style="width: 120px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -427,45 +365,42 @@
                         {
                             foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>@item.NombreEmpresa</td>
-                                    <td>@item.Contacto</td>
-                                    <td>@item.Telefono</td>
-                                    <td>@item.CorreoElectronico</td>
-                                    <td>@item.Direccion</td>
-                                    <td>
-                                        @if (item.Tipo == "Nacional")
-                                        {
-                                            <span class="tipo-nacional">Nacional</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="tipo-internacional">@item.Tipo</span>
-                                        }
-                                    </td>
-                                    <td>@item.FechaRegistro.ToString("dd/MM/yyyy")</td>
-                                    <td>
-                                        @if (item.Estado)
-                                        {
-                                            <span class="estado-activo">Activo</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="estado-inactivo">Inactivo</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <div class="actions-cell">
-                                            <a href="@Url.Action("ActualizarProveedor", "Proveedor", new { id = item.ProveedorID })"
-                                               class="btn-action-table btn-action-edit">
-                                                Editar
-                                            </a>
+                                var saldoPendiente = item.MontoTotal - item.MontoPagado;
 
-                                            <a href="@Url.Action("FacturaPendientes", "Proveedor", new { proveedorId = item.ProveedorID })"
-                                               class="btn-action-table btn-action-facturas">
-                                                Facturas
-                                            </a>
-                                        </div>
+                                <tr>
+                                    <td>@item.FacturaCompraID</td>
+                                    <td>@item.NombreProveedor</td>
+                                    <td>@item.FechaFactura.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+
+                                    <td data-valor="@item.MontoTotal.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                        ₡ @item.MontoTotal.ToString("N2", new System.Globalization.CultureInfo("es-CR"))
+                                    </td>
+
+                                    <td data-valor="@item.MontoPagado.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                        ₡ @item.MontoPagado.ToString("N2", new System.Globalization.CultureInfo("es-CR"))
+                                    </td>
+
+                                    <td data-valor="@saldoPendiente.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                        @if (saldoPendiente > 0)
+                                        {
+                                            <span class="monto-pendiente">₡ @saldoPendiente.ToString("N2", new System.Globalization.CultureInfo("es-CR"))</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="monto-cubierto">₡ 0,00</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (item.Estado == "Pagada")
+                                        {
+                                            <span class="estado-pagada">Pagada</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="estado-pendiente">Pendiente</span>
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -473,7 +408,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="9">No hay proveedores registrados.</td>
+                                <td colspan="8">No hay facturas registradas.</td>
                             </tr>
                         }
                     </tbody>
@@ -490,11 +425,11 @@
     <script>
         $(document).ready(function () {
 
-            if ($.fn.DataTable.isDataTable('#tablaProveedores')) {
+            if ($.fn.DataTable.isDataTable('#tablaFacturas')) {
                 return;
             }
 
-            var table = $('#tablaProveedores').DataTable({
+            var table = $('#tablaFacturas').DataTable({
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
                     paginate: {
@@ -503,36 +438,40 @@
                     }
                 },
                 pageLength: 5,
-                order: [[0, 'asc']],
-                columnDefs: [
-                    { orderable: false, targets: [8] }
-                ],
+                order: [[0, 'desc']],
                 dom: 't<"bottom"ip>'
             });
 
             function actualizarDashboard() {
                 let total = 0;
-                let activos = 0;
-                let inactivos = 0;
-                let nacionales = 0;
+                let pendientes = 0;
+                let pagadas = 0;
+                let monto = 0;
 
                 table.rows({ search: 'applied' }).every(function () {
                     let data = this.data();
+                    let fila = $(this.node());
 
-                    let tipo = data[5];
                     let estado = data[7];
+                    let montoValor = parseFloat(fila.find('td:eq(4)').attr('data-valor')) || 0;
 
                     total++;
 
-                    if (estado.includes("Activo")) activos++;
-                    if (estado.includes("Inactivo")) inactivos++;
-                    if (tipo.includes("Nacional")) nacionales++;
+                    if (estado.includes("Pendiente")) pendientes++;
+                    if (estado.includes("Pagada")) pagadas++;
+
+                    monto += montoValor;
                 });
 
                 $(".card-total .dashboard-value").text(total);
-                $(".card-active .dashboard-value").text(activos);
-                $(".card-inactive .dashboard-value").text(inactivos);
-                $(".card-national .dashboard-value").text(nacionales);
+                $(".card-pendientes .dashboard-value").text(pendientes);
+                $(".card-pagadas .dashboard-value").text(pagadas);
+                $(".card-monto .dashboard-value").text(
+                    "₡ " + monto.toLocaleString('es-CR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })
+                );
             }
 
             actualizarDashboard();
@@ -541,26 +480,22 @@
                 actualizarDashboard();
             });
 
-            $('#filtroBusquedaProveedor').on('keyup', function () {
-                table.search(this.value).draw();
+            $('#filtroProveedor').on('keyup', function () {
+                table.column(1).search(this.value).draw();
             });
 
-            $('#filtroEstadoProveedor').on('change', function () {
+            $('#filtroEstado').on('change', function () {
                 table.column(7).search(this.value).draw();
             });
 
-            $('#filtroTipoProveedor').on('change', function () {
-                table.column(5).search(this.value).draw();
-            });
-
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-                if (settings.nTable.id !== 'tablaProveedores') {
+                if (settings.nTable.id !== 'tablaFacturas') {
                     return true;
                 }
 
-                let fecha = data[6];
-                let desde = $('#filtroFechaDesdeProveedor').val();
-                let hasta = $('#filtroFechaHastaProveedor').val();
+                let fecha = data[2];
+                let desde = $('#filtroFechaDesde').val();
+                let hasta = $('#filtroFechaHasta').val();
 
                 if (!fecha) return true;
 
@@ -582,7 +517,7 @@
                 return true;
             });
 
-            $('#filtroFechaDesdeProveedor, #filtroFechaHastaProveedor').on('change', function () {
+            $('#filtroFechaDesde, #filtroFechaHasta').on('change', function () {
                 table.draw();
             });
         });

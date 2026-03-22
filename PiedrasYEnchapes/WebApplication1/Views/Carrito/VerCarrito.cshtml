@@ -1,172 +1,319 @@
-﻿@{
-    ViewBag.Title = "Carrito";
+﻿@model List<WebApplication1.Models.CarritoItem>
+
+@{
+    ViewBag.Title = "Carrito de Compras";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var total = Model != null ? Model.Sum(x => x.Subtotal) : 0;
+    var totalProductos = Model != null ? Model.Sum(x => x.Cantidad) : 0;
 }
 
-<link rel="stylesheet" href="~/StaticFiles/css/carrito-negro.css" />
-
-<div class="cart-page">
-
-    <!-- Header -->
-    <div class="cart-header">
-        <a class="cart-back" href="@Url.Action("VerProductos","Productos")" title="Volver">
-            <i class="fa fa-chevron-left"></i>
-        </a>
-
-        <div class="cart-title">
-            Carrito
-            <span class="cart-badge">3</span>
-        </div>
-
-        <a class="cart-trash" href="#" title="Vaciar carrito">
-            <i class="fa fa-trash-o"></i>
-        </a>
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
-
-    <div class="cart-grid">
-
-        <!-- Lista -->
-        <div class="cart-list">
-
-            <!-- Item 1 -->
-            <div class="cart-item">
-                <div class="cart-img">
-                    <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Producto" />
-                </div>
-
-                <div class="cart-info">
-                    <div class="cart-name">Piedra Decorativa Gris</div>
-                    <div class="cart-meta">SKU: PD-001 • 1m²</div>
-
-                    <div class="cart-bottom">
-                        <div class="cart-price">₡ 12,500</div>
-
-                        <div class="cart-qty">
-                            <button type="button" class="qty-btn" title="Menos">
-                                <i class="fa fa-minus"></i>
-                            </button>
-
-                            <input class="qty-input" type="text" value="1" />
-
-                            <button type="button" class="qty-btn" title="Más">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <a class="cart-remove" href="#" title="Eliminar">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="cart-item">
-                <div class="cart-img">
-                    <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Producto" />
-                </div>
-
-                <div class="cart-info">
-                    <div class="cart-name">Enchape Natural Beige</div>
-                    <div class="cart-meta">SKU: EN-014 • Caja</div>
-
-                    <div class="cart-bottom">
-                        <div class="cart-price">₡ 9,900</div>
-
-                        <div class="cart-qty">
-                            <button type="button" class="qty-btn">
-                                <i class="fa fa-minus"></i>
-                            </button>
-
-                            <input class="qty-input" type="text" value="2" />
-
-                            <button type="button" class="qty-btn">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <a class="cart-remove" href="#" title="Eliminar">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="cart-item">
-                <div class="cart-img">
-                    <img src="~/StaticFiles/images/logoPiedras.jpg" alt="Producto" />
-                </div>
-
-                <div class="cart-info">
-                    <div class="cart-name">Piedra Negra Premium</div>
-                    <div class="cart-meta">SKU: PN-300 • 1m²</div>
-
-                    <div class="cart-bottom">
-                        <div class="cart-price">₡ 15,000</div>
-
-                        <div class="cart-qty">
-                            <button type="button" class="qty-btn">
-                                <i class="fa fa-minus"></i>
-                            </button>
-
-                            <input class="qty-input" type="text" value="1" />
-
-                            <button type="button" class="qty-btn">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <a class="cart-remove" href="#" title="Eliminar">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-
-        </div>
-
-        <!-- Resumen -->
-        <div class="cart-summary">
-            <div class="summary-card">
-                <div class="summary-title">Resumen</div>
-
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <strong>₡ 47,300</strong>
-                </div>
-
-                <div class="summary-row">
-                    <span>Envío</span>
-                    <strong>₡ 0</strong>
-                </div>
-
-                <div class="summary-row">
-                    <span>Impuestos</span>
-                    <strong>₡ 0</strong>
-                </div>
-
-                <div class="summary-divider"></div>
-
-                <div class="summary-row summary-total">
-                    <span>Total</span>
-                    <strong>₡ 47,300</strong>
-                </div>
-
-                <a class="summary-btn" href="@Url.Action("Checkout","Carrito")">
-                    Continuar <span class="arrow">→</span>
-                </a>
-
-                <div class="summary-hint">
-                    Tip: Podés cotizar por WhatsApp si preferís una atención rápida.
-                </div>
-
-                <a class="summary-alt" href="#" title="Cotizar por WhatsApp">
-                    <i class="fa fa-whatsapp"></i> Cotizar por WhatsApp
-                </a>
-            </div>
-        </div>
-
-    </div>
-
 </div>
+
+<style>
+    .carrito-section {
+        padding: 30px 0 50px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .carrito-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .carrito-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+    }
+
+    .carrito-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .carrito-subtitle {
+        margin: 5px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .carrito-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 22px;
+    }
+
+    .carrito-card,
+    .resumen-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        padding: 20px;
+    }
+
+    .carrito-card-title,
+    .resumen-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 14px;
+    }
+
+    .carrito-vacio {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border: 1px solid #93c5fd;
+        border-radius: 12px;
+        padding: 16px;
+        font-weight: 600;
+    }
+
+    .carrito-item {
+        display: grid;
+        grid-template-columns: 90px 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+        .carrito-item:last-child {
+            border-bottom: none;
+        }
+
+    .carrito-img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+        background: #f9fafb;
+    }
+
+    .carrito-nombre {
+        font-size: 17px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 6px;
+    }
+
+    .carrito-meta {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 4px;
+    }
+
+    .carrito-subtotal {
+        font-size: 16px;
+        font-weight: 700;
+        color: #111827;
+        margin-top: 6px;
+    }
+
+    .carrito-acciones {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: 10px;
+    }
+
+    .btn-quitar {
+        background: #dc2626;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-quitar:hover {
+            background: #b91c1c;
+        }
+
+    .resumen-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #e5e7eb;
+        color: #374151;
+    }
+
+        .resumen-row.total {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            border-bottom: none;
+            padding-top: 16px;
+        }
+
+    .btn-comprar,
+    .btn-seguir {
+        width: 100%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 16px;
+        font-weight: 700;
+        text-decoration: none;
+        margin-top: 12px;
+    }
+
+    .btn-comprar {
+        background: #16a34a;
+        color: #fff;
+    }
+
+        .btn-comprar:hover {
+            background: #15803d;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .btn-seguir {
+        background: #111827;
+        color: #fff;
+    }
+
+        .btn-seguir:hover {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 900px) {
+        .carrito-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 640px) {
+        .carrito-item {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .carrito-acciones {
+            align-items: center;
+        }
+
+        .carrito-img {
+            margin: 0 auto;
+        }
+    }
+</style>
+
+<section class="carrito-section">
+    <div class="carrito-container">
+
+        <div class="carrito-head">
+            <div>
+                <h2 class="carrito-title">Carrito de compras</h2>
+                <p class="carrito-subtitle">
+                    Revisa tus productos antes de confirmar la compra.
+                </p>
+            </div>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="carrito-card">
+                <div class="carrito-vacio">
+                    Tu carrito está vacío.
+                </div>
+
+                <a href="@Url.Action("VerProductos", "Productos")" class="btn-seguir">
+                    Seguir comprando
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="carrito-grid">
+                <div class="carrito-card">
+                    <h3 class="carrito-card-title">Productos agregados</h3>
+
+                    @foreach (var item in Model)
+                    {
+                        var rutaImagen = !string.IsNullOrEmpty(item.Imagen)
+                            ? Url.Content("~/StaticFiles/images/" + item.Imagen)
+                            : Url.Content("~/StaticFiles/images/no-image.png");
+
+                        <div class="carrito-item">
+                            <img src="@rutaImagen" alt="@item.Nombre" class="carrito-img" />
+
+                            <div>
+                                <div class="carrito-nombre">@item.Nombre</div>
+                                <div class="carrito-meta">Precio unitario: ₡ @item.Precio.ToString("N2")</div>
+                                <div class="carrito-meta">Cantidad: @item.Cantidad</div>
+                                <div class="carrito-subtotal">Subtotal: ₡ @item.Subtotal.ToString("N2")</div>
+                            </div>
+
+                            <div class="carrito-acciones">
+                                @using (Html.BeginForm("QuitarDelCarrito", "Carrito", FormMethod.Post))
+                                {
+                                    @Html.Hidden("productoId", item.ProductoID)
+                                    <button type="submit" class="btn-quitar">
+                                        Quitar
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="resumen-card">
+                    <h3 class="resumen-title">Resumen</h3>
+
+                    <div class="resumen-row">
+                        <span>Productos</span>
+                        <span>@totalProductos</span>
+                    </div>
+
+                    <div class="resumen-row">
+                        <span>Subtotal</span>
+                        <span>₡ @total.ToString("N2")</span>
+                    </div>
+
+                    <div class="resumen-row total">
+                        <span>Total</span>
+                        <span>₡ @total.ToString("N2")</span>
+                    </div>
+
+                    @using (Html.BeginForm("ConfirmarCompra", "Carrito", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn-comprar"
+                                onclick="return confirm('¿Confirmar compra?')">
+                            <i class="fa fa-shopping-cart me-1"></i>
+                            Comprar ahora
+                        </button>
+                    }
+
+                    <a href="@Url.Action("VerProductos", "Productos")" class="btn-seguir">
+                        Seguir comprando
+                    </a>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>

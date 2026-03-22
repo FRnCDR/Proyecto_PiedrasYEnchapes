@@ -1,13 +1,13 @@
-﻿@model List<WebApplication1.Models.Proveedor>
+﻿@model List<WebApplication1.Models.HistorialCompra>
 
 @{
-    ViewBag.Title = "Proveedores";
+    ViewBag.Title = "Historial de Compras";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 
-    var totalProveedores = Model != null ? Model.Count : 0;
-    var proveedoresActivos = Model != null ? Model.Count(p => p.Estado) : 0;
-    var proveedoresInactivos = Model != null ? Model.Count(p => !p.Estado) : 0;
-    var nacionales = Model != null ? Model.Count(p => p.Tipo == "Nacional") : 0;
+    var totalCompras = Model != null ? Model.Count : 0;
+    var comprasCompletadas = Model != null ? Model.Count(x => x.Estado == "Completada") : 0;
+    var comprasPendientes = Model != null ? Model.Count(x => x.Estado == "Pendiente") : 0;
+    var montoTotal = Model != null ? Model.Sum(x => x.Total) : 0;
 }
 
 <div class="hero_general">
@@ -17,19 +17,19 @@
 </div>
 
 <style>
-    .provider-section {
+    .historial-section {
         padding: 30px 0 40px;
         background: #f8fafc;
         min-height: 100vh;
     }
 
-    .provider-container {
+    .historial-container {
         max-width: 1250px;
         margin: 0 auto;
         padding: 0 16px;
     }
 
-    .provider-head {
+    .historial-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -38,26 +38,26 @@
         flex-wrap: wrap;
     }
 
-    .provider-title {
+    .historial-title {
         margin: 0;
         font-size: 28px;
         font-weight: 700;
         color: #111827;
     }
 
-    .provider-subtitle {
+    .historial-subtitle {
         margin: 5px 0 0;
         font-size: 14px;
         color: #6b7280;
     }
 
-    .provider-actions {
+    .historial-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
     }
 
-    .btn-provider-primary {
+    .btn-historial-primary {
         background: #111827;
         border: none;
         color: #fff;
@@ -67,12 +67,12 @@
         text-decoration: none;
     }
 
-        .btn-provider-primary:hover {
+        .btn-historial-primary:hover {
             background: #000;
             color: #fff;
         }
 
-    .btn-provider-secondary {
+    .btn-historial-secondary {
         background: #16a34a;
         border: none;
         color: #fff;
@@ -82,7 +82,7 @@
         text-decoration: none;
     }
 
-        .btn-provider-secondary:hover {
+        .btn-historial-secondary:hover {
             background: #15803d;
             color: #fff;
         }
@@ -116,15 +116,15 @@
         background: #2563eb;
     }
 
-    .card-active::before {
+    .card-completadas::before {
         background: #16a34a;
     }
 
-    .card-inactive::before {
-        background: #dc2626;
+    .card-pendientes::before {
+        background: #f59e0b;
     }
 
-    .card-national::before {
+    .card-monto::before {
         background: #7c3aed;
     }
 
@@ -148,15 +148,15 @@
         color: #9ca3af;
     }
 
-    .provider-filtros {
+    .historial-filtros {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
         margin-bottom: 18px;
     }
 
-        .provider-filtros input,
-        .provider-filtros select {
+        .historial-filtros input,
+        .historial-filtros select {
             border-radius: 999px;
             border: 1px solid #d1d5db;
             padding: 8px 14px;
@@ -164,14 +164,14 @@
             background: #fff;
         }
 
-    .provider-card {
+    .historial-card {
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         padding: 18px;
     }
 
-    .provider-card-title {
+    .historial-card-title {
         font-size: 18px;
         font-weight: 700;
         color: #111827;
@@ -232,37 +232,28 @@
                 font-weight: 700;
             }
 
-    .estado-activo {
-        background: #28a745;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-weight: 700;
-        display: inline-block;
-    }
-
-    .estado-inactivo {
-        background: #dc3545;
-        color: #fff;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-weight: 700;
-        display: inline-block;
-    }
-
-    .tipo-nacional {
+    .estado-completada {
         background: #dcfce7;
         color: #166534;
-        padding: 5px 10px;
+        padding: 6px 12px;
         border-radius: 999px;
         font-weight: 700;
         display: inline-block;
     }
 
-    .tipo-internacional {
-        background: #dbeafe;
-        color: #1d4ed8;
-        padding: 5px 10px;
+    .estado-pendiente {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 700;
+        display: inline-block;
+    }
+
+    .estado-cancelada {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 6px 12px;
         border-radius: 999px;
         font-weight: 700;
         display: inline-block;
@@ -277,7 +268,7 @@
     }
 
     .btn-action-table {
-        min-width: 90px;
+        min-width: 100px;
         height: 36px;
         border: none;
         border-radius: 999px;
@@ -290,30 +281,31 @@
         transition: all 0.2s ease-in-out;
         cursor: pointer;
         padding: 0 14px;
+        color: #fff;
     }
 
         .btn-action-table:hover {
             transform: translateY(-1px);
             color: #fff;
+            text-decoration: none;
         }
 
-    .btn-action-edit {
-        background: #f59e0b;
-        color: #fff;
+    .btn-action-detalle {
+        background: #2563eb;
     }
 
-        .btn-action-edit:hover {
-            background: #d97706;
+        .btn-action-detalle:hover {
+            background: #1d4ed8;
         }
 
-    .btn-action-facturas {
-        background: #0ea5e9;
-        color: #fff;
+    .historial-vacio {
+        background: #dbeafe;
+        color: #1d4ed8;
+        border: 1px solid #93c5fd;
+        border-radius: 12px;
+        padding: 16px;
+        font-weight: 600;
     }
-
-        .btn-action-facturas:hover {
-            background: #0284c7;
-        }
 
     @@media (max-width: 992px) {
         .dashboard-grid {
@@ -322,7 +314,7 @@
     }
 
     @@media (max-width: 768px) {
-        .provider-head {
+        .historial-head {
             flex-direction: column;
             align-items: flex-start;
         }
@@ -331,155 +323,134 @@
             grid-template-columns: 1fr;
         }
 
-        .provider-card {
+        .historial-card {
             padding: 12px;
         }
     }
 </style>
 
-<section class="provider-section">
-    <div class="provider-container">
+<section class="historial-section">
+    <div class="historial-container">
 
-        <div class="provider-head">
+        <div class="historial-head">
             <div>
-                <h2 class="provider-title">Proveedores</h2>
-                <p class="provider-subtitle">
-                    Visualiza y administra el listado general de proveedores registrados en el sistema.
+                <h2 class="historial-title">Historial de Compras</h2>
+                <p class="historial-subtitle">
+                    Visualiza y controla todas las compras realizadas dentro del sistema.
                 </p>
             </div>
 
-            <div class="provider-actions">
-                <a href="@Url.Action("AgregarProveedor", "Proveedor")" class="btn btn-provider-primary">
-                    Agregar proveedor
+            <div class="historial-actions">
+                <a href="@Url.Action("VerProductos", "Productos")" class="btn btn-historial-primary">
+                    Seguir comprando
                 </a>
 
-                <a href="@Url.Action("VerOrdenesCompra", "OrdenesCompra")" class="btn btn-provider-secondary">
-                    Ver órdenes
+                <a href="@Url.Action("VerCarrito", "Carrito")" class="btn btn-historial-secondary">
+                    Ver carrito
                 </a>
             </div>
         </div>
 
-        <div class="dashboard-grid">
-            <div class="dashboard-card card-total">
-                <div class="dashboard-label">Total de proveedores</div>
-                <div class="dashboard-value">@totalProveedores</div>
-                <div class="dashboard-extra">Proveedores registrados en el sistema</div>
+        @if (Model == null || !Model.Any())
+        {
+            <div class="historial-vacio">
+                No tienes compras registradas.
+            </div>
+        }
+        else
+        {
+            <div class="dashboard-grid">
+                <div class="dashboard-card card-total">
+                    <div class="dashboard-label">Total de compras</div>
+                    <div class="dashboard-value">@totalCompras</div>
+                    <div class="dashboard-extra">Compras registradas en el sistema</div>
+                </div>
+
+                <div class="dashboard-card card-completadas">
+                    <div class="dashboard-label">Completadas</div>
+                    <div class="dashboard-value">@comprasCompletadas</div>
+                    <div class="dashboard-extra">Compras finalizadas correctamente</div>
+                </div>
+
+                <div class="dashboard-card card-pendientes">
+                    <div class="dashboard-label">Pendientes</div>
+                    <div class="dashboard-value">@comprasPendientes</div>
+                    <div class="dashboard-extra">Compras aún en proceso</div>
+                </div>
+
+                <div class="dashboard-card card-monto">
+                    <div class="dashboard-label">Monto total</div>
+                    <div class="dashboard-value">₡ @montoTotal.ToString("N2")</div>
+                    <div class="dashboard-extra">Monto acumulado de compras</div>
+                </div>
             </div>
 
-            <div class="dashboard-card card-active">
-                <div class="dashboard-label">Activos</div>
-                <div class="dashboard-value">@proveedoresActivos</div>
-                <div class="dashboard-extra">Proveedores disponibles actualmente</div>
+            <div class="historial-filtros">
+                <input type="text" id="filtroBusquedaCompra" placeholder="Buscar por ID o estado..." />
+
+                <select id="filtroEstadoCompra">
+                    <option value="">Todos los estados</option>
+                    <option value="Completada">Completada</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
+
+                <input type="date" id="filtroFechaDesdeCompra" />
+                <input type="date" id="filtroFechaHastaCompra" />
             </div>
 
-            <div class="dashboard-card card-inactive">
-                <div class="dashboard-label">Inactivos</div>
-                <div class="dashboard-value">@proveedoresInactivos</div>
-                <div class="dashboard-extra">Proveedores deshabilitados</div>
-            </div>
+            <div class="historial-card">
+                <h3 class="historial-card-title">Listado de compras</h3>
 
-            <div class="dashboard-card card-national">
-                <div class="dashboard-label">Nacionales</div>
-                <div class="dashboard-value">@nacionales</div>
-                <div class="dashboard-extra">Proveedores tipo nacional</div>
-            </div>
-        </div>
-
-        <div class="provider-filtros">
-            <input type="text" id="filtroBusquedaProveedor" placeholder="Buscar nombre, contacto o correo..." />
-
-            <select id="filtroEstadoProveedor">
-                <option value="">Todos los estados</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
-            </select>
-
-            <select id="filtroTipoProveedor">
-                <option value="">Todos los tipos</option>
-                <option value="Nacional">Nacional</option>
-                <option value="Internacional">Internacional</option>
-            </select>
-
-            <input type="date" id="filtroFechaDesdeProveedor" />
-            <input type="date" id="filtroFechaHastaProveedor" />
-        </div>
-
-        <div class="provider-card">
-            <h3 class="provider-card-title">Listado de proveedores</h3>
-
-            <div class="table-responsive" style="overflow: visible;">
-                <table id="tablaProveedores" class="table table-striped table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Contacto</th>
-                            <th>Teléfono</th>
-                            <th>Email</th>
-                            <th>Dirección</th>
-                            <th>Tipo</th>
-                            <th>Fecha Registro</th>
-                            <th>Estado</th>
-                            <th style="width: 120px;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null && Model.Any())
-                        {
-                            foreach (var item in Model)
+                <div class="table-responsive" style="overflow: visible;">
+                    <table id="tablaHistorialCompras" class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID Compra</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th style="width: 120px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.NombreEmpresa</td>
-                                    <td>@item.Contacto</td>
-                                    <td>@item.Telefono</td>
-                                    <td>@item.CorreoElectronico</td>
-                                    <td>@item.Direccion</td>
-                                    <td>
-                                        @if (item.Tipo == "Nacional")
-                                        {
-                                            <span class="tipo-nacional">Nacional</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="tipo-internacional">@item.Tipo</span>
-                                        }
+                                    <td>@item.CompraID</td>
+                                    <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
+                                    <td data-valor="@item.Total.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                                        ₡ @item.Total.ToString("N2")
                                     </td>
-                                    <td>@item.FechaRegistro.ToString("dd/MM/yyyy")</td>
                                     <td>
-                                        @if (item.Estado)
+                                        @if (item.Estado == "Completada")
                                         {
-                                            <span class="estado-activo">Activo</span>
+                                            <span class="estado-completada">Completada</span>
+                                        }
+                                        else if (item.Estado == "Pendiente")
+                                        {
+                                            <span class="estado-pendiente">Pendiente</span>
                                         }
                                         else
                                         {
-                                            <span class="estado-inactivo">Inactivo</span>
+                                            <span class="estado-cancelada">Cancelada</span>
                                         }
                                     </td>
                                     <td>
                                         <div class="actions-cell">
-                                            <a href="@Url.Action("ActualizarProveedor", "Proveedor", new { id = item.ProveedorID })"
-                                               class="btn-action-table btn-action-edit">
-                                                Editar
-                                            </a>
-
-                                            <a href="@Url.Action("FacturaPendientes", "Proveedor", new { proveedorId = item.ProveedorID })"
-                                               class="btn-action-table btn-action-facturas">
-                                                Facturas
+                                            <a href="@Url.Action("DetalleCompra", "Cliente", new { id = item.CompraID })"
+                                               class="btn-action-table btn-action-detalle">
+                                                Ver detalle
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
                             }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="9">No hay proveedores registrados.</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        }
 
     </div>
 </section>
@@ -490,11 +461,15 @@
     <script>
         $(document).ready(function () {
 
-            if ($.fn.DataTable.isDataTable('#tablaProveedores')) {
+            if (!$('#tablaHistorialCompras').length) {
                 return;
             }
 
-            var table = $('#tablaProveedores').DataTable({
+            if ($.fn.DataTable.isDataTable('#tablaHistorialCompras')) {
+                return;
+            }
+
+            var table = $('#tablaHistorialCompras').DataTable({
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
                     paginate: {
@@ -503,36 +478,43 @@
                     }
                 },
                 pageLength: 5,
-                order: [[0, 'asc']],
+                order: [[0, 'desc']],
                 columnDefs: [
-                    { orderable: false, targets: [8] }
+                    { orderable: false, targets: [4] }
                 ],
                 dom: 't<"bottom"ip>'
             });
 
             function actualizarDashboard() {
                 let total = 0;
-                let activos = 0;
-                let inactivos = 0;
-                let nacionales = 0;
+                let completadas = 0;
+                let pendientes = 0;
+                let monto = 0;
 
                 table.rows({ search: 'applied' }).every(function () {
                     let data = this.data();
+                    let fila = $(this.node());
 
-                    let tipo = data[5];
-                    let estado = data[7];
+                    let estado = data[3];
+                    let montoValor = parseFloat(fila.find('td:eq(2)').attr('data-valor')) || 0;
 
                     total++;
 
-                    if (estado.includes("Activo")) activos++;
-                    if (estado.includes("Inactivo")) inactivos++;
-                    if (tipo.includes("Nacional")) nacionales++;
+                    if (estado.includes("Completada")) completadas++;
+                    if (estado.includes("Pendiente")) pendientes++;
+
+                    monto += montoValor;
                 });
 
                 $(".card-total .dashboard-value").text(total);
-                $(".card-active .dashboard-value").text(activos);
-                $(".card-inactive .dashboard-value").text(inactivos);
-                $(".card-national .dashboard-value").text(nacionales);
+                $(".card-completadas .dashboard-value").text(completadas);
+                $(".card-pendientes .dashboard-value").text(pendientes);
+                $(".card-monto .dashboard-value").text(
+                    "₡ " + monto.toLocaleString('es-CR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })
+                );
             }
 
             actualizarDashboard();
@@ -541,26 +523,22 @@
                 actualizarDashboard();
             });
 
-            $('#filtroBusquedaProveedor').on('keyup', function () {
+            $('#filtroBusquedaCompra').on('keyup', function () {
                 table.search(this.value).draw();
             });
 
-            $('#filtroEstadoProveedor').on('change', function () {
-                table.column(7).search(this.value).draw();
-            });
-
-            $('#filtroTipoProveedor').on('change', function () {
-                table.column(5).search(this.value).draw();
+            $('#filtroEstadoCompra').on('change', function () {
+                table.column(3).search(this.value).draw();
             });
 
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-                if (settings.nTable.id !== 'tablaProveedores') {
+                if (settings.nTable.id !== 'tablaHistorialCompras') {
                     return true;
                 }
 
-                let fecha = data[6];
-                let desde = $('#filtroFechaDesdeProveedor').val();
-                let hasta = $('#filtroFechaHastaProveedor').val();
+                let fecha = data[1];
+                let desde = $('#filtroFechaDesdeCompra').val();
+                let hasta = $('#filtroFechaHastaCompra').val();
 
                 if (!fecha) return true;
 
@@ -582,7 +560,7 @@
                 return true;
             });
 
-            $('#filtroFechaDesdeProveedor, #filtroFechaHastaProveedor').on('change', function () {
+            $('#filtroFechaDesdeCompra, #filtroFechaHastaCompra').on('change', function () {
                 table.draw();
             });
         });
