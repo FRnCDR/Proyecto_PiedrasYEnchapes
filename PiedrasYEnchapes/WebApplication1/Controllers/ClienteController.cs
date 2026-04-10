@@ -1,10 +1,13 @@
-﻿using WebApplication1.EF;
-using WebApplication1.Models;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using WebApplication1.EF;
 using WebApplication1.Filtros;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -295,6 +298,78 @@ namespace WebApplication1.Controllers
 
                 ViewBag.CompraID = id;
                 return View(detalle);
+            }
+        }
+
+        public ActionResult DescargarPdf(int compraId)
+        {
+            // Verificar si el usuario está autenticado
+            if (Session["IdUsuario"] == null)
+            {
+                return RedirectToAction("Login", "Usuario");
+            }
+
+            int idUsuario = Convert.ToInt32(Session["IdUsuario"]);
+
+            using (var context = new DATABASE_PYEEntities())
+            {
+                bool compraValida = context.tbCompras.Any(c => c.CompraID == compraId && c.IdUsuario == idUsuario);
+
+                if (!compraValida)
+                {
+                    return RedirectToAction("HistorialCompras");
+                }
+
+                var detalle = context.tbDetalleCompra
+                    .Where(d => d.CompraID == compraId)
+                    .Select(d => new DetalleCompraModel
+                    {
+                        DetalleCompraID = d.DetalleCompraID,
+                        NombreProducto = d.tbProductos.Nombre,
+                        Cantidad = d.Cantidad,
+                        PrecioUnitario = d.PrecioUnitario,
+                        Subtotal = d.Subtotal
+                    })
+                    .ToList();
+
+                // Crear el documento PDF
+                using (var memoryStream = new MemoryStream())
+                {
+                    // Crear un documento PDF con tamaño A4
+                    Document document = new Document(PageSize.A4);
+                    PdfWriter.GetInstance(document, memoryStream);
+
+                    document.Open();
+
+                    // Título del PDF
+                    document.Add(new Paragraph($"Detalle de la Compra {compraId}"));
+                    document.Add(new Paragraph($"Fecha de compra: {DateTime.Now.ToString("dd/MM/yyyy")}"));
+                    document.Add(new Paragraph(" "));
+
+                    // Agregar los detalles de los productos comprados
+                    PdfPTable table = new PdfPTable(4);
+                    table.AddCell("Producto");
+                    table.AddCell("Cantidad");
+                    table.AddCell("Precio Unitario");
+                    table.AddCell("Subtotal");
+
+                    foreach (var item in detalle)
+                    {
+                        table.AddCell(item.NombreProducto);
+                        table.AddCell(item.Cantidad.ToString());
+                        table.AddCell($"₡ {item.PrecioUnitario:N2}");
+                        table.AddCell($"₡ {item.Subtotal:N2}");
+                    }
+
+                    document.Add(table);
+
+                    // Cerrar el documento PDF
+                    document.Close();
+
+                    // Devolver el archivo PDF
+                    byte[] fileBytes = memoryStream.ToArray();
+                    return File(fileBytes, "application/pdf", $"DetalleCompra_{compraId}.pdf");
+                }
             }
         }
 

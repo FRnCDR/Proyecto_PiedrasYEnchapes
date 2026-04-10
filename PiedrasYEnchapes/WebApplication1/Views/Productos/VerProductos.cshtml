@@ -4,11 +4,29 @@
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
 
+
+
 <div class="hero_general">
     <div class="bg-box">
         <img src="~/StaticFiles/images/navGeneral.jpg" />
     </div>
 </div>
+
+<style>
+
+    .out-of-stock {
+        display: block;
+        font-size: 14px;
+        color: #ff0000; /* Rojo para indicar sin stock */
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+        background-color: #f8d7da; /* Fondo de color suave */
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+    }
+</style>
 
 <section class="catalog-hero">
     <div class="catalog-hero-img">
@@ -69,6 +87,10 @@
                                         <span class="catalog-num">@numero</span>
                                         <div class="catalog-meta">
                                             <h5 class="catalog-name">@item.Nombre</h5>
+                                            @if (!item.Estado)
+                                            {
+                                                <p class="out-of-stock">Sin stock</p>
+                                            }
                                             <p class="catalog-desc">@item.Descripcion</p>
                                         </div>
                                     </div>
@@ -78,6 +100,7 @@
                                         <a class="catalog-link" href="@Url.Action("DetalleProducto", "Productos", new { id = item.ProductoID })">
                                             Ver detalle <span class="arrow">→</span>
                                         </a>
+                                        
                                     </div>
                                 </div>
                             </article>

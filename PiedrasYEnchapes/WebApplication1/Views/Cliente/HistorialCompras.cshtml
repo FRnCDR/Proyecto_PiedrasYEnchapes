@@ -196,6 +196,20 @@
         text-align: center;
     }
 
+    .btn-danger {
+        background-color: red;
+        color: white; 
+        text-align: center;
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        text-decoration: none; 
+        font-weight: bold; 
+    }
+
+        .btn-danger:hover {
+            background-color: darkred; 
+        }
+
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             background: #f3f4f6 !important;
             border: none !important;
@@ -441,6 +455,9 @@
                                             <a href="@Url.Action("DetalleCompra", "Cliente", new { id = item.CompraID })"
                                                class="btn-action-table btn-action-detalle">
                                                 Ver detalle
+                                            </a>
+                                            <a href="@Url.Action("DescargarPdf", "Cliente", new { compraId = item.CompraID })" class="btn-danger">
+                                                Descargar PDF
                                             </a>
                                         </div>
                                     </td>
