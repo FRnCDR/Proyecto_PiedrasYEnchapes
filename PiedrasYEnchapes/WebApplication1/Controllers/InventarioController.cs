@@ -48,9 +48,9 @@ namespace WebApplication1.Controllers
         // ---------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AgregarProducto(Producto producto, HttpPostedFileBase Imagen)
+        public ActionResult AgregarProducto(Producto producto, HttpPostedFileBase Imagen, HttpPostedFileBase ImagenEjemplo)
         {
-            // Validar imagen antes de insertar
+            // Validar imagen principal
             if (Imagen != null && Imagen.ContentLength > 0)
             {
                 var extension = Path.GetExtension(Imagen.FileName).ToLower();
@@ -62,7 +62,18 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            // Validar proveedor si es obligatorio
+            // Validar imagen ejemplo
+            if (ImagenEjemplo != null && ImagenEjemplo.ContentLength > 0)
+            {
+                var extension = Path.GetExtension(ImagenEjemplo.FileName).ToLower();
+                var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+
+                if (!validExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("ImagenEjemplo", "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.");
+                }
+            }
+
             if (!producto.ProveedorID.HasValue || producto.ProveedorID.Value <= 0)
             {
                 ModelState.AddModelError("ProveedorID", "Debe seleccionar un proveedor.");
@@ -86,31 +97,40 @@ namespace WebApplication1.Controllers
                         Precio = producto.Precio,
                         CategoriaID = producto.CategoriaID,
                         ProveedorID = producto.ProveedorID.Value,
-                        Imagen = string.Empty
+                        Imagen = string.Empty,
+                        ImagenEjemplo = string.Empty
                     };
 
                     context.tbProductos.Add(nuevoProducto);
                     context.SaveChanges();
 
-                    // Guardar imagen si viene
+                    var folderPath = Server.MapPath("~/StaticFiles/images/");
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    // Guardar imagen principal
                     if (Imagen != null && Imagen.ContentLength > 0)
                     {
                         var extension = Path.GetExtension(Imagen.FileName).ToLower();
-                        var folderPath = Server.MapPath("~/StaticFiles/images/");
-
-                        if (!Directory.Exists(folderPath))
-                            Directory.CreateDirectory(folderPath);
-
-                        // Guardar solo el nombre del archivo
                         var nombreArchivo = nuevoProducto.ProductoID + extension;
                         var rutaImagen = Path.Combine(folderPath, nombreArchivo);
 
                         Imagen.SaveAs(rutaImagen);
-
-                        // En BD solo guardar el nombre
                         nuevoProducto.Imagen = nombreArchivo;
-                        context.SaveChanges();
                     }
+
+                    // Guardar imagen de ejemplo
+                    if (ImagenEjemplo != null && ImagenEjemplo.ContentLength > 0)
+                    {
+                        var extensionEjemplo = Path.GetExtension(ImagenEjemplo.FileName).ToLower();
+                        var nombreArchivoEjemplo = nuevoProducto.ProductoID + "_ejemplo" + extensionEjemplo;
+                        var rutaImagenEjemplo = Path.Combine(folderPath, nombreArchivoEjemplo);
+
+                        ImagenEjemplo.SaveAs(rutaImagenEjemplo);
+                        nuevoProducto.ImagenEjemplo = nombreArchivoEjemplo;
+                    }
+
+                    context.SaveChanges();
 
                     TempData["Mensaje"] = "Producto agregado correctamente.";
                     return RedirectToAction("VerInventario", "Inventario");
@@ -152,7 +172,8 @@ namespace WebApplication1.Controllers
                     Precio = producto.Precio,
                     CategoriaID = producto.CategoriaID,
                     ProveedorID = producto.ProveedorID,
-                    Imagen = producto.Imagen
+                    Imagen = producto.Imagen,
+                    ImagenEjemplo = producto.ImagenEjemplo
                 };
 
                 CargarCombos(datos.CategoriaID, datos.ProveedorID);
@@ -165,9 +186,8 @@ namespace WebApplication1.Controllers
         // ---------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ActualizarProducto(Producto producto, HttpPostedFileBase Imagen)
+        public ActionResult ActualizarProducto(Producto producto, HttpPostedFileBase Imagen, HttpPostedFileBase ImagenEjemplo)
         {
-            // Validar imagen antes de actualizar
             if (Imagen != null && Imagen.ContentLength > 0)
             {
                 var extension = Path.GetExtension(Imagen.FileName).ToLower();
@@ -179,7 +199,17 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            // Validar proveedor si es obligatorio
+            if (ImagenEjemplo != null && ImagenEjemplo.ContentLength > 0)
+            {
+                var extension = Path.GetExtension(ImagenEjemplo.FileName).ToLower();
+                var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+
+                if (!validExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("ImagenEjemplo", "Solo se permiten imágenes en formato .jpg, .jpeg, .png o .gif.");
+                }
+            }
+
             if (!producto.ProveedorID.HasValue || producto.ProveedorID.Value <= 0)
             {
                 ModelState.AddModelError("ProveedorID", "Debe seleccionar un proveedor.");
@@ -211,34 +241,50 @@ namespace WebApplication1.Controllers
                     productoExistente.CategoriaID = producto.CategoriaID;
                     productoExistente.ProveedorID = producto.ProveedorID.Value;
 
-                    // Actualizar imagen si viene una nueva
+                    var folderPath = Server.MapPath("~/StaticFiles/images/");
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    // Actualizar imagen principal
                     if (Imagen != null && Imagen.ContentLength > 0)
                     {
                         var extension = Path.GetExtension(Imagen.FileName).ToLower();
-                        var folderPath = Server.MapPath("~/StaticFiles/images/");
 
-                        if (!Directory.Exists(folderPath))
-                            Directory.CreateDirectory(folderPath);
-
-                        // Eliminar imagen anterior si existe
                         if (!string.IsNullOrEmpty(productoExistente.Imagen))
                         {
                             var rutaAnterior = Path.Combine(folderPath, productoExistente.Imagen);
-
                             if (System.IO.File.Exists(rutaAnterior))
                             {
                                 System.IO.File.Delete(rutaAnterior);
                             }
                         }
 
-                        // Guardar solo el nombre del archivo
                         var nombreArchivo = productoExistente.ProductoID + extension;
                         var rutaImagen = Path.Combine(folderPath, nombreArchivo);
 
                         Imagen.SaveAs(rutaImagen);
-
-                        // En BD solo guardar el nombre
                         productoExistente.Imagen = nombreArchivo;
+                    }
+
+                    // Actualizar imagen ejemplo
+                    if (ImagenEjemplo != null && ImagenEjemplo.ContentLength > 0)
+                    {
+                        var extensionEjemplo = Path.GetExtension(ImagenEjemplo.FileName).ToLower();
+
+                        if (!string.IsNullOrEmpty(productoExistente.ImagenEjemplo))
+                        {
+                            var rutaAnteriorEjemplo = Path.Combine(folderPath, productoExistente.ImagenEjemplo);
+                            if (System.IO.File.Exists(rutaAnteriorEjemplo))
+                            {
+                                System.IO.File.Delete(rutaAnteriorEjemplo);
+                            }
+                        }
+
+                        var nombreArchivoEjemplo = productoExistente.ProductoID + "_ejemplo" + extensionEjemplo;
+                        var rutaImagenEjemplo = Path.Combine(folderPath, nombreArchivoEjemplo);
+
+                        ImagenEjemplo.SaveAs(rutaImagenEjemplo);
+                        productoExistente.ImagenEjemplo = nombreArchivoEjemplo;
                     }
 
                     context.SaveChanges();
@@ -296,11 +342,11 @@ namespace WebApplication1.Controllers
                                      Stock = p.Stock,
                                      Precio = p.Precio,
                                      Imagen = p.Imagen,
+                                     ImagenEjemplo = p.ImagenEjemplo,
                                      CategoriaID = p.CategoriaID,
                                      ProveedorID = p.ProveedorID,
                                      NombreEmpresa = pr.NombreEmpresa,
                                      Estado = p.Estado
-
                                  })
                                  .ToList();
 

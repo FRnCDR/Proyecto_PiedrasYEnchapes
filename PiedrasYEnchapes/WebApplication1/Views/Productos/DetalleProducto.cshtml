@@ -7,22 +7,11 @@
     var rutaImagen = !string.IsNullOrEmpty(Model.Imagen)
         ? Url.Content("~/StaticFiles/images/" + Model.Imagen)
         : Url.Content("~/StaticFiles/images/no-image.png");
+
+    var rutaImagenEjemplo = !string.IsNullOrEmpty(Model.ImagenEjemplo)
+        ? Url.Content("~/StaticFiles/images/" + Model.ImagenEjemplo)
+        : rutaImagen;
 }
-
-<style>
-    .btn-disabled {
-        background: #d1d5db !important;
-        border: 1px solid #d1d5db !important;
-        color: #6b7280 !important;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-
-        .btn-disabled:hover {
-            background: #d1d5db !important;
-            transform: none !important;
-        }
-</style>
 
 <div class="hero_general">
     <div class="bg-box">
@@ -44,7 +33,27 @@
 
                 <div class="col-lg-6">
                     <div class="detalle-imagen-box @(Model.Estado ? "" : "producto-inactivo")">
-                        <img src="@rutaImagen" alt="@Model.Nombre" class="detalle-imagen img-fluid" />
+                        <div class="detalle-galeria">
+                            <img id="imagenPrincipal"
+                                 src="@rutaImagen"
+                                 alt="@Model.Nombre"
+                                 class="detalle-imagen img-fluid" />
+
+                            <div class="detalle-miniaturas">
+                                <img src="@rutaImagen"
+                                     alt="Imagen del producto"
+                                     class="miniatura-imagen activa"
+                                     onclick="cambiarImagen(this, '@rutaImagen')" />
+
+                                @if (!string.IsNullOrEmpty(Model.ImagenEjemplo))
+                                {
+                                    <img src="@rutaImagenEjemplo"
+                                         alt="Ejemplo del producto"
+                                         class="miniatura-imagen"
+                                         onclick="cambiarImagen(this, '@rutaImagenEjemplo')" />
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -90,50 +99,30 @@
                         </div>
 
                         <div class="detalle-botones">
-                            <div class="detalle-botones">
-
-                                @if (Model.Estado && Model.Stock > 0)
+                            @if (Model.Estado && Model.Stock > 0)
+                            {
+                                using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post))
                                 {
-                                    using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post))
-                                    {
-                                        @Html.Hidden("productoId", Model.ProductoID)
-                                        @Html.Hidden("cantidad", 1)
+                                    @Html.Hidden("productoId", Model.ProductoID)
+                                    @Html.Hidden("cantidad", 1)
 
-                                        <button type="submit" class="btn-detalle-principal">
-                                            <i class="fa fa-shopping-cart"></i> Agregar al carrito
-                                        </button>
-                                    }
+                                    <button type="submit" class="btn-detalle-principal">
+                                        <i class="fa fa-shopping-cart"></i> Agregar al carrito
+                                    </button>
                                 }
-
-                                // Boton para agregar al carrito solo si el producto está activo y tiene stock disponible
-
-
-                                // Botón deshabilitado para productos agotados pero activos
-
-                                else if (Model.Estado && Model.Stock == 0)
-                                {
-                                <button class="btn-detalle-principal btn-disabled">
+                            }
+                            else if (Model.Estado && Model.Stock == 0)
+                            {
+                                <button type="button" class="btn-detalle-principal btn-disabled">
                                     <i class="fa fa-exclamation-circle"></i> Producto agotado
                                 </button>
-                                }
-
-                                // Botón no disponible para productos inactivos
-                                else
-                                {
-                                <button class="btn-detalle-principal btn-disabled">
+                            }
+                            else
+                            {
+                                <button type="button" class="btn-detalle-principal btn-disabled">
                                     <i class="fa fa-times-circle"></i> No disponible
                                 </button>
-                                }
-
-                                <a href="@Url.Action("VerProductos", "Productos")" class="btn-detalle-secundario">
-                                    Seguir viendo productos
-                                </a>
-
-                                <a href="@Url.Action("Index", "Home")" class="btn-detalle-secundario">
-                                    Ir al inicio
-                                </a>
-
-                            </div>
+                            }
 
                             <a href="@Url.Action("VerProductos", "Productos")" class="btn-detalle-secundario">
                                 Seguir viendo productos
@@ -154,6 +143,19 @@
 </section>
 
 <style>
+    .btn-disabled {
+        background: #d1d5db !important;
+        border: 1px solid #d1d5db !important;
+        color: #6b7280 !important;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+        .btn-disabled:hover {
+            background: #d1d5db !important;
+            transform: none !important;
+        }
+
     .producto-inactivo img {
         opacity: 0.5;
         filter: grayscale(40%);
@@ -173,6 +175,7 @@
         color: #ffc107;
         font-weight: 600;
     }
+
     .detalle-producto-section {
         padding: 70px 0 90px 0;
         background: #f8f8f8;
@@ -215,12 +218,45 @@
         height: 100%;
     }
 
+    .detalle-galeria {
+        width: 100%;
+    }
+
     .detalle-imagen {
         max-height: 500px;
         width: 100%;
         object-fit: contain;
         border-radius: 18px;
     }
+
+    .detalle-miniaturas {
+        display: flex;
+        gap: 18px;
+        margin-top: 20px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .miniatura-imagen {
+        width: 110px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 3px solid transparent;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: #fff;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+
+        .miniatura-imagen:hover {
+            transform: translateY(-2px);
+            border-color: #c49b63;
+        }
+
+        .miniatura-imagen.activa {
+            border-color: #222831;
+        }
 
     .detalle-info {
         padding: 55px 45px;
@@ -300,14 +336,6 @@
         font-weight: 600;
     }
 
-        .detalle-stock.disponible {
-            color: #198754;
-        }
-
-        .detalle-stock.agotado {
-            color: #dc3545;
-        }
-
     .detalle-botones {
         display: flex;
         flex-wrap: wrap;
@@ -385,5 +413,23 @@
         .btn-detalle-secundario {
             width: 100%;
         }
+
+        .miniatura-imagen {
+            width: 90px;
+            height: 75px;
+        }
     }
 </style>
+
+<script>
+    function cambiarImagen(elemento, nuevaRuta) {
+        document.getElementById("imagenPrincipal").src = nuevaRuta;
+
+        var miniaturas = document.querySelectorAll(".miniatura-imagen");
+        miniaturas.forEach(function (img) {
+            img.classList.remove("activa");
+        });
+
+        elemento.classList.add("activa");
+    }
+</script>

@@ -29,18 +29,18 @@ namespace WebApplication1.EF
     
         public virtual DbSet<tbCategorias> tbCategorias { get; set; }
         public virtual DbSet<tbClientes> tbClientes { get; set; }
+        public virtual DbSet<tbCompras> tbCompras { get; set; }
         public virtual DbSet<tbCotizaciones> tbCotizaciones { get; set; }
+        public virtual DbSet<tbDetalleCompra> tbDetalleCompra { get; set; }
         public virtual DbSet<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
         public virtual DbSet<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
         public virtual DbSet<tbEmpleados> tbEmpleados { get; set; }
+        public virtual DbSet<tbFacturasCompra> tbFacturasCompra { get; set; }
         public virtual DbSet<tbOrdenesCompra> tbOrdenesCompra { get; set; }
         public virtual DbSet<tbPerfil> tbPerfil { get; set; }
         public virtual DbSet<tbProductos> tbProductos { get; set; }
         public virtual DbSet<tbProveedores> tbProveedores { get; set; }
         public virtual DbSet<tbUsuario> tbUsuario { get; set; }
-        public virtual DbSet<tbFacturasCompra> tbFacturasCompra { get; set; }
-        public virtual DbSet<tbCompras> tbCompras { get; set; }
-        public virtual DbSet<tbDetalleCompra> tbDetalleCompra { get; set; }
     
         public virtual ObjectResult<Nullable<int>> CrearUsuarios(string identificacion, string nombre, string correoElectronico, string contrasenna)
         {

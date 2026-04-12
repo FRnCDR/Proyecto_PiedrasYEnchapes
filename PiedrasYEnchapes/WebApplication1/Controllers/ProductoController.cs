@@ -19,7 +19,6 @@ namespace WebApplication1.Controllers
             {
                 var lista = context.tbProductos
                     .AsNoTracking()
-                    //.Where(p => p.Estado == true)
                     .Select(p => new Producto
                     {
                         ProductoID = p.ProductoID,
@@ -28,6 +27,7 @@ namespace WebApplication1.Controllers
                         Precio = p.Precio,
                         Stock = p.Stock,
                         Imagen = p.Imagen,
+                        ImagenEjemplo = p.ImagenEjemplo,
                         CategoriaID = p.CategoriaID,
                         ProveedorID = p.ProveedorID,
                         Estado = p.Estado
@@ -54,6 +54,7 @@ namespace WebApplication1.Controllers
                         Precio = p.Precio,
                         Stock = p.Stock,
                         Imagen = p.Imagen,
+                        ImagenEjemplo = p.ImagenEjemplo,
                         CategoriaID = p.CategoriaID,
                         ProveedorID = p.ProveedorID,
                         Estado = p.Estado

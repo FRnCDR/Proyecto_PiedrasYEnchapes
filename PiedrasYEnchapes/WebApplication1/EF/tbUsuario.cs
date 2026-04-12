@@ -28,8 +28,8 @@ namespace WebApplication1.EF
         public bool Estado { get; set; }
         public int IdPerfil { get; set; }
     
-        public virtual tbPerfil tbPerfil { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbCompras> tbCompras { get; set; }
+        public virtual tbPerfil tbPerfil { get; set; }
     }
 }

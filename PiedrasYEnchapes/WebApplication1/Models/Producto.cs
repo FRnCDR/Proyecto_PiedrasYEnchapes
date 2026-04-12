@@ -36,5 +36,7 @@ namespace WebApplication1.Models
 
         public int? ProveedorID { get; set; }
         public string NombreEmpresa { get; set; }
+
+        public string ImagenEjemplo { get; set; }
     }
 }
