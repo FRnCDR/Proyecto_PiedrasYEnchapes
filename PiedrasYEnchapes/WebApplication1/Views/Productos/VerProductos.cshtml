@@ -13,18 +13,110 @@
 </div>
 
 <style>
-
     .out-of-stock {
         display: block;
         font-size: 14px;
-        color: #ff0000; /* Rojo para indicar sin stock */
+        color: #ff0000;
         font-weight: bold;
         text-align: center;
         margin-top: 10px;
-        background-color: #f8d7da; /* Fondo de color suave */
+        background-color: #f8d7da;
         border-radius: 5px;
         padding: 5px;
         width: 100%;
+    }
+
+    .producto-item {
+        display: flex;
+    }
+
+    .catalog-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        min-height: 520px; /* ajusta este valor si quieres más altas o más bajas */
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .catalog-img {
+        display: block;
+        width: 100%;
+        height: 240px; /* todas las imágenes con la misma altura */
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+        .catalog-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* evita que la imagen deforme la card */
+            display: block;
+        }
+
+    .catalog-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        padding: 18px;
+    }
+
+    .catalog-topline {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .catalog-num {
+        flex-shrink: 0;
+    }
+
+    .catalog-meta {
+        flex: 1;
+        min-height: 160px; /* mismo espacio para info */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .catalog-name {
+        min-height: 48px;
+        margin-bottom: 8px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* máximo 2 líneas */
+        -webkit-box-orient: vertical;
+    }
+
+    .catalog-desc {
+        flex-grow: 1;
+        margin-bottom: 12px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* máximo 3 líneas */
+        -webkit-box-orient: vertical;
+    }
+
+    .catalog-bottom {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding-top: 12px;
+        border-top: 1px solid #eee;
+    }
+
+    .catalog-price {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .catalog-link {
+        white-space: nowrap;
     }
 </style>
 
@@ -119,10 +211,6 @@
                 }
 
             </div>
-        </div>
-
-        <div class="catalog-cta">
-            <a class="catalog-more" href="#">Ver más</a>
         </div>
 
     </div>
