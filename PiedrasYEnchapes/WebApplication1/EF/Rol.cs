@@ -12,18 +12,22 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbProductos
+    public partial class Rol
     {
-        public int ProductoID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Rol()
+        {
+            this.Usuario = new HashSet<Usuario>();
+        }
+    
+        public int RolId { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public int Stock { get; set; }
-        public decimal Precio { get; set; }
-        public string Imagen { get; set; }
-        public Nullable<int> CategoriaID { get; set; }
-        public int ProveedorID { get; set; }
+        public bool Activo { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public Nullable<System.DateTime> FechaModificacion { get; set; }
     
-        public virtual tbCategorias tbCategorias { get; set; }
-        public virtual tbProveedores tbProveedores { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Usuario> Usuario { get; set; }
     }
 }

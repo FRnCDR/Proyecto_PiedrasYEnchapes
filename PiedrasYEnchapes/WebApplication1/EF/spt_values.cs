@@ -12,15 +12,13 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbDetalleCotizacion
+    public partial class spt_values
     {
-        public int DetalleCotizacionID { get; set; }
-        public int CotizacionID { get; set; }
-        public int ProductoID { get; set; }
-        public int Cantidad { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public decimal Subtotal { get; set; }
-    
-        public virtual tbCotizaciones tbCotizaciones { get; set; }
+        public string name { get; set; }
+        public int number { get; set; }
+        public string type { get; set; }
+        public Nullable<int> low { get; set; }
+        public Nullable<int> high { get; set; }
+        public Nullable<int> status { get; set; }
     }
 }

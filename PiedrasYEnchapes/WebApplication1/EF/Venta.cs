@@ -12,28 +12,33 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbOrdenesCompra
+    public partial class Venta
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbOrdenesCompra()
+        public Venta()
         {
-            this.tbDetalleOrdenCompra = new HashSet<tbDetalleOrdenCompra>();
-            this.tbDetalleOrdenCompra1 = new HashSet<tbDetalleOrdenCompra>();
-            this.tbFacturasCompra = new HashSet<tbFacturasCompra>();
+            this.Entrega = new HashSet<Entrega>();
+            this.Factura = new HashSet<Factura>();
+            this.VentaDetalle = new HashSet<VentaDetalle>();
         }
     
-        public int OrdenCompraID { get; set; }
-        public int ProveedorID { get; set; }
-        public System.DateTime FechaOrden { get; set; }
+        public int VentaId { get; set; }
+        public Nullable<int> ClienteId { get; set; }
+        public Nullable<int> EmpleadoId { get; set; }
+        public System.DateTime Fecha { get; set; }
+        public string Canal { get; set; }
+        public string Estado { get; set; }
         public decimal Total { get; set; }
-        public bool Estado { get; set; }
-        public string EstadoRecepcion { get; set; }
+        public bool Activo { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
     
+        public virtual Cliente Cliente { get; set; }
+        public virtual Empleado Empleado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
+        public virtual ICollection<Entrega> Entrega { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra1 { get; set; }
+        public virtual ICollection<Factura> Factura { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbFacturasCompra> tbFacturasCompra { get; set; }
+        public virtual ICollection<VentaDetalle> VentaDetalle { get; set; }
     }
 }

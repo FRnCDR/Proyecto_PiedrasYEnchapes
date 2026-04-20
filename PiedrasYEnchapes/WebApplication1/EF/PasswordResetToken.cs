@@ -12,15 +12,15 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbDetalleCotizacion
+    public partial class PasswordResetToken
     {
-        public int DetalleCotizacionID { get; set; }
-        public int CotizacionID { get; set; }
-        public int ProductoID { get; set; }
-        public int Cantidad { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public decimal Subtotal { get; set; }
+        public int TokenId { get; set; }
+        public int UsuarioId { get; set; }
+        public string Token { get; set; }
+        public System.DateTime ExpiraEn { get; set; }
+        public bool Usado { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
     
-        public virtual tbCotizaciones tbCotizaciones { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

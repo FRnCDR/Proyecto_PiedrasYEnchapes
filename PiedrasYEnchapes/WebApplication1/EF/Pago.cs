@@ -12,15 +12,15 @@ namespace WebApplication1.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tbDetalleCotizacion
+    public partial class Pago
     {
-        public int DetalleCotizacionID { get; set; }
-        public int CotizacionID { get; set; }
-        public int ProductoID { get; set; }
-        public int Cantidad { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public decimal Subtotal { get; set; }
+        public int PagoId { get; set; }
+        public int FacturaId { get; set; }
+        public System.DateTime FechaPago { get; set; }
+        public decimal Monto { get; set; }
+        public string Metodo { get; set; }
+        public string Referencia { get; set; }
     
-        public virtual tbCotizaciones tbCotizaciones { get; set; }
+        public virtual Factura Factura { get; set; }
     }
 }

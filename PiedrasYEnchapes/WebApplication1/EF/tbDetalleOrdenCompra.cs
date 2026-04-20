@@ -22,6 +22,6 @@ namespace WebApplication1.EF
         public decimal Subtotal { get; set; }
     
         public virtual tbOrdenesCompra tbOrdenesCompra { get; set; }
-        public virtual tbProductos tbProductos { get; set; }
+        public virtual tbOrdenesCompra tbOrdenesCompra1 { get; set; }
     }
 }

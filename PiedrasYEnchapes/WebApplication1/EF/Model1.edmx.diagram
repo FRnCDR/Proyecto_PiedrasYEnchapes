@@ -4,34 +4,91 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="18811ff3cb984226aafae0463e13fa1f" Name="Diagram1">
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbCategorias" Width="1.5" PointX="3.75" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbClientes" Width="1.5" PointX="6.75" PointY="15.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbCompras" Width="1.5" PointX="6" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbCotizaciones" Width="1.5" PointX="9" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleCompra" Width="1.5" PointX="8.25" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleCotizacion" Width="1.5" PointX="11.25" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbDetalleOrdenCompra" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbEmpleados" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbFacturasCompra" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbOrdenesCompra" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbPerfil" Width="1.5" PointX="1.5" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbProductos" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbProveedores" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATABASE_PYEModel.tbUsuario" Width="1.5" PointX="3.75" PointY="11.5" IsExpanded="true" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_Categoria" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbCotizaciones_tbClientes" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbCompras_tbUsuario" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCompra_tbCompras" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCotizacion_tbCotizaciones" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCompra_tbProductos" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbDetalleCotizacion_tbProductos" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK__tbDetalle__Orden__6B24EA82" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK__tbDetalle__Produ__6C190EBB" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbFacturasCompra_OrdenCompra" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbFacturasCompra_Proveedor" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_Usuario_Perfil" ManuallyRouted="false" />
-        <AssociationConnector Association="DATABASE_PYEModel.FK_tbProductos_tbProveedores" ManuallyRouted="false" />
+      <Diagram DiagramId="373b422b34b74e3da0a84612f8e3fe77" Name="Diagram1">
+        <EntityTypeShape EntityType="masterModel.AspNetRoles" Width="1.5" PointX="10.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.AspNetUserClaims" Width="1.5" PointX="15.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.AspNetUserLogins" Width="1.5" PointX="15.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.AspNetUsers" Width="1.5" PointX="13" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.HABITACIONES" Width="1.5" PointX="10.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbCategorias" Width="1.5" PointX="13.75" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbClientes" Width="1.5" PointX="16.75" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbCompras" Width="1.5" PointX="12.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbCotizaciones" Width="1.5" PointX="19" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbDetalleCompra" Width="1.5" PointX="14.5" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbDetalleCotizacion" Width="1.5" PointX="21.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbDetalleOrdenCompra" Width="1.5" PointX="13" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbEmpleados" Width="1.5" PointX="18" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbFacturasCompra" Width="1.5" PointX="16" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbOrdenesCompra" Width="1.5" PointX="10.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbPerfil" Width="1.5" PointX="7.75" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbPerfiles" Width="1.5" PointX="15.75" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbProductos" Width="1.5" PointX="16" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbProveedores" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.tbUsuario" Width="1.5" PointX="10" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Categoria" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Cliente" Width="1.5" PointX="3.75" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Empleado" Width="1.5" PointX="3.75" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Entrega" Width="1.5" PointX="8.25" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Factura" Width="1.5" PointX="8.25" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.InventarioMovimiento" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.InventarioMovimientoDetalle" Width="1.5" PointX="5.25" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.OrdenCompra" Width="1.5" PointX="6" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.OrdenCompraDetalle" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Pago" Width="1.5" PointX="10.5" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.PasswordResetToken" Width="1.5" PointX="3.75" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Producto" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.ProductoImagen" Width="1.5" PointX="5.25" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.ProductoProveedor" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Proveedor" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Rol" Width="1.5" PointX="1.5" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Usuario" Width="1.5" PointX="1.5" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.Venta" Width="1.5" PointX="6" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.VentaDetalle" Width="1.5" PointX="8.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.ANALISIS" Width="1.5" PointX="17.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.MSreplication_options" Width="1.5" PointX="18.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.PALABRAS_CLAVE" Width="1.5" PointX="18.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_db" Width="1.5" PointX="19.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_dev" Width="1.5" PointX="12.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.spt_fallback_usg" Width="1.5" PointX="20.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.spt_monitor" Width="1.5" PointX="14.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="masterModel.spt_values" Width="1.5" PointX="20.75" PointY="18.75" IsExpanded="true" />
+        <AssociationConnector Association="masterModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Categoria" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbCotizaciones_tbClientes" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbCompras_tbUsuario" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbDetalleCompra_tbCompras" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbDetalleCotizacion_tbCotizaciones" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK__tbDetalle__Orden__231F2AE2" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK__tbDetalle__Orden__3DD3211E" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Empleados_Perfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbFacturasCompra_OrdenCompra" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbFacturasCompra_Proveedor" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Usuario_Perfil" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_tbProductos_tbProveedores" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Producto_Categoria" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Cliente_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Venta_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Empleado_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_OC_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Venta_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Entrega_Venta" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Factura_Venta" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_Pago_Factura" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_IMD_Mov" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_InventarioMov_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_IMD_Prod" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_OC_Proveedor" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_OCD_OC" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_OCD_Prod" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_PasswordReset_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_PP_Producto" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_ProductoImagen_Producto" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_VD_Prod" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_PP_Proveedor" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.FK_VD_Venta" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="masterModel.UsuarioRol" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,10 +15,10 @@ namespace WebApplication1.EF
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class DATABASE_PYEEntities : DbContext
+    public partial class masterEntities : DbContext
     {
-        public DATABASE_PYEEntities()
-            : base("name=DATABASE_PYEEntities")
+        public masterEntities()
+            : base("name=masterEntities")
         {
         }
     
@@ -27,6 +27,11 @@ namespace WebApplication1.EF
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<HABITACIONES> HABITACIONES { get; set; }
         public virtual DbSet<tbCategorias> tbCategorias { get; set; }
         public virtual DbSet<tbClientes> tbClientes { get; set; }
         public virtual DbSet<tbCompras> tbCompras { get; set; }
@@ -38,9 +43,74 @@ namespace WebApplication1.EF
         public virtual DbSet<tbFacturasCompra> tbFacturasCompra { get; set; }
         public virtual DbSet<tbOrdenesCompra> tbOrdenesCompra { get; set; }
         public virtual DbSet<tbPerfil> tbPerfil { get; set; }
+        public virtual DbSet<tbPerfiles> tbPerfiles { get; set; }
         public virtual DbSet<tbProductos> tbProductos { get; set; }
         public virtual DbSet<tbProveedores> tbProveedores { get; set; }
         public virtual DbSet<tbUsuario> tbUsuario { get; set; }
+        public virtual DbSet<Categoria> Categoria { get; set; }
+        public virtual DbSet<Cliente> Cliente { get; set; }
+        public virtual DbSet<Empleado> Empleado { get; set; }
+        public virtual DbSet<Entrega> Entrega { get; set; }
+        public virtual DbSet<Factura> Factura { get; set; }
+        public virtual DbSet<InventarioMovimiento> InventarioMovimiento { get; set; }
+        public virtual DbSet<InventarioMovimientoDetalle> InventarioMovimientoDetalle { get; set; }
+        public virtual DbSet<OrdenCompra> OrdenCompra { get; set; }
+        public virtual DbSet<OrdenCompraDetalle> OrdenCompraDetalle { get; set; }
+        public virtual DbSet<Pago> Pago { get; set; }
+        public virtual DbSet<PasswordResetToken> PasswordResetToken { get; set; }
+        public virtual DbSet<Producto> Producto { get; set; }
+        public virtual DbSet<ProductoImagen> ProductoImagen { get; set; }
+        public virtual DbSet<ProductoProveedor> ProductoProveedor { get; set; }
+        public virtual DbSet<Proveedor> Proveedor { get; set; }
+        public virtual DbSet<Rol> Rol { get; set; }
+        public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<Venta> Venta { get; set; }
+        public virtual DbSet<VentaDetalle> VentaDetalle { get; set; }
+        public virtual DbSet<ANALISIS> ANALISIS { get; set; }
+        public virtual DbSet<MSreplication_options> MSreplication_options { get; set; }
+        public virtual DbSet<PALABRAS_CLAVE> PALABRAS_CLAVE { get; set; }
+        public virtual DbSet<spt_fallback_db> spt_fallback_db { get; set; }
+        public virtual DbSet<spt_fallback_dev> spt_fallback_dev { get; set; }
+        public virtual DbSet<spt_fallback_usg> spt_fallback_usg { get; set; }
+        public virtual DbSet<spt_monitor> spt_monitor { get; set; }
+        public virtual DbSet<spt_values> spt_values { get; set; }
+    
+        public virtual int AgregarVehiculo(Nullable<System.Guid> id, Nullable<System.Guid> idModelo, string placa, string color, Nullable<int> anio, Nullable<decimal> precio, string correoPropietario, string telefonoPropietario)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(System.Guid));
+    
+            var idModeloParameter = idModelo.HasValue ?
+                new ObjectParameter("IdModelo", idModelo) :
+                new ObjectParameter("IdModelo", typeof(System.Guid));
+    
+            var placaParameter = placa != null ?
+                new ObjectParameter("Placa", placa) :
+                new ObjectParameter("Placa", typeof(string));
+    
+            var colorParameter = color != null ?
+                new ObjectParameter("Color", color) :
+                new ObjectParameter("Color", typeof(string));
+    
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            var precioParameter = precio.HasValue ?
+                new ObjectParameter("Precio", precio) :
+                new ObjectParameter("Precio", typeof(decimal));
+    
+            var correoPropietarioParameter = correoPropietario != null ?
+                new ObjectParameter("CorreoPropietario", correoPropietario) :
+                new ObjectParameter("CorreoPropietario", typeof(string));
+    
+            var telefonoPropietarioParameter = telefonoPropietario != null ?
+                new ObjectParameter("TelefonoPropietario", telefonoPropietario) :
+                new ObjectParameter("TelefonoPropietario", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AgregarVehiculo", idParameter, idModeloParameter, placaParameter, colorParameter, anioParameter, precioParameter, correoPropietarioParameter, telefonoPropietarioParameter);
+        }
     
         public virtual ObjectResult<Nullable<int>> CrearUsuarios(string identificacion, string nombre, string correoElectronico, string contrasenna)
         {
@@ -63,6 +133,43 @@ namespace WebApplication1.EF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CrearUsuarios", identificacionParameter, nombreParameter, correoElectronicoParameter, contrasennaParameter);
         }
     
+        public virtual int EditarVehiculo(Nullable<System.Guid> id, Nullable<System.Guid> idModelo, string placa, string color, Nullable<int> anio, Nullable<decimal> precio, string correoPropietario, string telefonoPropietario)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(System.Guid));
+    
+            var idModeloParameter = idModelo.HasValue ?
+                new ObjectParameter("IdModelo", idModelo) :
+                new ObjectParameter("IdModelo", typeof(System.Guid));
+    
+            var placaParameter = placa != null ?
+                new ObjectParameter("Placa", placa) :
+                new ObjectParameter("Placa", typeof(string));
+    
+            var colorParameter = color != null ?
+                new ObjectParameter("Color", color) :
+                new ObjectParameter("Color", typeof(string));
+    
+            var anioParameter = anio.HasValue ?
+                new ObjectParameter("Anio", anio) :
+                new ObjectParameter("Anio", typeof(int));
+    
+            var precioParameter = precio.HasValue ?
+                new ObjectParameter("Precio", precio) :
+                new ObjectParameter("Precio", typeof(decimal));
+    
+            var correoPropietarioParameter = correoPropietario != null ?
+                new ObjectParameter("CorreoPropietario", correoPropietario) :
+                new ObjectParameter("CorreoPropietario", typeof(string));
+    
+            var telefonoPropietarioParameter = telefonoPropietario != null ?
+                new ObjectParameter("TelefonoPropietario", telefonoPropietario) :
+                new ObjectParameter("TelefonoPropietario", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("EditarVehiculo", idParameter, idModeloParameter, placaParameter, colorParameter, anioParameter, precioParameter, correoPropietarioParameter, telefonoPropietarioParameter);
+        }
+    
         public virtual ObjectResult<Nullable<int>> LoginUsuario(string correoElectronico, string contrasenna)
         {
             var correoElectronicoParameter = correoElectronico != null ?
@@ -74,6 +181,21 @@ namespace WebApplication1.EF
                 new ObjectParameter("Contrasenna", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("LoginUsuario", correoElectronicoParameter, contrasennaParameter);
+        }
+    
+        public virtual int sp_MScleanupmergepublisher()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_MScleanupmergepublisher");
+        }
+    
+        public virtual int sp_MSrepl_startup()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_MSrepl_startup");
+        }
+    
+        public virtual int sp_ssis_startup()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ssis_startup");
         }
     }
 }
