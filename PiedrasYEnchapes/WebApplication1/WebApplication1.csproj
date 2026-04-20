@@ -333,6 +333,7 @@
     <Content Include="StaticFiles\cssEx\vendor.bundle.base.css" />
     <Content Include="StaticFiles\css\about-modern.css" />
     <Content Include="StaticFiles\css\asistente-virtual.css" />
+    <Content Include="StaticFiles\css\benefits.css" />
     <Content Include="StaticFiles\css\bootstrap.css" />
     <Content Include="StaticFiles\css\CambiarContrasenna.css" />
     <Content Include="StaticFiles\css\carrito.css" />

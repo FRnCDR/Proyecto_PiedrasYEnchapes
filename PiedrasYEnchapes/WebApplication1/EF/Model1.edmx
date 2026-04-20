@@ -166,7 +166,7 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__tbDetalle__Orden__7E37BEF6">
+        <Association Name="FK__tbDetalle__Orden__6B24EA82">
           <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -178,7 +178,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbDetalle__Produ__7F2BE32F">
+        <Association Name="FK__tbDetalle__Produ__6C190EBB">
           <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -347,11 +347,11 @@
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__tbDetalle__Orden__7E37BEF6" Association="Self.FK__tbDetalle__Orden__7E37BEF6">
+          <AssociationSet Name="FK__tbDetalle__Orden__6B24EA82" Association="Self.FK__tbDetalle__Orden__6B24EA82">
             <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
-          <AssociationSet Name="FK__tbDetalle__Produ__7F2BE32F" Association="Self.FK__tbDetalle__Produ__7F2BE32F">
+          <AssociationSet Name="FK__tbDetalle__Produ__6C190EBB" Association="Self.FK__tbDetalle__Produ__6C190EBB">
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
@@ -490,8 +490,8 @@
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <Property Name="PrecioCompra" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Subtotal" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <NavigationProperty Name="tbOrdenesCompra" Relationship="Self.FK__tbDetalle__Orden__7E37BEF6" FromRole="tbDetalleOrdenCompra" ToRole="tbOrdenesCompra" />
-          <NavigationProperty Name="tbProductos" Relationship="Self.FK__tbDetalle__Produ__7F2BE32F" FromRole="tbDetalleOrdenCompra" ToRole="tbProductos" />
+          <NavigationProperty Name="tbOrdenesCompra" Relationship="Self.FK__tbDetalle__Orden__6B24EA82" FromRole="tbDetalleOrdenCompra" ToRole="tbOrdenesCompra" />
+          <NavigationProperty Name="tbProductos" Relationship="Self.FK__tbDetalle__Produ__6C190EBB" FromRole="tbDetalleOrdenCompra" ToRole="tbProductos" />
         </EntityType>
         <EntityType Name="tbEmpleados">
           <Key>
@@ -531,7 +531,7 @@
           <Property Name="Total" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="EstadoRecepcion" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Orden__7E37BEF6" FromRole="tbOrdenesCompra" ToRole="tbDetalleOrdenCompra" />
+          <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Orden__6B24EA82" FromRole="tbOrdenesCompra" ToRole="tbDetalleOrdenCompra" />
           <NavigationProperty Name="tbFacturasCompra" Relationship="Self.FK_tbFacturasCompra_OrdenCompra" FromRole="tbOrdenesCompra" ToRole="tbFacturasCompra" />
         </EntityType>
         <EntityType Name="tbPerfil">
@@ -559,7 +559,7 @@
           <NavigationProperty Name="tbCategorias" Relationship="Self.FK_Categoria" FromRole="tbProductos" ToRole="tbCategorias" />
           <NavigationProperty Name="tbDetalleCompra" Relationship="Self.FK_tbDetalleCompra_tbProductos" FromRole="tbProductos" ToRole="tbDetalleCompra" />
           <NavigationProperty Name="tbDetalleCotizacion" Relationship="Self.FK_tbDetalleCotizacion_tbProductos" FromRole="tbProductos" ToRole="tbDetalleCotizacion" />
-          <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Produ__7F2BE32F" FromRole="tbProductos" ToRole="tbDetalleOrdenCompra" />
+          <NavigationProperty Name="tbDetalleOrdenCompra" Relationship="Self.FK__tbDetalle__Produ__6C190EBB" FromRole="tbProductos" ToRole="tbDetalleOrdenCompra" />
           <NavigationProperty Name="tbProveedores" Relationship="Self.FK_tbProductos_tbProveedores" FromRole="tbProductos" ToRole="tbProveedores" />
         </EntityType>
         <EntityType Name="tbProveedores">
@@ -676,7 +676,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbDetalle__Orden__7E37BEF6">
+        <Association Name="FK__tbDetalle__Orden__6B24EA82">
           <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -688,7 +688,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbDetalle__Produ__7F2BE32F">
+        <Association Name="FK__tbDetalle__Produ__6C190EBB">
           <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -791,11 +791,11 @@
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleCotizacion" EntitySet="tbDetalleCotizacion" />
           </AssociationSet>
-          <AssociationSet Name="FK__tbDetalle__Orden__7E37BEF6" Association="Self.FK__tbDetalle__Orden__7E37BEF6">
+          <AssociationSet Name="FK__tbDetalle__Orden__6B24EA82" Association="Self.FK__tbDetalle__Orden__6B24EA82">
             <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
-          <AssociationSet Name="FK__tbDetalle__Produ__7F2BE32F" Association="Self.FK__tbDetalle__Produ__7F2BE32F">
+          <AssociationSet Name="FK__tbDetalle__Produ__6C190EBB" Association="Self.FK__tbDetalle__Produ__6C190EBB">
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
