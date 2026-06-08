@@ -20,10 +20,12 @@ namespace WebApplication1.Models
         [StringLength(100, ErrorMessage = "El correo no puede exceder los 100 caracteres.")]
         public string CorreoElectronico { get; set; }
 
+        [Required(ErrorMessage = "El teléfono es obligatorio.")]
         [Phone(ErrorMessage = "Ingrese un número de teléfono válido.")]
         [StringLength(20, ErrorMessage = "El teléfono no puede exceder los 20 caracteres.")]
         public string Telefono { get; set; }
 
+        [Required(ErrorMessage = "La dirección es obligatoria.")]
         [StringLength(255, ErrorMessage = "La dirección no puede exceder los 255 caracteres.")]
         public string Direccion { get; set; }
 

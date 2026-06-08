@@ -14,6 +14,14 @@ namespace WebApplication1.EF
     
     public partial class tbProductos
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tbProductos()
+        {
+            this.tbDetalleCompra = new HashSet<tbDetalleCompra>();
+            this.tbDetalleCotizacion = new HashSet<tbDetalleCotizacion>();
+            this.tbDetalleOrdenCompra = new HashSet<tbDetalleOrdenCompra>();
+        }
+    
         public int ProductoID { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
@@ -22,8 +30,16 @@ namespace WebApplication1.EF
         public string Imagen { get; set; }
         public Nullable<int> CategoriaID { get; set; }
         public int ProveedorID { get; set; }
+        public bool Estado { get; set; }
+        public string ImagenEjemplo { get; set; }
     
         public virtual tbCategorias tbCategorias { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDetalleCompra> tbDetalleCompra { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbDetalleOrdenCompra> tbDetalleOrdenCompra { get; set; }
         public virtual tbProveedores tbProveedores { get; set; }
     }
 }

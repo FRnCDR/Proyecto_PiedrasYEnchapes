@@ -22,7 +22,5 @@ namespace WebApplication1.EF
         public bool Estado { get; set; }
         public System.DateTime FechaRegistro { get; set; }
         public Nullable<int> IdPerfil { get; set; }
-    
-        public virtual tbPerfiles tbPerfiles { get; set; }
     }
 }

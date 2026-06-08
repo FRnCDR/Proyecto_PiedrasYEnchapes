@@ -24,10 +24,12 @@ namespace WebApplication1.Models
         [StringLength(100)]
         public string CorreoElectronico { get; set; }
 
+        [Required(ErrorMessage = "El teléfono es obligatorio.")]
         [Phone(ErrorMessage = "Ingrese un número de teléfono válido.")]
         [StringLength(20)]
         public string Telefono { get; set; }
 
+        [Required(ErrorMessage = "La dirección es obligatoria.")]
         [StringLength(255)]
         public string Direccion { get; set; }
 
