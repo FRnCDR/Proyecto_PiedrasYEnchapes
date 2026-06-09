@@ -9,6 +9,7 @@ using WebApplication1.Filtros;
 namespace WebApplication1.Controllers
 {
     [ValidarSesion]
+    [ValidarPerfilAdmin]
     public class ProveedorController : Controller
     {
         // Consultar todos los proveedores

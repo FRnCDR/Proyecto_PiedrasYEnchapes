@@ -154,12 +154,28 @@ namespace WebApplication1.Controllers
         {
             using (var context = new DATABASE_PYEEntities())
             {
-                var categoria = context.tbCategorias.FirstOrDefault(c => c.CategoriaID == id);
+                var tieneProductos = context.tbProductos
+                    .Any(p => p.CategoriaID == id);
+
+                if (tieneProductos)
+                {
+                    TempData["Mensaje"] = "No se puede eliminar la categoría porque tiene productos asociados.";
+                    TempData["TipoMensaje"] = "error";
+
+                    return RedirectToAction("VerCategorias");
+                }
+
+                var categoria = context.tbCategorias
+                    .FirstOrDefault(c => c.CategoriaID == id);
+
                 if (categoria != null)
                 {
                     context.tbCategorias.Remove(categoria);
                     context.SaveChanges();
                 }
+
+                TempData["Mensaje"] = "Categoría eliminada correctamente.";
+                TempData["TipoMensaje"] = "success";
             }
 
             return RedirectToAction("VerCategorias");

@@ -29,6 +29,8 @@
                     <div class="card-body pt-3">
                         @using (Html.BeginForm("ActualizarCategoria", "Categoria", FormMethod.Post, new { @id = "FormActualizarCategoria" }))
                         {
+                            @Html.AntiForgeryToken()
+
                             @Html.HiddenFor(x => x.CategoriaID) <!-- Es importante incluir el Id de la categoría en el formulario -->
 
                             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })

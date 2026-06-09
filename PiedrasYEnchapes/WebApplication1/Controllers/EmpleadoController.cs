@@ -10,6 +10,7 @@ using WebApplication1.Filtros;
 namespace WebApplication1.Controllers
 {
     [ValidarSesion]
+    [ValidarPerfilAdmin]
     public class EmpleadoController : Controller
     {
         // Consultar todos los empleados

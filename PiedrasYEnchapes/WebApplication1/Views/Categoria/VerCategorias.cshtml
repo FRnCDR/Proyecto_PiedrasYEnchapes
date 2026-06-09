@@ -66,11 +66,18 @@
                                         Editar
                                     </a>
 
-                                    <a href="@Url.Action("EliminarCategoria", "Categoria", new { id = categoria.CategoriaID })"
-                                       class="btn btn-sm btn-danger"
-                                       onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">
-                                        Eliminar
-                                    </a>
+                                    @using (Html.BeginForm("EliminarCategoria", "Categoria", FormMethod.Post, new { style = "display:inline;" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden" name="id" value="@categoria.CategoriaID" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('¿Seguro que deseas eliminar esta categoría?')">
+                                            Eliminar
+                                        </button>
+                                    }
                                 </td>
                             </tr>
                         }

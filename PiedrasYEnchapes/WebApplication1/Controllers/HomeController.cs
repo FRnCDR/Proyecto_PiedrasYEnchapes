@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using WebApplication1.EF;
-using WebApplication1.Services;
-using WebApplication1.Models;
 using WebApplication1.Filtros;
+using WebApplication1.Helpers;
+using WebApplication1.Models;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
@@ -43,19 +41,17 @@ namespace WebApplication1.Controllers
         {
             using (var context = new DATABASE_PYEEntities())
             {
-                int resultado = context.LoginUsuario(
-                    usuario.CorreoElectronico,
-                    usuario.Contrasenna
-                ).FirstOrDefault() ?? 0;
+                var usuarioDb = context.tbUsuario
+                    .FirstOrDefault(u => u.CorreoElectronico == usuario.CorreoElectronico);
 
-                if (resultado == 1)
+                if (usuarioDb != null &&
+                    PasswordHelper.VerifyPassword(usuario.Contrasenna, usuarioDb.Contrasenna))
                 {
-                    var usuarioDb = context.tbUsuario
-                        .FirstOrDefault(u => u.CorreoElectronico == usuario.CorreoElectronico);
-
-                    Session["UsuarioCorreo"] = usuario.CorreoElectronico;
-                    Session["Nombre"] = usuarioDb != null ? usuarioDb.Nombre : "Usuario";
+                    Session["UsuarioCorreo"] = usuarioDb.CorreoElectronico;
+                    Session["Nombre"] = usuarioDb.Nombre;
                     Session["IdUsuario"] = usuarioDb.IdUsuario;
+                    Session["IdPerfil"] = usuarioDb.IdPerfil;
+
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -79,11 +75,11 @@ namespace WebApplication1.Controllers
         {
             using (var context = new DATABASE_PYEEntities())
             {
-                        var resultado = context.CrearUsuarios(
+            var resultado = context.CrearUsuarios(
             usuario.Identificacion,
             usuario.Nombre,
             usuario.CorreoElectronico,
-            usuario.Contrasenna
+            PasswordHelper.HashPassword(usuario.Contrasenna)
                 ).FirstOrDefault();
 
                 if (resultado == 1)
@@ -117,8 +113,8 @@ namespace WebApplication1.Controllers
                     // 1) generar contraseña temporal
                     var passTemp = RecuperacionService.GenerarContrasenna();
 
-                    // 2) actualizar en BD (texto plano como tu guía)
-                    userDb.Contrasenna = passTemp;
+                    // 2) actualizar en BD
+                    userDb.Contrasenna = PasswordHelper.HashPassword(passTemp);
 
                     var filas = context.SaveChanges();
 

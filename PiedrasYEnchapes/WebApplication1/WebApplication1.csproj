@@ -290,10 +290,12 @@
     <Compile Include="EF\tbUsuario.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Filtros\ValidarPerfilAdmin.cs" />
     <Compile Include="Filtros\ValidarSesionAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\CambiarContrasennaViewModel.cs" />
     <Compile Include="Models\CarritoItem.cs" />
     <Compile Include="Models\DetalleCompraModel.cs" />
@@ -406,6 +408,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="StaticFiles\fonts\" />
+    <Folder Include="Views\PasswordHelper\" />
+    <Folder Include="Views\ValidarPerfilAdmin\" />
     <Folder Include="wwwroot\imgProductos\" />
   </ItemGroup>
   <ItemGroup>

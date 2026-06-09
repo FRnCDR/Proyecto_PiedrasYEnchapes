@@ -14,6 +14,8 @@
 
     primerNombre = primerNombre.ToLower();
     primerNombre = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(primerNombre);
+
+    var perfil = Session["IdPerfil"] != null ? Convert.ToInt32(Session["IdPerfil"]) : 0;
 }
 
 
@@ -107,9 +109,17 @@
             font-weight: 600;
         }
 
-        .toast-success { background: #16a34a; }
-        .toast-warning { background: #f59e0b; }
-        .toast-error { background: #dc2626; }
+        .toast-success {
+            background: #16a34a;
+        }
+
+        .toast-warning {
+            background: #f59e0b;
+        }
+
+        .toast-error {
+            background: #dc2626;
+        }
 
         .toast-close {
             background: none;
@@ -120,8 +130,15 @@
         }
 
         @@keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 
@@ -202,33 +219,39 @@
 
 
                         <!-- Administración -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown"
-                               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-cog mr-1"></i> Administración
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminDropdown">
-                                <a class="dropdown-item" href="@Url.Action("VerEmpleados", "Empleado")">
-                                    <i class="fa fa-users mr-2"></i> Empleados
+                        @if (perfil == 1)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown"
+                                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-cog mr-1"></i> Administración
                                 </a>
-                                <a class="dropdown-item" href="@Url.Action("VerClientes", "Cliente")">
-                                    <i class="fa fa-users mr-2"></i> Clientes
-                                </a>
-                                <a class="dropdown-item" href="@Url.Action("VerProveedores", "Proveedor")">
-                                    <i class="fa fa-truck mr-2"></i> Proveedores
-                                </a>
-                                <a class="dropdown-item" href="@Url.Action("VerInventario", "Inventario")">
-                                    <i class="fa fa-archive mr-2"></i> Inventario
-                                </a>
-                                <a class="dropdown-item" href="@Url.Action("TodasLasFacturas", "Proveedor")">
-                                    <i class="fa fa-file-text mr-2"></i> Facturas
-                                </a>
-                            </div>
-                        </li>
 
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminDropdown">
 
+                                    <a class="dropdown-item" href="@Url.Action("VerEmpleados", "Empleado")">
+                                        <i class="fa fa-users mr-2"></i> Empleados
+                                    </a>
 
+                                    <a class="dropdown-item" href="@Url.Action("VerClientes", "Cliente")">
+                                        <i class="fa fa-users mr-2"></i> Clientes
+                                    </a>
 
+                                    <a class="dropdown-item" href="@Url.Action("VerProveedores", "Proveedor")">
+                                        <i class="fa fa-truck mr-2"></i> Proveedores
+                                    </a>
+
+                                    <a class="dropdown-item" href="@Url.Action("VerInventario", "Inventario")">
+                                        <i class="fa fa-archive mr-2"></i> Inventario
+                                    </a>
+
+                                    <a class="dropdown-item" href="@Url.Action("TodasLasFacturas", "Proveedor")">
+                                        <i class="fa fa-file-text mr-2"></i> Facturas
+                                    </a>
+
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </nav>
@@ -335,7 +358,7 @@
                             Calidad, estilo y durabilidad en cada pieza.
                         </p>
 
-                      
+
                     </div>
 
                     <!-- Col 3 -->

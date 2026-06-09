@@ -12,6 +12,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
     [ValidarSesion]
+    [ValidarPerfilAdmin]
     public class ClienteController : Controller
     {
         // Consultar todos los clientes

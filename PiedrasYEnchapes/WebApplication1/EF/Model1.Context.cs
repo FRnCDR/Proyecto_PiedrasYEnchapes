@@ -18,7 +18,7 @@ namespace WebApplication1.EF
     public partial class DATABASE_PYEEntities : DbContext
     {
         public DATABASE_PYEEntities()
-            : base("name=DATABASE_PYEEntities1")
+            : base("name=DATABASE_PYEEntities")
         {
         }
     
