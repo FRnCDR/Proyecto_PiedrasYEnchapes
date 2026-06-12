@@ -1,0 +1,291 @@
+﻿@{
+    ViewBag.Title = "Detalle de Cotización";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var cotizacion = ViewBag.Cotizacion as WebApplication1.Models.Cotizacion;
+    var detalle = ViewBag.DetalleCotizacion as List<WebApplication1.Models.DetalleCotizacionViewModel>;
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+    .detalle-section {
+        padding: 30px 0 50px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .detalle-container {
+        max-width: 960px;
+        margin: auto;
+        padding: 0 16px;
+    }
+
+    .detalle-title {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .detalle-subtitle {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .card-info {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+        margin-bottom: 20px;
+    }
+
+        .card-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+    }
+
+    .info-box {
+        background: #f3f4f6;
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .info-label {
+        font-size: 11px;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+    }
+
+    .info-value {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .estado-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .estado-pendiente {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+
+    .estado-aprobada {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .estado-rechazada {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .table-productos {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+        .table-productos thead th {
+            background: #111827;
+            color: #fff;
+            padding: 11px 14px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .table-productos tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .table-productos tbody td {
+            padding: 11px 14px;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+
+    .total-row {
+        text-align: right;
+        margin-top: 14px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+        .total-row span {
+            color: #16a34a;
+        }
+
+    .empty-detalle {
+        text-align: center;
+        padding: 30px;
+        color: #9ca3af;
+        font-size: 14px;
+    }
+
+    .obs-box {
+        background: #f3f4f6;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 14px;
+        color: #374151;
+        margin-top: 14px;
+    }
+
+    .btn-volver {
+        background: #111827;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.2s;
+    }
+
+        .btn-volver:hover {
+            background: #000;
+            color: white;
+            text-decoration: none;
+        }
+</style>
+
+<section class="detalle-section">
+    <div class="detalle-container">
+
+        <h2 class="detalle-title">Detalle de Cotización #@cotizacion.CotizacionID</h2>
+        <p class="detalle-subtitle">
+            Revisa los productos, cantidades y precios incluidos en esta cotización.
+        </p>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div style="background:#dcfce7;color:#166534;border:1px solid #86efac;
+                        padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:14px;">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <!-- INFO GENERAL -->
+        <div class="card-info">
+            <h4>Información general</h4>
+            <div class="info-grid">
+
+                <div class="info-box">
+                    <div class="info-label">Número</div>
+                    <div class="info-value">#@cotizacion.CotizacionID</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Cliente</div>
+                    <div class="info-value">@ViewBag.NombreUsuario</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Fecha</div>
+                    <div class="info-value">@cotizacion.FechaCotizacion.ToString("dd/MM/yyyy")</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Estado</div>
+                    <div class="info-value">
+                        @{
+                            var claseEstado = cotizacion.Estado == "Aprobada" ? "estado-aprobada" :
+                                              cotizacion.Estado == "Pendiente" ? "estado-pendiente" :
+                                                                                 "estado-rechazada";
+                        }
+                        <span class="estado-badge @claseEstado">@cotizacion.Estado</span>
+                    </div>
+                </div>
+
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(cotizacion.Observaciones))
+            {
+                <div class="obs-box">
+                    <strong>Observaciones:</strong> @cotizacion.Observaciones
+                </div>
+            }
+        </div>
+
+        <!-- PRODUCTOS -->
+        <div class="card-info">
+            <h4>Productos cotizados</h4>
+
+            @if (detalle != null && detalle.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table-productos">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int fila = 1; }
+                            @foreach (var item in detalle)
+                            {
+                                <tr>
+                                    <td>@fila</td>
+                                    <td><strong>@item.NombreProducto</strong></td>
+                                    <td>@item.Cantidad</td>
+                                    <td>₡ @item.PrecioUnitario.ToString("N2")</td>
+                                    <td>₡ @item.Subtotal.ToString("N2")</td>
+                                </tr>
+                                fila++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="total-row">
+                    Total estimado: <span>₡ @cotizacion.Total.ToString("N2")</span>
+                </div>
+            }
+            else
+            {
+                <div class="empty-detalle">
+                    Esta cotización no tiene productos agregados.
+                </div>
+            }
+        </div>
+
+        <!-- ACCIONES -->
+        <div style="display:flex; gap:10px; margin-top:6px;">
+            <a href="@Url.Action("VerCotizaciones", "Cotizacion")" class="btn-volver">
+                ← Volver a mis cotizaciones
+            </a>
+        </div>
+
+    </div>
+</section>

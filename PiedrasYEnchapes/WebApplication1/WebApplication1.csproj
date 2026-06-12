@@ -410,6 +410,7 @@
     <Folder Include="StaticFiles\fonts\" />
     <Folder Include="Views\PasswordHelper\" />
     <Folder Include="Views\ValidarPerfilAdmin\" />
+    <Folder Include="Views\VerDetalleCotizacion\" />
     <Folder Include="wwwroot\imgProductos\" />
   </ItemGroup>
   <ItemGroup>
@@ -460,6 +461,7 @@
     <Content Include="Views\Proveedor\TodasLasFacturas.cshtml" />
     <Content Include="Views\Cliente\HistorialCompras.cshtml" />
     <Content Include="Views\Cliente\DetalleCompra.cshtml" />
+    <Content Include="Views\Cotizacion\VerDetalleCotizacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

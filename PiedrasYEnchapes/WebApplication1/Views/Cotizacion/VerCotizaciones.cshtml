@@ -1,7 +1,7 @@
 ﻿@model List<WebApplication1.Models.CotizacionLista>
 
 @{
-    ViewBag.Title = "Cotizaciones";
+    ViewBag.Title = "Mis Cotizaciones";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
 }
 
@@ -16,6 +16,7 @@
 <section class="cotizaciones-cliente-section">
     <div class="cotizaciones-cliente-container">
 
+        <!-- ENCABEZADO -->
         <div class="cotizaciones-hero">
             <div class="cotizaciones-hero-text">
                 <span class="cotizaciones-eyebrow">Tus solicitudes</span>
@@ -25,15 +26,15 @@
                     a cada solicitud de forma simple y visual.
                 </p>
             </div>
-
             <div class="cotizaciones-hero-action">
-                <a href="@Url.Action("CrearCotizacion","Cotizacion")" class="btn-nueva-cotizacion">
+                <a href="@Url.Action("CrearCotizacion", "Cotizacion")" class="btn-nueva-cotizacion">
                     <span class="btn-icon">＋</span>
                     Nueva cotización
                 </a>
             </div>
         </div>
 
+        <!-- MENSAJES -->
         @if (TempData["Mensaje"] != null)
         {
             <div class="cotizacion-alert-success">
@@ -42,13 +43,14 @@
             </div>
         }
 
+        <!-- RESUMEN -->
         <div class="cotizaciones-topbar">
             <div class="cotizaciones-topbar-left">
                 <h2>Resumen</h2>
                 <p>
                     @if (Model != null && Model.Any())
                     {
-                        <text>Tienes @Model.Count cotización(es) registrada(s) en el sistema.</text>
+                        <text>Tienes @Model.Count cotización(es) registrada(s).</text>
                     }
                     else
                     {
@@ -76,11 +78,12 @@
             }
         </div>
 
+        <!-- LISTA DE COTIZACIONES -->
         @if (Model != null && Model.Any())
         {
             <div class="cotizaciones-grid">
 
-                @foreach (var item in Model.OrderByDescending(x => x.CotizacionID))
+                @foreach (var item in Model)
                 {
                     var claseEstado = "estado-rechazada";
                     var iconoEstado = "✕";
@@ -97,12 +100,12 @@
                     }
 
                     <article class="cotizacion-item-card reveal-card">
+
                         <div class="cotizacion-card-top">
                             <div class="cotizacion-card-id-wrap">
                                 <span class="cotizacion-card-label">Cotización</span>
                                 <h3 class="cotizacion-card-id">#@item.CotizacionID</h3>
                             </div>
-
                             <span class="cotizacion-estado-badge @claseEstado">
                                 <span class="estado-icon">@iconoEstado</span>
                                 @item.Estado
@@ -110,46 +113,72 @@
                         </div>
 
                         <div class="cotizacion-card-body">
-                            <div class="cotizacion-data-block">
-                                <span class="data-label">Cliente</span>
-                                <span class="data-value">@item.NombreCliente</span>
-                            </div>
-
                             <div class="cotizacion-data-row">
                                 <div class="cotizacion-data-block">
                                     <span class="data-label">Fecha</span>
                                     <span class="data-value">@item.FechaCotizacion.ToShortDateString()</span>
                                 </div>
-
                                 <div class="cotizacion-data-block">
                                     <span class="data-label">Total estimado</span>
                                     <span class="data-value total-value">₡ @item.Total.ToString("N2")</span>
                                 </div>
                             </div>
+
+                            @if (!string.IsNullOrWhiteSpace(item.Observaciones))
+                            {
+                                <div class="cotizacion-data-block" style="margin-top:8px;">
+                                    <span class="data-label">Observaciones</span>
+                                    <span class="data-value" style="font-size:13px;color:#6b7280;">
+                                        @item.Observaciones
+                                    </span>
+                                </div>
+                            }
                         </div>
 
                         <div class="cotizacion-card-footer">
-                            <a href="@Url.Action("VerDetalleCotizacion","Cotizacion", new { q = item.CotizacionID })"
+
+                            <!-- Ver detalle -->
+                            <a href="@Url.Action("VerDetalleCotizacion", "Cotizacion", new { q = item.CotizacionID })"
                                class="btn-card-action btn-card-outline">
                                 Ver detalle
                             </a>
 
-                            <a href="@Url.Action("AgregarDetalleCotizacion","Cotizacion", new { q = item.CotizacionID })"
+                            <!-- Editar (agregar/quitar productos) -->
+                            <a href="@Url.Action("AgregarDetalleCotizacion", "Cotizacion", new { q = item.CotizacionID })"
                                class="btn-card-action btn-card-soft">
                                 Editar
                             </a>
 
-                            @using (Html.BeginForm("CambiarEstadoCotizacion", "Cotizacion", FormMethod.Post, new { @class = "form-inline-action" }))
+                            <!-- Eliminar cotización completa -->
+                            @using (Html.BeginForm("EliminarCotizacion", "Cotizacion", FormMethod.Post,
+                                        new { @class = "form-inline-action" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("q", item.CotizacionID)
-                                @Html.Hidden("estado", "Aprobada")
-
-                                <button type="submit" class="btn-card-action btn-card-success">
-                                    Aprobar
+                                <button type="submit"
+                                        class="btn-card-action btn-card-danger"
+                                        onclick="return confirm('¿Eliminar la cotización #@item.CotizacionID y todos sus productos?')">
+                                    Eliminar
                                 </button>
                             }
+
+                            <!-- Aprobar (solo visible para admin) -->
+                            @if (Session["IdPerfil"] != null && Session["IdPerfil"].ToString() == "1")
+                            {
+                                using (Html.BeginForm("CambiarEstadoCotizacion", "Cotizacion", FormMethod.Post,
+                                            new { @class = "form-inline-action" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("q", item.CotizacionID)
+                                    @Html.Hidden("estado", "Aprobada")
+                                    <button type="submit" class="btn-card-action btn-card-success">
+                                        Aprobar
+                                    </button>
+                                }
+                            }
+
                         </div>
+
                     </article>
                 }
 
@@ -161,11 +190,9 @@
                 <div class="empty-icon">◌</div>
                 <h3>Aún no tienes cotizaciones</h3>
                 <p>
-                    Cuando empieces a solicitar productos, aquí podrás ver el estado de cada cotización
-                    de forma clara y ordenada.
+                    Crea tu primera cotización y empieza a seleccionar los productos que necesitas.
                 </p>
-
-                <a href="@Url.Action("CrearCotizacion","Cotizacion")" class="btn-nueva-cotizacion">
+                <a href="@Url.Action("CrearCotizacion", "Cotizacion")" class="btn-nueva-cotizacion">
                     <span class="btn-icon">＋</span>
                     Crear mi primera cotización
                 </a>

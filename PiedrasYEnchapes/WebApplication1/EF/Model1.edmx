@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DATABASE_PYEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tbCategorias">
           <Key>
             <PropertyRef Name="CategoriaID" />
@@ -47,6 +47,7 @@
           <Property Name="Total" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Observaciones" Type="nvarchar" MaxLength="255" />
+          <Property Name="IdUsuario" Type="int" />
         </EntityType>
         <EntityType Name="tbDetalleCompra">
           <Key>
@@ -166,7 +167,7 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdPerfil" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__tbDetalle__Orden__7E37BEF6">
+        <Association Name="FK__tbDetalle__Orden__6B24EA82">
           <End Role="tbOrdenesCompra" Type="Self.tbOrdenesCompra" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -178,7 +179,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__tbDetalle__Produ__7F2BE32F">
+        <Association Name="FK__tbDetalle__Produ__6C190EBB">
           <End Role="tbProductos" Type="Self.tbProductos" Multiplicity="1" />
           <End Role="tbDetalleOrdenCompra" Type="Self.tbDetalleOrdenCompra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -223,6 +224,18 @@
             </Principal>
             <Dependent Role="tbCotizaciones">
               <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbCotizaciones_tbUsuario">
+          <End Role="tbUsuario" Type="Self.tbUsuario" Multiplicity="0..1" />
+          <End Role="tbCotizaciones" Type="Self.tbCotizaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tbCotizaciones">
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -347,11 +360,11 @@
           <EntitySet Name="tbProductos" EntityType="Self.tbProductos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbProveedores" EntityType="Self.tbProveedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUsuario" EntityType="Self.tbUsuario" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__tbDetalle__Orden__7E37BEF6" Association="Self.FK__tbDetalle__Orden__7E37BEF6">
+          <AssociationSet Name="FK__tbDetalle__Orden__6B24EA82" Association="Self.FK__tbDetalle__Orden__6B24EA82">
             <End Role="tbOrdenesCompra" EntitySet="tbOrdenesCompra" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
-          <AssociationSet Name="FK__tbDetalle__Produ__7F2BE32F" Association="Self.FK__tbDetalle__Produ__7F2BE32F">
+          <AssociationSet Name="FK__tbDetalle__Produ__6C190EBB" Association="Self.FK__tbDetalle__Produ__6C190EBB">
             <End Role="tbProductos" EntitySet="tbProductos" />
             <End Role="tbDetalleOrdenCompra" EntitySet="tbDetalleOrdenCompra" />
           </AssociationSet>
@@ -365,6 +378,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_tbCotizaciones_tbClientes" Association="Self.FK_tbCotizaciones_tbClientes">
             <End Role="tbClientes" EntitySet="tbClientes" />
+            <End Role="tbCotizaciones" EntitySet="tbCotizaciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbCotizaciones_tbUsuario" Association="Self.FK_tbCotizaciones_tbUsuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
             <End Role="tbCotizaciones" EntitySet="tbCotizaciones" />
           </AssociationSet>
           <AssociationSet Name="FK_tbDetalleCompra_tbCompras" Association="Self.FK_tbDetalleCompra_tbCompras">
@@ -400,8 +417,7 @@
             <End Role="tbUsuario" EntitySet="tbUsuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DATABASE_PYEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -453,6 +469,8 @@
           <Property Name="Observaciones" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tbClientes" Relationship="Self.FK_tbCotizaciones_tbClientes" FromRole="tbCotizaciones" ToRole="tbClientes" />
           <NavigationProperty Name="tbDetalleCotizacion" Relationship="Self.FK_tbDetalleCotizacion_tbCotizaciones" FromRole="tbCotizaciones" ToRole="tbDetalleCotizacion" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <NavigationProperty Name="tbUsuario" Relationship="DATABASE_PYEModel.FK_tbCotizaciones_tbUsuario" FromRole="tbCotizaciones" ToRole="tbUsuario" />
         </EntityType>
         <EntityType Name="tbDetalleCompra">
           <Key>
@@ -591,6 +609,7 @@
           <Property Name="IdPerfil" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbCompras" Relationship="Self.FK_tbCompras_tbUsuario" FromRole="tbUsuario" ToRole="tbCompras" />
           <NavigationProperty Name="tbPerfil" Relationship="Self.FK_Usuario_Perfil" FromRole="tbUsuario" ToRole="tbPerfil" />
+          <NavigationProperty Name="tbCotizaciones" Relationship="DATABASE_PYEModel.FK_tbCotizaciones_tbUsuario" FromRole="tbUsuario" ToRole="tbCotizaciones" />
         </EntityType>
         <Association Name="FK_Categoria">
           <End Role="tbCategorias" Type="Self.tbCategorias" Multiplicity="0..1" />
@@ -825,7 +844,23 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
+          <AssociationSet Name="FK_tbCotizaciones_tbUsuario" Association="DATABASE_PYEModel.FK_tbCotizaciones_tbUsuario">
+            <End Role="tbUsuario" EntitySet="tbUsuario" />
+            <End Role="tbCotizaciones" EntitySet="tbCotizaciones" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_tbCotizaciones_tbUsuario">
+          <End Type="DATABASE_PYEModel.tbUsuario" Role="tbUsuario" Multiplicity="0..1" />
+          <End Type="DATABASE_PYEModel.tbCotizaciones" Role="tbCotizaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tbCotizaciones">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -870,6 +905,7 @@
           <EntitySetMapping Name="tbCotizaciones">
             <EntityTypeMapping TypeName="DATABASE_PYEModel.tbCotizaciones">
               <MappingFragment StoreEntitySet="tbCotizaciones">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
                 <ScalarProperty Name="CotizacionID" ColumnName="CotizacionID" />
                 <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
                 <ScalarProperty Name="FechaCotizacion" ColumnName="FechaCotizacion" />

@@ -32,6 +32,7 @@
         <AssociationConnector Association="DATABASE_PYEModel.FK_tbFacturasCompra_Proveedor" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_Usuario_Perfil" ManuallyRouted="false" />
         <AssociationConnector Association="DATABASE_PYEModel.FK_tbProductos_tbProveedores" ManuallyRouted="false" />
+        <AssociationConnector Association="DATABASE_PYEModel.FK_tbCotizaciones_tbUsuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

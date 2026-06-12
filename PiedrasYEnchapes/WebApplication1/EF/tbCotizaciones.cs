@@ -26,9 +26,11 @@ namespace WebApplication1.EF
         public decimal Total { get; set; }
         public string Estado { get; set; }
         public string Observaciones { get; set; }
+        public Nullable<int> IdUsuario { get; set; }
     
         public virtual tbClientes tbClientes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbDetalleCotizacion> tbDetalleCotizacion { get; set; }
+        public virtual tbUsuario tbUsuario { get; set; }
     }
 }

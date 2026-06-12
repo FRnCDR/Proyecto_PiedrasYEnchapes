@@ -18,6 +18,7 @@ namespace WebApplication1.EF
         public tbUsuario()
         {
             this.tbCompras = new HashSet<tbCompras>();
+            this.tbCotizaciones = new HashSet<tbCotizaciones>();
         }
     
         public int IdUsuario { get; set; }
@@ -31,5 +32,7 @@ namespace WebApplication1.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbCompras> tbCompras { get; set; }
         public virtual tbPerfil tbPerfil { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbCotizaciones> tbCotizaciones { get; set; }
     }
 }
