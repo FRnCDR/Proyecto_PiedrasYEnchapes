@@ -402,6 +402,12 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CambiarEstadoCotizacion(int q, string estado)
         {
+            if (!EsAdmin())
+            {
+                TempData["Mensaje"] = "No tienes permiso para realizar esta acción.";
+                return RedirectToAction("VerCotizaciones");
+            }
+
             try
             {
                 using (var context = new DATABASE_PYEEntities())

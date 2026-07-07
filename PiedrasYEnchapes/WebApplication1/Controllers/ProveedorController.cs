@@ -28,6 +28,7 @@ namespace WebApplication1.Controllers
 
         // Agregar nuevo proveedor (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AgregarProveedor(Proveedor proveedor)
         {
             if (!ModelState.IsValid)
@@ -120,6 +121,7 @@ namespace WebApplication1.Controllers
 
         // Actualizar proveedor (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ActualizarProveedor(Proveedor proveedor)
         {
             if (!ModelState.IsValid)

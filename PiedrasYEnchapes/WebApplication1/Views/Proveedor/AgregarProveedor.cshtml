@@ -27,6 +27,7 @@
                     <div class="card-body pt-3">
                         @using (Html.BeginForm("AgregarProveedor", "Proveedor", FormMethod.Post, new { @id = "FormAgregarProveedor" }))
                         {
+                            @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
 
                             <!-- Nombre de la Empresa -->

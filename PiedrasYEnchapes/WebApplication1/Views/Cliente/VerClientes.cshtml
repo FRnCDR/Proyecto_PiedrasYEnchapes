@@ -421,10 +421,15 @@
                                                 Editar
                                             </a>
 
-                                            <a href="@Url.Action("CambiarEstadoCliente", "Cliente", new { q = item.IdCliente })"
-                                               class="btn-action-table @(item.Estado ? "btn-action-disable" : "btn-action-enable")">
-                                                @(item.Estado ? "Desactivar" : "Activar")
-                                            </a>
+                                            @using (Html.BeginForm("CambiarEstadoCliente", "Cliente", FormMethod.Post, new { style = "display:inline;" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.Hidden("q", item.IdCliente)
+
+                                                <button type="submit" class="btn-action-table @(item.Estado ? "btn-action-disable" : "btn-action-enable")">
+                                                    @(item.Estado ? "Desactivar" : "Activar")
+                                                </button>
+                                            }
                                         </div>
                                     </td>
                                 </tr>

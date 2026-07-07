@@ -131,6 +131,7 @@
                                         {
                                             using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post))
                                             {
+                                                @Html.AntiForgeryToken()
                                                 @Html.Hidden("productoId", item.ProductoID)
                                                 @Html.Hidden("cantidad", 1)
 

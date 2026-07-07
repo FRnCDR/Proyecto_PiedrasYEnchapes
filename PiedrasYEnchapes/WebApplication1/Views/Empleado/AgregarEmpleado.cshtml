@@ -30,6 +30,7 @@
 
                         @using (Html.BeginForm("AgregarEmpleado", "Empleado", FormMethod.Post, new { id = "FormAgregarEmpleado" }))
                         {
+                            @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
 
                             <!-- Nombre -->

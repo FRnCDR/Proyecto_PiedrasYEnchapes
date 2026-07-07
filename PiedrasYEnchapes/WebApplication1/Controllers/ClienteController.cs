@@ -30,6 +30,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AgregarCliente(Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -140,6 +141,7 @@ namespace WebApplication1.Controllers
 
         // Actualizar cliente (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ActualizarCliente(Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -199,6 +201,8 @@ namespace WebApplication1.Controllers
         }
 
         // Cambiar estado (activar/inactivar)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CambiarEstadoCliente(int q)
         {
             using (var context = new DATABASE_PYEEntities())

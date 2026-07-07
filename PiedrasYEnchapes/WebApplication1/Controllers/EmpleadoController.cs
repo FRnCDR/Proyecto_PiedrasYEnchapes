@@ -29,6 +29,7 @@ namespace WebApplication1.Controllers
 
         // Agregar nuevo empleado (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AgregarEmpleado(Empleado empleado)
         {
             if (!ModelState.IsValid)
@@ -114,6 +115,7 @@ namespace WebApplication1.Controllers
 
         // Actualizar un empleado (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ActualizarEmpleado(Empleado empleado)
         {
             if (!ModelState.IsValid)

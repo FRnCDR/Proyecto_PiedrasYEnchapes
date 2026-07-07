@@ -28,6 +28,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AgregarAlCarrito(int productoId, int cantidad = 1)
         {
             if (cantidad <= 0)
@@ -100,6 +101,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult QuitarDelCarrito(int productoId)
         {
             var carrito = ObtenerCarrito();

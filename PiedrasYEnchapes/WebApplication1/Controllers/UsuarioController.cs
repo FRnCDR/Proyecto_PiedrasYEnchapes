@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using WebApplication1.EF;
 using WebApplication1.Models;
 using WebApplication1.Filtros;
+using WebApplication1.Helpers;
 
 namespace WebApplication1.Controllers
 {
@@ -170,7 +171,7 @@ namespace WebApplication1.Controllers
 
 
                //Validar Contraseña Actual
-               if (u.Contrasenna != model.ContrasennaActual)
+               if (!PasswordHelper.VerifyPassword(model.ContrasennaActual, u.Contrasenna))
                 {
                     ViewBag.Mensaje = "La contraseña actual es incorrecta.";
                     ViewBag.TipoMensaje = "danger";
@@ -194,7 +195,7 @@ namespace WebApplication1.Controllers
 
                 //Guardar nueva contraseña
 
-                u.Contrasenna = model.NuevaContrasenna;
+                u.Contrasenna = PasswordHelper.HashPassword(model.NuevaContrasenna);
 
                 var filas = context.SaveChanges();
 
