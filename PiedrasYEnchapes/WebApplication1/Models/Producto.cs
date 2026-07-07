@@ -20,6 +20,7 @@ namespace WebApplication1.Models
         public string Descripcion { get; set; }  // Descripción del producto
 
         [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
         public int Stock { get; set; }  // Cantidad disponible en stock
 
         [Required]

@@ -510,7 +510,8 @@
             });
 
             $('#filtroEstadoCliente').on('change', function () {
-                table.column(6).search(this.value).draw();
+                var valor = this.value;
+                table.column(6).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $('#filtroTelefonoCliente').on('change', function () {

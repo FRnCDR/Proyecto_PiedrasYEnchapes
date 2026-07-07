@@ -1,4 +1,5 @@
 ﻿@model List<WebApplication1.Models.Producto>
+@using System.Collections.Generic
 
 @{
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
@@ -118,6 +119,53 @@
     .catalog-link {
         white-space: nowrap;
     }
+
+    .catalog-pagination {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-top: 32px;
+    }
+
+    .catalog-pagination .page-btn {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: #f3f4f6;
+        color: #111827;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .catalog-pagination .page-btn:hover {
+            background: #111827;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .catalog-pagination .page-btn.current {
+            background: #111827;
+            color: #fff;
+            cursor: default;
+        }
+
+        .catalog-pagination .page-btn.page-nav {
+            padding: 0 16px;
+        }
+
+    .catalog-pagination .page-ellipsis {
+        padding: 0 4px;
+        color: #9ca3af;
+        font-weight: 600;
+    }
 </style>
 
 <section class="catalog-hero">
@@ -210,8 +258,71 @@
                     </div>
                 }
 
+                <div id="sinResultadosProducto" class="col-12" style="display:none;">
+                    <div class="alert alert-info text-center">
+                        No se encontraron productos que coincidan con tu búsqueda.
+                    </div>
+                </div>
+
             </div>
         </div>
+
+        @{
+            var paginaActual = ViewBag.PaginaActual != null ? (int)ViewBag.PaginaActual : 1;
+            var totalPaginas = ViewBag.TotalPaginas != null ? (int)ViewBag.TotalPaginas : 0;
+        }
+
+        @if (totalPaginas > 1)
+        {
+            var paginasAMostrar = new List<int?>();
+            var rangoInicio = Math.Max(1, paginaActual - 2);
+            var rangoFin = Math.Min(totalPaginas, paginaActual + 2);
+
+            if (rangoInicio > 1)
+            {
+                paginasAMostrar.Add(1);
+                if (rangoInicio > 2) { paginasAMostrar.Add(null); }
+            }
+
+            for (var i = rangoInicio; i <= rangoFin; i++)
+            {
+                paginasAMostrar.Add(i);
+            }
+
+            if (rangoFin < totalPaginas)
+            {
+                if (rangoFin < totalPaginas - 1) { paginasAMostrar.Add(null); }
+                paginasAMostrar.Add(totalPaginas);
+            }
+
+            <nav class="catalog-pagination" aria-label="Paginación de productos">
+                @if (paginaActual > 1)
+                {
+                    <a class="page-btn page-nav" href="@Url.Action("VerProductos", new { pagina = paginaActual - 1 })">← Anterior</a>
+                }
+
+                @foreach (var p in paginasAMostrar)
+                {
+                    if (p == null)
+                    {
+                        <span class="page-ellipsis">…</span>
+                    }
+                    else if (p == paginaActual)
+                    {
+                        <span class="page-btn current">@p</span>
+                    }
+                    else
+                    {
+                        <a class="page-btn" href="@Url.Action("VerProductos", new { pagina = p })">@p</a>
+                    }
+                }
+
+                @if (paginaActual < totalPaginas)
+                {
+                    <a class="page-btn page-nav" href="@Url.Action("VerProductos", new { pagina = paginaActual + 1 })">Siguiente →</a>
+                }
+            </nav>
+        }
 
     </div>
 </section>
@@ -221,9 +332,12 @@
         document.addEventListener("DOMContentLoaded", function () {
             const input = document.getElementById("buscarProducto");
             const productos = document.querySelectorAll(".producto-item");
+            const mensajeSinResultados = document.getElementById("sinResultadosProducto");
+            const paginacion = document.querySelector(".catalog-pagination");
 
             input.addEventListener("keyup", function () {
                 const texto = input.value.toLowerCase().trim();
+                let visibles = 0;
 
                 productos.forEach(function (producto) {
                     const nombre = producto.querySelector(".catalog-name")?.textContent.toLowerCase() || "";
@@ -231,10 +345,19 @@
 
                     if (nombre.includes(texto) || descripcion.includes(texto)) {
                         producto.style.display = "";
+                        visibles++;
                     } else {
                         producto.style.display = "none";
                     }
                 });
+
+                if (mensajeSinResultados) {
+                    mensajeSinResultados.style.display = (visibles === 0 && texto !== "") ? "" : "none";
+                }
+
+                if (paginacion) {
+                    paginacion.style.display = (texto !== "") ? "none" : "";
+                }
             });
         });
     </script>

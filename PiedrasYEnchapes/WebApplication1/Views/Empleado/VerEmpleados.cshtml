@@ -501,7 +501,8 @@
             });
 
             $('#filtroEstadoEmpleado').on('change', function () {
-                table.column(3).search(this.value).draw();
+                var valor = this.value;
+                table.column(3).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $('#filtroTelefonoEmpleado').on('change', function () {

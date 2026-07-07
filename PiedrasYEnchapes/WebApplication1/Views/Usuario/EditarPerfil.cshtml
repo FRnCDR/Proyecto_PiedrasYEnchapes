@@ -32,7 +32,7 @@
                 <div class="ig-field">
                     <label class="ig-label">Identificación</label>
                     @Html.TextBoxFor(x => x.Identificacion,
-                        new { @class = "ig-control", id = "Identificacion" })
+                        new { @class = "ig-control", id = "Identificacion", @readonly = "readonly" })
                 </div>
 
                 <!-- Nombre -->
@@ -73,9 +73,6 @@
 
 @section Scripts {
     <script>
-        console.log("UrlConsultarCedulaEditarPerfil:", '@ViewBag.UrlConsultarCedula');
-        var urlConsultarCedulaEditarPerfil = '@ViewBag.UrlConsultarCedula';
-
         function closePerfilToast() {
             const toast = document.getElementById('perfilToast');
             if (toast) toast.remove();
@@ -84,9 +81,5 @@
         window.addEventListener('load', function () {
             setTimeout(closePerfilToast, 4000);
         });
-
-
     </script>
-
-    <script src="~/StaticFiles/js/EditarPerfil.js"></script>
 }

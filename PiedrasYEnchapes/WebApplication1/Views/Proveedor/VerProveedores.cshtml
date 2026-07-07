@@ -546,11 +546,13 @@
             });
 
             $('#filtroEstadoProveedor').on('change', function () {
-                table.column(7).search(this.value).draw();
+                var valor = this.value;
+                table.column(7).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $('#filtroTipoProveedor').on('change', function () {
-                table.column(5).search(this.value).draw();
+                var valor = this.value;
+                table.column(5).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {

@@ -13,12 +13,24 @@ namespace WebApplication1.Controllers
     [ValidarSesion]
     public class ProductosController : Controller
     {
-        public ActionResult VerProductos()
+        private const int ProductosPorPagina = 12;
+
+        public ActionResult VerProductos(int pagina = 1)
         {
             using (var context = new DATABASE_PYEEntities())
             {
-                var lista = context.tbProductos
-                    .AsNoTracking()
+                var query = context.tbProductos.AsNoTracking();
+
+                var totalProductos = query.Count();
+                var totalPaginas = (int)Math.Ceiling(totalProductos / (double)ProductosPorPagina);
+
+                if (pagina < 1) pagina = 1;
+                if (totalPaginas > 0 && pagina > totalPaginas) pagina = totalPaginas;
+
+                var lista = query
+                    .OrderBy(p => p.Nombre)
+                    .Skip((pagina - 1) * ProductosPorPagina)
+                    .Take(ProductosPorPagina)
                     .Select(p => new Producto
                     {
                         ProductoID = p.ProductoID,
@@ -33,6 +45,9 @@ namespace WebApplication1.Controllers
                         Estado = p.Estado
                     })
                     .ToList();
+
+                ViewBag.PaginaActual = pagina;
+                ViewBag.TotalPaginas = totalPaginas;
 
                 return View(lista);
             }

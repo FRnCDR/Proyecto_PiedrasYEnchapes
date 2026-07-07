@@ -51,7 +51,7 @@
                             <!-- Stock -->
                             <div class="mb-3">
                                 <label class="form-label">Stock</label>
-                                @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", placeholder = "Stock disponible" })
+                                @Html.TextBoxFor(model => model.Stock, new { @class = "form-control", placeholder = "Stock disponible", type = "number", min = "0" })
                                 @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
                             </div>
 

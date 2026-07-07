@@ -641,11 +641,13 @@ Tables_paginate .paginate_button.next {
             });
 
             $('#filtroEstado').on('change', function () {
-                table.column(4).search(this.value).draw();
+                var valor = this.value;
+                table.column(4).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $('#filtroRecepcion').on('change', function () {
-                table.column(5).search(this.value).draw();
+                var valor = this.value;
+                table.column(5).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {

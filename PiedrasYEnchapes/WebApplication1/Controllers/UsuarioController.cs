@@ -22,9 +22,6 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public ActionResult EditarPerfil()
         {
-            // ✅ URL del endpoint que ya tienes en HomeController
-            ViewBag.UrlConsultarCedula = Url.Action("ConsultarCedula", "Home");
-
             // Mensajes del POST
             ViewBag.Mensaje = TempData["Mensaje"];
             ViewBag.TipoMensaje = TempData["TipoMensaje"];
@@ -96,8 +93,7 @@ namespace WebApplication1.Controllers
                     return RedirectToAction("EditarPerfil");
                 }
 
-                // ✅ Actualizar datos
-                u.Identificacion = usuario.Identificacion;
+                // ✅ Actualizar datos (la identificación no se modifica: es el identificador permanente de la cuenta)
                 u.Nombre = usuario.Nombre;
                 u.CorreoElectronico = usuario.CorreoElectronico;
 

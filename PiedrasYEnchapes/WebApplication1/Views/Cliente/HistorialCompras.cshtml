@@ -545,7 +545,8 @@
             });
 
             $('#filtroEstadoCompra').on('change', function () {
-                table.column(3).search(this.value).draw();
+                var valor = this.value;
+                table.column(3).search(valor ? '^' + valor + '$' : '', true, false).draw();
             });
 
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
