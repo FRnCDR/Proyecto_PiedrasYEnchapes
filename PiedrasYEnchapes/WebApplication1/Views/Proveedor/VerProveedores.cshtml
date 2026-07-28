@@ -315,6 +315,24 @@
             background: #0284c7;
         }
 
+    .btn-action-disable {
+        background: #dc2626;
+        color: #fff;
+    }
+
+        .btn-action-disable:hover {
+            background: #b91c1c;
+        }
+
+    .btn-action-enable {
+        background: #16a34a;
+        color: #fff;
+    }
+
+        .btn-action-enable:hover {
+            background: #15803d;
+        }
+
     @@media (max-width: 992px) {
         .dashboard-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -461,6 +479,11 @@
                                                 Editar
                                             </a>
 
+                                            <a href="@Url.Action("CambiarEstadoProveedor", "Proveedor", new { id = item.ProveedorID })"
+                                               class="btn-action-table @(item.Estado ? "btn-action-disable" : "btn-action-enable")">
+                                                @(item.Estado ? "Desactivar" : "Activar")
+                                            </a>
+
                                             <a href="@Url.Action("FacturaPendientes", "Proveedor", new { proveedorId = item.ProveedorID })"
                                                class="btn-action-table btn-action-facturas">
                                                 Facturas
@@ -541,12 +564,14 @@
 
             $('#filtroEstadoProveedor').on('change', function () {
                 var valor = this.value;
-                table.column(7).search(valor ? '^' + valor + '$' : '', true, false).draw();
+                // \s* tolera los espacios que DataTables deja al extraer el texto de la celda (span de estado).
+                table.column(7).search(valor ? '^\\s*' + valor + '\\s*$' : '', true, false).draw();
             });
 
             $('#filtroTipoProveedor').on('change', function () {
                 var valor = this.value;
-                table.column(5).search(valor ? '^' + valor + '$' : '', true, false).draw();
+                // \s* tolera los espacios del texto extraído; el ancla evita que "Nacional" choque con "Internacional".
+                table.column(5).search(valor ? '^\\s*' + valor + '\\s*$' : '', true, false).draw();
             });
 
             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
@@ -554,23 +579,30 @@
                     return true;
                 }
 
-                let fecha = data[6];
+                let fecha = data[6] ? data[6].trim() : "";
                 let desde = $('#filtroFechaDesdeProveedor').val();
                 let hasta = $('#filtroFechaHastaProveedor').val();
 
                 if (!fecha) return true;
 
+                // Fecha de la fila en formato dd/MM/yyyy -> Date local.
                 let partes = fecha.split('/');
-                let fechaRow = new Date(partes[2], partes[1] - 1, partes[0]);
+                if (partes.length !== 3) return true;
+                let fechaRow = new Date(+partes[2], +partes[1] - 1, +partes[0]);
+                fechaRow.setHours(0, 0, 0, 0);
 
+                // Los inputs date entregan "yyyy-MM-dd"; se parsean como fecha LOCAL
+                // para evitar el desfase de un día que provoca new Date("yyyy-MM-dd") (UTC).
                 if (desde) {
-                    let fDesde = new Date(desde);
+                    let d = desde.split('-');
+                    let fDesde = new Date(+d[0], +d[1] - 1, +d[2]);
                     fDesde.setHours(0, 0, 0, 0);
                     if (fechaRow < fDesde) return false;
                 }
 
                 if (hasta) {
-                    let fHasta = new Date(hasta);
+                    let h = hasta.split('-');
+                    let fHasta = new Date(+h[0], +h[1] - 1, +h[2]);
                     fHasta.setHours(23, 59, 59, 999);
                     if (fechaRow > fHasta) return false;
                 }

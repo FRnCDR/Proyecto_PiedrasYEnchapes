@@ -11,11 +11,14 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
+    // Nota: la restricción de administrador se aplica por acción (no a toda la clase),
+    // porque HistorialCompras/DetalleCompra/DescargarPdf son del cliente dueño de la compra,
+    // no del administrador. Esas acciones validan la propiedad por IdUsuario.
     [ValidarSesion]
-    [ValidarPerfilAdmin]
     public class ClienteController : Controller
     {
         // Consultar todos los clientes
+        [ValidarPerfilAdmin]
         public ActionResult VerClientes()
         {
             var resultado = ConsultarClientes();
@@ -24,6 +27,7 @@ namespace WebApplication1.Controllers
 
         // Agregar nuevo cliente (GET)
         [HttpGet]
+        [ValidarPerfilAdmin]
         public ActionResult AgregarCliente()
         {
             return View(new Cliente());
@@ -31,6 +35,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidarPerfilAdmin]
         public ActionResult AgregarCliente(Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -102,6 +107,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
+        [ValidarPerfilAdmin]
         public ActionResult ActualizarCliente(int? q)
         {
             if (!q.HasValue)
@@ -142,6 +148,7 @@ namespace WebApplication1.Controllers
         // Actualizar cliente (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidarPerfilAdmin]
         public ActionResult ActualizarCliente(Cliente cliente)
         {
             if (!ModelState.IsValid)
@@ -203,6 +210,7 @@ namespace WebApplication1.Controllers
         // Cambiar estado (activar/inactivar)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidarPerfilAdmin]
         public ActionResult CambiarEstadoCliente(int q)
         {
             using (var context = new DATABASE_PYEEntities())

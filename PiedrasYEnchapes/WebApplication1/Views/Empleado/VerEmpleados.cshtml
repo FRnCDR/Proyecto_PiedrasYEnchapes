@@ -496,7 +496,9 @@
 
             $('#filtroEstadoEmpleado').on('change', function () {
                 var valor = this.value;
-                table.column(3).search(valor ? '^' + valor + '$' : '', true, false).draw();
+                // \s* tolera los espacios que DataTables deja al extraer el texto de la celda (span de estado).
+                // El ancla ^...$ evita que "Activo" coincida con "Inactivo".
+                table.column(3).search(valor ? '^\\s*' + valor + '\\s*$' : '', true, false).draw();
             });
 
             $('#filtroTelefonoEmpleado').on('change', function () {

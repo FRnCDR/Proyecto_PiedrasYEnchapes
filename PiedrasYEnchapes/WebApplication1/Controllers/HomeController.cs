@@ -39,6 +39,16 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Login(Usuario usuario)
         {
+            // Identificamos el intento por correo + IP para limitar la fuerza bruta.
+            var ip = Request.UserHostAddress;
+
+            // Si la cuenta/IP está bloqueada por demasiados intentos fallidos, no seguimos.
+            if (LoginThrottleHelper.EstaBloqueado(usuario.CorreoElectronico, ip, out int minutosRestantes))
+            {
+                ViewBag.Mensaje = $"Demasiados intentos fallidos. Intente nuevamente en {minutosRestantes} minuto(s).";
+                return View(usuario);
+            }
+
             using (var context = new DATABASE_PYEEntities())
             {
                 var usuarioDb = context.tbUsuario
@@ -47,12 +57,25 @@ namespace WebApplication1.Controllers
                 if (usuarioDb != null &&
                     PasswordHelper.VerifyPassword(usuario.Contrasenna, usuarioDb.Contrasenna))
                 {
+                    // Inicio de sesión correcto: se limpia el conteo de intentos.
+                    LoginThrottleHelper.RegistrarExito(usuario.CorreoElectronico, ip);
+
                     Session["UsuarioCorreo"] = usuarioDb.CorreoElectronico;
                     Session["Nombre"] = usuarioDb.Nombre;
                     Session["IdUsuario"] = usuarioDb.IdUsuario;
                     Session["IdPerfil"] = usuarioDb.IdPerfil;
 
                     return RedirectToAction("Index", "Home");
+                }
+
+                // Credenciales incorrectas: se registra el intento fallido.
+                LoginThrottleHelper.RegistrarFallo(usuario.CorreoElectronico, ip);
+
+                // Volvemos a evaluar por si este fallo activó el bloqueo.
+                if (LoginThrottleHelper.EstaBloqueado(usuario.CorreoElectronico, ip, out int minRestantes))
+                {
+                    ViewBag.Mensaje = $"Demasiados intentos fallidos. Intente nuevamente en {minRestantes} minuto(s).";
+                    return View(usuario);
                 }
 
                 ViewBag.Mensaje = "Correo o contraseña incorrectos.";

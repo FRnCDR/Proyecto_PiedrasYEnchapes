@@ -3,6 +3,26 @@
 @{
     ViewBag.Title = "Detalle de Compra";
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var total = Model != null ? Model.Sum(x => x.Subtotal) : 0;
+
+    // Número de WhatsApp de la empresa (configurable en Web.config).
+    var whatsappNumero = System.Configuration.ConfigurationManager.AppSettings["WhatsAppEmpresa"];
+
+    // Mensaje pre-armado con el detalle de esta compra para coordinar por WhatsApp.
+    var sbMensaje = new System.Text.StringBuilder();
+    sbMensaje.Append("Hola, quiero coordinar mi compra #" + ViewBag.CompraID + " de Piedras y Enchapes.\n\n");
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            sbMensaje.Append("• " + item.Cantidad + " x " + item.NombreProducto
+                             + " — ₡" + item.Subtotal.ToString("N2") + "\n");
+        }
+    }
+    sbMensaje.Append("\nTotal: ₡" + total.ToString("N2"));
+
+    var whatsappUrl = "https://wa.me/" + whatsappNumero + "?text=" + Uri.EscapeDataString(sbMensaje.ToString());
 }
 
 <div class="hero_general">
@@ -50,8 +70,8 @@
     }
 
     .btn-volver {
-        display: inline-block;
-        margin-bottom: 18px;
+        display: inline-flex;
+        align-items: center;
         background: #111827;
         color: #fff;
         padding: 10px 16px;
@@ -74,19 +94,62 @@
         padding: 14px 16px;
         font-weight: 600;
     }
+
+    .detalle-acciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 18px;
+        align-items: center;
+    }
+
+    .btn-whatsapp {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #25d366;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .whatsapp-nota {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #6b7280;
+    }
 </style>
 
 <section class="detalle-section">
     <div class="detalle-container">
 
-        <a href="@Url.Action("HistorialCompras", "Cliente")" class="btn-volver">
-            Volver al historial
-        </a>
+        <div class="detalle-acciones">
+            <a href="@Url.Action("HistorialCompras", "Cliente")" class="btn-volver">
+                Volver al historial
+            </a>
+
+            @if (Model != null && Model.Any())
+            {
+                <a href="@whatsappUrl" target="_blank" rel="noopener" class="btn-whatsapp">
+                    <i class="fa fa-whatsapp"></i>
+                    Coordinar compra por WhatsApp
+                </a>
+            }
+        </div>
 
         <div class="detalle-card">
             <h2 class="detalle-title">Detalle de Compra #@ViewBag.CompraID</h2>
             <p class="detalle-subtitle">
-                Consulta el detalle de productos incluidos en esta compra.
+                Este comprobante es tu registro de compra. Para concretar el pago y la entrega,
+                coordina con la empresa por WhatsApp usando el botón de arriba.
             </p>
 
             @if (Model == null || !Model.Any())

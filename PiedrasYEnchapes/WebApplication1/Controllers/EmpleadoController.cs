@@ -100,7 +100,8 @@ namespace WebApplication1.Controllers
                     Nombre = e.Nombre,
                     Apellidos = e.Apellidos,
                     Correo = e.Correo,
-                    Telefono = e.Telefono
+                    Telefono = e.Telefono,
+                    Estado = e.Estado
                 }).FirstOrDefault();
 
                 if (datos == null)
@@ -150,6 +151,7 @@ namespace WebApplication1.Controllers
                     empleadoExistente.Apellidos = empleado.Apellidos;
                     empleadoExistente.Correo = empleado.Correo;
                     empleadoExistente.Telefono = empleado.Telefono;
+                    empleadoExistente.Estado = empleado.Estado;
 
                     var resultadoActualizacion = context.SaveChanges();
 

@@ -139,6 +139,9 @@ namespace WebApplication1.Controllers
                 return RedirectToAction("VerCarrito");
             }
 
+            // ID de la compra registrada, para redirigir luego al comprobante.
+            int nuevaCompraId;
+
             using (var context = new DATABASE_PYEEntities())
             {
                 foreach (var item in carrito)
@@ -201,14 +204,17 @@ namespace WebApplication1.Controllers
                 }
 
                 context.SaveChanges();
+
+                nuevaCompraId = nuevaCompra.CompraID;
             }
 
             Session["Carrito"] = new List<CarritoItem>();
 
-            TempData["Mensaje"] = "Compra realizada correctamente.";
+            TempData["Mensaje"] = "Compra registrada correctamente. Coordina la entrega por WhatsApp.";
             TempData["TipoMensaje"] = "success";
 
-            return RedirectToAction("HistorialCompras", "Cliente");
+            // Redirige al comprobante de la compra recién registrada, donde está el botón de WhatsApp.
+            return RedirectToAction("DetalleCompra", "Cliente", new { id = nuevaCompraId });
         }
     }
 }
