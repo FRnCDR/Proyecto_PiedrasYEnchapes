@@ -421,6 +421,27 @@
     <script src="~/StaticFiles/js/jquery-3.4.1.min.js"></script>
     <script src="~/StaticFiles/js/bootstrap.js"></script>
     <script src="~/StaticFiles/js/cotizaciones-cliente.js"></script>
+
+    <script>
+        window.assistantConfig = {
+            userName: @Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(primerNombre, true)),
+            routes: {
+                productos: '@Url.Action("VerProductos", "Productos")',
+                cotizar: '@Url.Action("CrearCotizacion", "Cotizacion")',
+                misCotizaciones: '@Url.Action("VerCotizaciones", "Cotizacion")',
+                carrito: '@Url.Action("VerCarrito", "Carrito")',
+                historial: '@Url.Action("HistorialCompras", "Cliente")',
+                nosotros: '@Url.Action("VerNosotros", "SobreNosotros")'
+            },
+            contacto: {
+                telefono: '+506 8884 3892',
+                telHref: 'tel:+50688843892',
+                email: 'piedrasyenchapes@gmail.com',
+                emailHref: 'mailto:piedrasyenchapes@gmail.com',
+                horario: 'Lunes a Domingo, 10:00 AM – 10:00 PM'
+            }
+        };
+    </script>
     <script src="~/StaticFiles/js/asistente-virtual.js"></script>
 
 

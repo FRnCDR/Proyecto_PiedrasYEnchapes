@@ -162,6 +162,31 @@
         box-shadow: 0 6px 16px rgba(17,24,39,0.12);
     }
 
+.assistant-message-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.assistant-action-btn {
+    display: inline-block;
+    background: #111827;
+    color: white;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+    .assistant-action-btn:hover {
+        background: #2f3d52;
+        color: white;
+        text-decoration: none;
+    }
+
 .assistant-quick-actions {
     padding: 12px 14px 0;
     display: flex;
