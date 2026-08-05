@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Página no disponible - Piedras y Enchapes</title>
+    <!--
+        Página estática de error. La usa customErrors (Web.config) para los errores
+        que ocurren fuera de MVC: rutas inexistentes (404), archivos no encontrados
+        o fallos que impiden ejecutar la aplicación. Al ser HTML puro, se muestra
+        aunque la aplicación o la base de datos no estén disponibles.
+    -->
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #0f0f10;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .error-card {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 18px;
+            box-shadow: 0 16px 40px rgba(0,0,0,.35);
+            padding: 40px 36px;
+            max-width: 560px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .error-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: rgba(255,193,7,.12);
+            border: 1px solid rgba(255,193,7,.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            color: #ffc107;
+        }
+
+        h1 { font-size: 26px; font-weight: 900; margin-bottom: 12px; }
+
+        p {
+            color: rgba(255,255,255,.75);
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .btn-amber, .btn-ghost {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 800;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .btn-amber { background: #ffc107; color: #111; }
+
+        .btn-ghost {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.14);
+            color: #fff;
+        }
+
+        .nota {
+            margin-top: 26px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,.10);
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-icon">!</div>
+
+        <h1>Página no disponible</h1>
+
+        <p>
+            La página que buscás no existe o no está disponible en este momento.
+        </p>
+        <p>
+            Verificá la dirección o volvé al inicio para seguir navegando por
+            nuestro catálogo.
+        </p>
+
+        <div class="acciones">
+            <a class="btn-amber" href="/">Volver al inicio</a>
+            <a class="btn-ghost" href="/Productos/VerProductos">Ver productos</a>
+        </div>
+
+        <div class="nota">
+            Piedras y Enchapes &middot; Si el problema persiste, contactanos por WhatsApp.
+        </div>
+    </div>
+</body>
+</html>

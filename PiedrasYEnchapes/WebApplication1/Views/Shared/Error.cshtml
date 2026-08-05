@@ -1,0 +1,129 @@
+@model System.Web.Mvc.HandleErrorInfo
+@{
+    // Página de error para excepciones no controladas (usada por HandleErrorAttribute).
+    // Es autocontenida a propósito: sin layout, sin sesión y sin consultas a la base de
+    // datos, para que pueda mostrarse incluso si esos componentes son los que fallaron.
+    // Nunca se muestran detalles técnicos al usuario final.
+    Layout = null;
+    ViewBag.Title = "Ocurrió un problema";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ocurrió un problema - Piedras y Enchapes</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #0f0f10;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .error-card {
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 18px;
+            box-shadow: 0 16px 40px rgba(0,0,0,.35);
+            padding: 40px 36px;
+            max-width: 560px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .error-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: rgba(255,193,7,.12);
+            border: 1px solid rgba(255,193,7,.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            color: #ffc107;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: rgba(255,255,255,.75);
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .btn-amber, .btn-ghost {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 800;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .btn-amber {
+            background: #ffc107;
+            color: #111;
+        }
+
+        .btn-ghost {
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.14);
+            color: #fff;
+        }
+
+        .nota {
+            margin-top: 26px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,.10);
+            font-size: 13px;
+            color: rgba(255,255,255,.55);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-icon">!</div>
+
+        <h1>Ocurrió un problema</h1>
+
+        <p>
+            No pudimos completar la acción que solicitaste. El equipo ya fue notificado
+            del inconveniente.
+        </p>
+        <p>
+            Podés intentarlo de nuevo en unos minutos o volver al inicio. Si necesitás
+            ayuda inmediata, escribinos y con gusto te atendemos.
+        </p>
+
+        <div class="acciones">
+            <a class="btn-amber" href="@Url.Content("~/")">Volver al inicio</a>
+            <a class="btn-ghost" href="@Url.Content("~/Productos/VerProductos")">Ver productos</a>
+        </div>
+
+        <div class="nota">
+            Piedras y Enchapes &middot; Si el problema persiste, contactanos por WhatsApp.
+        </div>
+    </div>
+</body>
+</html>

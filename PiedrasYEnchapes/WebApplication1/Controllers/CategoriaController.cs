@@ -8,6 +8,7 @@ using WebApplication1.Filtros;
 namespace WebApplication1.Controllers
 {
     [ValidarSesion]
+    [ValidarPerfilAdmin]
     public class CategoriaController : Controller
     {
         // ---------------------------------------------------------
