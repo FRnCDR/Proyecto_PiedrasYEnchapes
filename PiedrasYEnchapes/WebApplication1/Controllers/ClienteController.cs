@@ -40,7 +40,7 @@ namespace WebApplication1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Mensaje = "El modelo NO es válido";
+                ViewBag.Mensaje = "Revise los campos marcados: hay datos incompletos o con formato incorrecto.";
                 return View(cliente);
             }
 

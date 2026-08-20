@@ -35,6 +35,15 @@
 
                             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
 
+                            @* Muestra los avisos del controlador (correo duplicado, error al guardar, etc.).
+                               Sin esto el formulario se recargaba sin explicar por que no se guardo. *@
+                            if (ViewBag.Mensaje != null)
+                            {
+                                <div role="alert" style="background:#fff3cd;border:1px solid #ffe08a;color:#7a5b00;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-weight:600;">
+                                    @ViewBag.Mensaje
+                                </div>
+                            }
+
                             <!-- Nombre -->
                             <div class="mb-3">
                                 <label for="Nombre" class="form-label">Nombre</label>
