@@ -16,6 +16,12 @@
     primerNombre = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(primerNombre);
 
     var perfil = Session["IdPerfil"] != null ? Convert.ToInt32(Session["IdPerfil"]) : 0;
+
+    // Versión de style.css basada en su fecha de modificación: obliga al navegador
+    // a bajar la hoja nueva tras un despliegue en vez de usar la cacheada.
+    var versionEstilos = System.IO.File
+        .GetLastWriteTimeUtc(Server.MapPath("~/StaticFiles/css/style.css"))
+        .Ticks.ToString();
 }
 
 
@@ -29,6 +35,11 @@
     <title>@ViewBag.Title - Piedras Decorativas</title>
 
     <!-- Bootstrap CSS -->
+    @* Icono de la pestaña: monograma GF de la marca *@
+    <link rel="icon" href="~/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/StaticFiles/images/favicon-gf-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="~/StaticFiles/images/favicon-gf-180.png" />
+
     <link rel="stylesheet" href="~/StaticFiles/css/bootstrap.css" />
 
     <!-- Font Awesome -->
@@ -37,7 +48,7 @@
 
     <!-- Custom styles -->
     <link rel="stylesheet" href="~/StaticFiles/css/responsive.css" />
-    <link rel="stylesheet" href="~/StaticFiles/css/style.css" />
+    <link rel="stylesheet" href="~/StaticFiles/css/style.css?v=@versionEstilos" />
     <link href="~/StaticFiles/css/index-moderno.css" rel="stylesheet" />
     <link href="~/StaticFiles/css/catalogo-minimal.css" rel="stylesheet" />
     <link href="~/StaticFiles/css/catalogo-productos.css" rel="stylesheet" />
@@ -162,6 +173,10 @@
             <nav class="navbar navbar-expand-lg custom_nav-container navbar-clean">
                 <!-- Marca -->
                 <a class="navbar-brand brand-clean" href="@Url.Action("Index", "Home")">
+                    @* width/height dan el tamaño correcto aunque el CSS llegue cacheado *@
+                    <img src="~/StaticFiles/images/logo-marca.png"
+                         alt="Gustavo Fallas - Piedras, enchapes y más" class="brand-logo"
+                         width="95" height="52" />
                     <span>Piedras decorativas</span>
                 </a>
 

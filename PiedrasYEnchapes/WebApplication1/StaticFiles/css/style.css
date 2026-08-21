@@ -1182,11 +1182,38 @@ hr {
     padding: 12px 0;
 }
 
+.brand-clean {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+    /* Escudo de la marca; el fondo del PNG es transparente */
+    .brand-clean .brand-logo {
+        height: 52px;
+        width: auto;
+        display: block;
+    }
+
 .brand-clean span {
     font-size: 28px;
     font-weight: 800;
     color: #fff !important;
     letter-spacing: .4px;
+}
+
+@media (max-width: 575.98px) {
+    .brand-clean {
+        gap: 10px;
+    }
+
+        .brand-clean .brand-logo {
+            height: 40px;
+        }
+
+    .brand-clean span {
+        font-size: 21px;
+    }
 }
 
 /* UL en una sola fila */

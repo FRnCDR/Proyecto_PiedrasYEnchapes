@@ -380,6 +380,9 @@
     <Content Include="StaticFiles\images\mollejon.jpg" />
     <Content Include="StaticFiles\images\navGeneral.jpg" />
     <Content Include="StaticFiles\images\no-image.png" />
+    <Content Include="StaticFiles\images\logo-marca.png" />
+    <Content Include="StaticFiles\images\favicon-gf-32.png" />
+    <Content Include="StaticFiles\images\favicon-gf-180.png" />
     <Content Include="StaticFiles\fonts\DejaVuSans.ttf" />
     <Content Include="StaticFiles\fonts\DejaVuSans-Bold.ttf" />
     <Content Include="StaticFiles\fonts\LICENSE-DejaVu.txt" />
