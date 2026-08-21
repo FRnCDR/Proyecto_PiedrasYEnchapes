@@ -30,10 +30,37 @@ namespace WebApplication1.Services
             return new string(resultado);
         }
 
+        private static string CorreoSMTP => ConfigurationManager.AppSettings["CorreoSMTP"];
+        private static string ContrasennaSMTP => ConfigurationManager.AppSettings["ContrasennaSMTP"];
+
+        private static string ServidorSMTP =>
+            string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["ServidorSMTP"])
+                ? "smtp.gmail.com"
+                : ConfigurationManager.AppSettings["ServidorSMTP"];
+
+        private static int PuertoSMTP
+        {
+            get
+            {
+                int puerto;
+                return int.TryParse(ConfigurationManager.AppSettings["PuertoSMTP"], out puerto) ? puerto : 587;
+            }
+        }
+
+        /// <summary>
+        /// Indica si hay credenciales de correo. Se consulta ANTES de tocar la
+        /// contraseña, para no dejar al usuario sin acceso cuando no se puede avisar.
+        /// </summary>
+        public static bool EstaConfigurado()
+        {
+            return !string.IsNullOrWhiteSpace(CorreoSMTP)
+                && !string.IsNullOrWhiteSpace(ContrasennaSMTP);
+        }
+
         public static void EnviarCorreoRecuperacion(string asunto, string contrasenna, string destinatario)
         {
-            var correoSMTP = ConfigurationManager.AppSettings["CorreoSMTP"];
-            var contrasennaSMTP = ConfigurationManager.AppSettings["ContrasennaSMTP"];
+            var correoSMTP = CorreoSMTP;
+            var contrasennaSMTP = ContrasennaSMTP;
 
             if (string.IsNullOrWhiteSpace(correoSMTP))
                 throw new InvalidOperationException("AppSetting 'CorreoSMTP' no está configurado o está vacío.");
@@ -44,12 +71,13 @@ namespace WebApplication1.Services
             if (string.IsNullOrWhiteSpace(destinatario))
                 throw new ArgumentException("El correo destinatario está vacío o es nulo.", nameof(destinatario));
 
-            var smtp = new SmtpClient("smtp.gmail.com")
+            var smtp = new SmtpClient(ServidorSMTP)
             {
-                Port = 587,
+                Port = PuertoSMTP,
                 EnableSsl = true,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(correoSMTP, contrasennaSMTP)
+                Credentials = new NetworkCredential(correoSMTP, contrasennaSMTP),
+                Timeout = 20000
             };
 
 
@@ -65,7 +93,12 @@ namespace WebApplication1.Services
             };
 
             mensaje.To.Add(destinatario);
-            smtp.Send(mensaje);
+
+            using (smtp)
+            using (mensaje)
+            {
+                smtp.Send(mensaje);
+            }
         }
 
         private static string GetPlantillaRecuperacion()

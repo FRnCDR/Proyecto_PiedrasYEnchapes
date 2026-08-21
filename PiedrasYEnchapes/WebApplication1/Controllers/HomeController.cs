@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -125,47 +127,66 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult RecuperarAcceso(Usuario usuario)
         {
+            if (string.IsNullOrWhiteSpace(usuario.CorreoElectronico))
+            {
+                ViewBag.Mensaje = "Escribe tu correo electrónico.";
+                return View(usuario);
+            }
+
+            // Si no hay credenciales de correo no se puede avisar al usuario, así que
+            // ni se intenta: cambiar la contraseña sin poder enviarla lo dejaría afuera.
+            if (!RecuperacionService.EstaConfigurado())
+            {
+                ViewBag.Mensaje = "El envío de correos no está configurado. Contacta al administrador.";
+                return View(usuario);
+            }
+
             using (var context = new DATABASE_PYEEntities())
             {
-                // buscar usuario por correo (tbUsuario del EF)
                 var userDb = context.tbUsuario
                     .FirstOrDefault(u => u.CorreoElectronico == usuario.CorreoElectronico);
 
-                if (userDb != null)
+                if (userDb == null)
                 {
-                    // 1) generar contraseña temporal
-                    var passTemp = RecuperacionService.GenerarContrasenna();
+                    ViewBag.Mensaje = "No se encontró un usuario con ese correo.";
+                    return View(usuario);
+                }
 
-                    // 2) actualizar en BD
-                    userDb.Contrasenna = PasswordHelper.HashPassword(passTemp);
+                var passTemp = RecuperacionService.GenerarContrasenna();
 
-                    var filas = context.SaveChanges();
-
-                    if (filas > 0)
+                // La contraseña solo queda cambiada si el correo se envía. Si el envío
+                // falla se revierte y el usuario conserva la que ya tenía.
+                using (var transaccion = context.Database.BeginTransaction())
+                {
+                    try
                     {
-                        // 3) enviar correo
+                        userDb.Contrasenna = PasswordHelper.HashPassword(passTemp);
+                        context.SaveChanges();
+
                         RecuperacionService.EnviarCorreoRecuperacion(
                             "Recuperación de acceso - Piedras Decorativas",
                             passTemp,
                             userDb.CorreoElectronico
                         );
 
-                        ViewBag.MensajeOK = "Te enviamos una contraseña temporal a tu correo.";
-                        return View(); // o RedirectToAction("Login","Home");
+                        transaccion.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaccion.Rollback();
+
+                        System.Diagnostics.Trace.TraceError(
+                            "RecuperarAcceso falló para {0}: {1}", userDb.CorreoElectronico, ex);
+
+                        ViewBag.Mensaje = "No pudimos enviar el correo en este momento. Intenta de nuevo más tarde.";
+                        return View(usuario);
                     }
                 }
 
-                ViewBag.Mensaje = "No se encontró un usuario con ese correo o no se pudo restablecer.";
-                return View(usuario);
+                ViewBag.MensajeOK = "Te enviamos una contraseña temporal a tu correo.";
+                return View();
             }
         }
-
-
-
-
-
-
-
 
         // ----------------- CONSULTA CÉDULA  -----------------
         [HttpGet]

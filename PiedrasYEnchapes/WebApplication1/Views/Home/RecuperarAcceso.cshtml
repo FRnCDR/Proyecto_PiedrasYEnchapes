@@ -49,3 +49,32 @@
         </div>
     </section>
 </div>
+
+@* Resultado del intento de recuperación *@
+@if (ViewBag.MensajeOK != null)
+{
+    <div id="recuperarToast" class="custom-toast toast-success">
+        <span>@ViewBag.MensajeOK</span>
+        <button type="button" onclick="cerrarToastRecuperar()">×</button>
+    </div>
+}
+else if (ViewBag.Mensaje != null)
+{
+    <div id="recuperarToast" class="custom-toast toast-error">
+        <span>@ViewBag.Mensaje</span>
+        <button type="button" onclick="cerrarToastRecuperar()">×</button>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function cerrarToastRecuperar() {
+            var t = document.getElementById('recuperarToast');
+            if (t) { t.style.display = 'none'; }
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(cerrarToastRecuperar, 6000);
+        });
+    </script>
+}
