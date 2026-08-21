@@ -354,7 +354,16 @@
     .detalle-botones {
         display: flex;
         flex-wrap: wrap;
+        align-items: center; /* evita que los enlaces se estiren a la altura del form */
         gap: 15px;
+    }
+
+    /* Cantidad y "Agregar al carrito" en la misma línea */
+    .form-agregar {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
     }
 
     .btn-detalle-principal,
@@ -429,6 +438,15 @@
             width: 100%;
         }
 
+        .form-agregar {
+            width: 100%;
+        }
+
+        .detalle-cantidad {
+            justify-content: space-between;
+            width: 100%;
+        }
+
         .miniatura-imagen {
             width: 90px;
             height: 75px;
@@ -455,7 +473,6 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        margin-bottom: 14px;
     }
 
         .detalle-cantidad label {
