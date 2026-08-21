@@ -1,13 +1,12 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using WebApplication1.EF;
 using WebApplication1.Filtros;
 using WebApplication1.Models;
+using WebApplication1.Services;
 
 namespace WebApplication1.Controllers
 {
@@ -319,21 +318,31 @@ namespace WebApplication1.Controllers
             // Verificar si el usuario está autenticado
             if (Session["IdUsuario"] == null)
             {
-                return RedirectToAction("Login", "Usuario");
+                return RedirectToAction("Login", "Home");
             }
 
             int idUsuario = Convert.ToInt32(Session["IdUsuario"]);
 
             using (var context = new DATABASE_PYEEntities())
             {
-                bool compraValida = context.tbCompras.Any(c => c.CompraID == compraId && c.IdUsuario == idUsuario);
+                // Solo el dueño de la compra puede descargar su comprobante.
+                var compra = context.tbCompras
+                    .AsNoTracking()
+                    .FirstOrDefault(c => c.CompraID == compraId && c.IdUsuario == idUsuario);
 
-                if (!compraValida)
+                if (compra == null)
                 {
                     return RedirectToAction("HistorialCompras");
                 }
 
+                var cliente = context.tbUsuario
+                    .AsNoTracking()
+                    .Where(u => u.IdUsuario == idUsuario)
+                    .Select(u => new { u.Nombre, u.Identificacion, u.CorreoElectronico })
+                    .FirstOrDefault();
+
                 var detalle = context.tbDetalleCompra
+                    .AsNoTracking()
                     .Where(d => d.CompraID == compraId)
                     .Select(d => new DetalleCompraModel
                     {
@@ -345,44 +354,17 @@ namespace WebApplication1.Controllers
                     })
                     .ToList();
 
-                // Crear el documento PDF
-                using (var memoryStream = new MemoryStream())
-                {
-                    // Crear un documento PDF con tamaño A4
-                    Document document = new Document(PageSize.A4);
-                    PdfWriter.GetInstance(document, memoryStream);
+                var pdf = ComprobantePdfService.Generar(
+                    compra.CompraID,
+                    compra.FechaCompra,
+                    compra.Estado,
+                    cliente != null ? cliente.Nombre : null,
+                    cliente != null ? cliente.Identificacion : null,
+                    cliente != null ? cliente.CorreoElectronico : null,
+                    detalle);
 
-                    document.Open();
-
-                    // Título del PDF
-                    document.Add(new Paragraph($"Detalle de la Compra {compraId}"));
-                    document.Add(new Paragraph($"Fecha de compra: {DateTime.Now.ToString("dd/MM/yyyy")}"));
-                    document.Add(new Paragraph(" "));
-
-                    // Agregar los detalles de los productos comprados
-                    PdfPTable table = new PdfPTable(4);
-                    table.AddCell("Producto");
-                    table.AddCell("Cantidad");
-                    table.AddCell("Precio Unitario");
-                    table.AddCell("Subtotal");
-
-                    foreach (var item in detalle)
-                    {
-                        table.AddCell(item.NombreProducto);
-                        table.AddCell(item.Cantidad.ToString());
-                        table.AddCell($"₡ {item.PrecioUnitario:N2}");
-                        table.AddCell($"₡ {item.Subtotal:N2}");
-                    }
-
-                    document.Add(table);
-
-                    // Cerrar el documento PDF
-                    document.Close();
-
-                    // Devolver el archivo PDF
-                    byte[] fileBytes = memoryStream.ToArray();
-                    return File(fileBytes, "application/pdf", $"DetalleCompra_{compraId}.pdf");
-                }
+                return File(pdf, "application/pdf",
+                    string.Format("Comprobante-COMP-{0:D6}.pdf", compra.CompraID));
             }
         }
 

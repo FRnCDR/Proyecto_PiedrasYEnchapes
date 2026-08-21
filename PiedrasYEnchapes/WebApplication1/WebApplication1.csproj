@@ -318,6 +318,7 @@
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RecuperacionService.cs" />
+    <Compile Include="Services\ComprobantePdfService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="EF\Model1.Context.tt">
@@ -379,6 +380,9 @@
     <Content Include="StaticFiles\images\mollejon.jpg" />
     <Content Include="StaticFiles\images\navGeneral.jpg" />
     <Content Include="StaticFiles\images\no-image.png" />
+    <Content Include="StaticFiles\fonts\DejaVuSans.ttf" />
+    <Content Include="StaticFiles\fonts\DejaVuSans-Bold.ttf" />
+    <Content Include="StaticFiles\fonts\LICENSE-DejaVu.txt" />
     <Content Include="StaticFiles\images\piedraSanchezSemiRusticaFachaleta.jpg" />
     <Content Include="StaticFiles\images\piedraSanchezSemiRusticoIrregular.jpg" />
     <Content Include="StaticFiles\images\quintaAmarilla.jpg" />
