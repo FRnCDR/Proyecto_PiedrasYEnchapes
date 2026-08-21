@@ -122,6 +122,80 @@
         margin-top: 6px;
     }
 
+    /* Selector de cantidad */
+    .form-cantidad {
+        margin: 8px 0 4px;
+    }
+
+    .cantidad-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 999px;
+        padding: 4px;
+    }
+
+    .cantidad-btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        color: #111827;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+        transition: background .15s ease, color .15s ease;
+    }
+
+        .cantidad-btn:hover:not(:disabled) {
+            background: #111827;
+            color: #fff;
+        }
+
+        .cantidad-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+    .cantidad-input {
+        width: 52px;
+        border: none;
+        background: transparent;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+        outline: none;
+        -moz-appearance: textfield;
+    }
+
+        .cantidad-input::-webkit-outer-spin-button,
+        .cantidad-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    .cantidad-aplicar {
+        background: #111827;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .cantidad-stock {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
     .carrito-acciones {
         display: flex;
         flex-direction: column;
@@ -261,7 +335,41 @@
                             <div>
                                 <div class="carrito-nombre">@item.Nombre</div>
                                 <div class="carrito-meta">Precio unitario: ₡ @item.Precio.ToString("N2")</div>
-                                <div class="carrito-meta">Cantidad: @item.Cantidad</div>
+
+                                @using (Html.BeginForm("ActualizarCantidad", "Carrito", FormMethod.Post, new { @class = "form-cantidad" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("productoId", item.ProductoID)
+
+                                    <div class="cantidad-control">
+                                        <button type="button" class="cantidad-btn" data-paso="-1"
+                                                title="Quitar una unidad" aria-label="Quitar una unidad">&minus;</button>
+
+                                        <input type="number" name="cantidad" class="cantidad-input"
+                                               value="@item.Cantidad" min="1" max="@item.Stock"
+                                               aria-label="Cantidad de @item.Nombre" />
+
+                                        <button type="button" class="cantidad-btn" data-paso="1"
+                                                title="Agregar una unidad" aria-label="Agregar una unidad">+</button>
+
+                                        @* Sin JavaScript el stepper no funciona, pero escribir y enviar sí. *@
+                                        <noscript>
+                                            <button type="submit" class="cantidad-aplicar">Actualizar</button>
+                                        </noscript>
+                                    </div>
+
+                                    <div class="carrito-meta cantidad-stock">
+                                        @if (item.Stock > 0)
+                                        {
+                                            <text>@item.Stock disponible(s)</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Sin stock</text>
+                                        }
+                                    </div>
+                                }
+
                                 <div class="carrito-subtotal">Subtotal: ₡ @item.Subtotal.ToString("N2")</div>
                             </div>
 
@@ -318,3 +426,50 @@
 
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        (function () {
+            document.querySelectorAll(".form-cantidad").forEach(function (form) {
+                var input = form.querySelector(".cantidad-input");
+                if (!input) { return; }
+
+                var min = parseInt(input.getAttribute("min"), 10) || 1;
+                var max = parseInt(input.getAttribute("max"), 10) || 1;
+
+                function limitar(valor) {
+                    if (isNaN(valor)) { return min; }
+                    return Math.min(max, Math.max(min, valor));
+                }
+
+                function refrescarBotones() {
+                    var actual = parseInt(input.value, 10);
+                    form.querySelectorAll(".cantidad-btn").forEach(function (btn) {
+                        var paso = parseInt(btn.getAttribute("data-paso"), 10);
+                        btn.disabled = (paso < 0 && actual <= min) || (paso > 0 && actual >= max);
+                    });
+                }
+
+                form.querySelectorAll(".cantidad-btn").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        var paso = parseInt(btn.getAttribute("data-paso"), 10);
+                        var nuevo = limitar((parseInt(input.value, 10) || min) + paso);
+
+                        if (nuevo === parseInt(input.value, 10)) { return; }
+
+                        input.value = nuevo;
+                        form.submit();
+                    });
+                });
+
+                // Al escribir la cantidad a mano se envía al salir del campo o con Enter.
+                input.addEventListener("change", function () {
+                    input.value = limitar(parseInt(input.value, 10));
+                    form.submit();
+                });
+
+                refrescarBotones();
+            });
+        })();
+    </script>
+}

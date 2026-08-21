@@ -101,11 +101,25 @@
                         <div class="detalle-botones">
                             @if (Model.Estado && Model.Stock > 0)
                             {
-                                using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post))
+                                using (Html.BeginForm("AgregarAlCarrito", "Carrito", FormMethod.Post, new { @class = "form-agregar" }))
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.Hidden("productoId", Model.ProductoID)
-                                    @Html.Hidden("cantidad", 1)
+
+                                    <div class="detalle-cantidad">
+                                        <label for="cantidadProducto">Cantidad</label>
+
+                                        <div class="cantidad-control">
+                                            <button type="button" class="cantidad-btn" data-paso="-1"
+                                                    aria-label="Quitar una unidad">&minus;</button>
+
+                                            <input type="number" id="cantidadProducto" name="cantidad"
+                                                   class="cantidad-input" value="1" min="1" max="@Model.Stock" />
+
+                                            <button type="button" class="cantidad-btn" data-paso="1"
+                                                    aria-label="Agregar una unidad">+</button>
+                                        </div>
+                                    </div>
 
                                     <button type="submit" class="btn-detalle-principal">
                                         <i class="fa fa-shopping-cart"></i> Agregar al carrito
@@ -434,3 +448,114 @@
         elemento.classList.add("activa");
     }
 </script>
+
+<style>
+    /* Selector de cantidad antes de agregar al carrito */
+    .detalle-cantidad {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+        .detalle-cantidad label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0;
+        }
+
+    .cantidad-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 999px;
+        padding: 4px;
+    }
+
+    .cantidad-btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        color: #111827;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+        transition: background .15s ease, color .15s ease;
+    }
+
+        .cantidad-btn:hover:not(:disabled) {
+            background: #111827;
+            color: #fff;
+        }
+
+        .cantidad-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+    .cantidad-input {
+        width: 52px;
+        border: none;
+        background: transparent;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+        outline: none;
+        -moz-appearance: textfield;
+    }
+
+        .cantidad-input::-webkit-outer-spin-button,
+        .cantidad-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+</style>
+
+@section Scripts {
+    <script>
+        (function () {
+            var form = document.querySelector(".form-agregar");
+            if (!form) { return; }
+
+            var input = form.querySelector(".cantidad-input");
+            var min = parseInt(input.getAttribute("min"), 10) || 1;
+            var max = parseInt(input.getAttribute("max"), 10) || 1;
+
+            function limitar(valor) {
+                if (isNaN(valor)) { return min; }
+                return Math.min(max, Math.max(min, valor));
+            }
+
+            function refrescarBotones() {
+                var actual = parseInt(input.value, 10);
+                form.querySelectorAll(".cantidad-btn").forEach(function (btn) {
+                    var paso = parseInt(btn.getAttribute("data-paso"), 10);
+                    btn.disabled = (paso < 0 && actual <= min) || (paso > 0 && actual >= max);
+                });
+            }
+
+            form.querySelectorAll(".cantidad-btn").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    var paso = parseInt(btn.getAttribute("data-paso"), 10);
+                    input.value = limitar((parseInt(input.value, 10) || min) + paso);
+                    refrescarBotones();
+                });
+            });
+
+            input.addEventListener("change", function () {
+                input.value = limitar(parseInt(input.value, 10));
+                refrescarBotones();
+            });
+
+            refrescarBotones();
+        })();
+    </script>
+}

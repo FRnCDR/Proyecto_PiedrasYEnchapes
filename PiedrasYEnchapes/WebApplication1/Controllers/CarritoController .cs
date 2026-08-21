@@ -24,7 +24,122 @@ namespace WebApplication1.Controllers
         public ActionResult VerCarrito()
         {
             var carrito = ObtenerCarrito();
+
+            // El stock se refresca aquí porque el carrito vive en sesión y el
+            // inventario pudo cambiar desde que se agregó el producto.
+            if (carrito.Any())
+            {
+                using (var context = new DATABASE_PYEEntities())
+                {
+                    var ids = carrito.Select(x => x.ProductoID).ToList();
+
+                    var productos = context.tbProductos
+                        .Where(p => ids.Contains(p.ProductoID))
+                        .Select(p => new { p.ProductoID, p.Stock, p.Precio, p.Estado })
+                        .ToList();
+
+                    foreach (var item in carrito.ToList())
+                    {
+                        var producto = productos.FirstOrDefault(p => p.ProductoID == item.ProductoID);
+
+                        if (producto == null || !producto.Estado)
+                        {
+                            carrito.Remove(item);
+                            TempData["Mensaje"] = "Se quitaron productos que ya no están disponibles.";
+                            TempData["TipoMensaje"] = "warning";
+                            continue;
+                        }
+
+                        item.Stock = producto.Stock;
+                        item.Precio = producto.Precio;
+
+                        // Si el stock bajó, se ajusta la cantidad en lugar de dejar
+                        // que la compra falle al confirmar.
+                        if (item.Cantidad > producto.Stock)
+                        {
+                            item.Cantidad = producto.Stock;
+                            TempData["Mensaje"] = "Se ajustaron cantidades por disponibilidad de stock.";
+                            TempData["TipoMensaje"] = "warning";
+                        }
+                    }
+
+                    carrito.RemoveAll(x => x.Cantidad <= 0);
+                    Session["Carrito"] = carrito;
+                }
+            }
+
             return View(carrito);
+        }
+
+        /// <summary>
+        /// Fija la cantidad de una línea del carrito (no la suma, la reemplaza).
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ActualizarCantidad(int productoId, int cantidad)
+        {
+            var carrito = ObtenerCarrito();
+            var item = carrito.FirstOrDefault(x => x.ProductoID == productoId);
+
+            if (item == null)
+            {
+                TempData["Mensaje"] = "El producto ya no está en el carrito.";
+                TempData["TipoMensaje"] = "warning";
+                return RedirectToAction("VerCarrito");
+            }
+
+            // Cantidad 0 o menos equivale a quitar la línea.
+            if (cantidad <= 0)
+            {
+                carrito.Remove(item);
+                Session["Carrito"] = carrito;
+
+                TempData["Mensaje"] = "Producto eliminado del carrito.";
+                TempData["TipoMensaje"] = "success";
+                return RedirectToAction("VerCarrito");
+            }
+
+            using (var context = new DATABASE_PYEEntities())
+            {
+                var producto = context.tbProductos
+                    .FirstOrDefault(p => p.ProductoID == productoId);
+
+                if (producto == null || !producto.Estado)
+                {
+                    carrito.Remove(item);
+                    Session["Carrito"] = carrito;
+
+                    TempData["Mensaje"] = "Este producto ya no está disponible.";
+                    TempData["TipoMensaje"] = "warning";
+                    return RedirectToAction("VerCarrito");
+                }
+
+                if (cantidad > producto.Stock)
+                {
+                    cantidad = producto.Stock;
+                    TempData["Mensaje"] = "Solo hay " + producto.Stock + " unidad(es) disponibles de '" + producto.Nombre + "'.";
+                    TempData["TipoMensaje"] = "warning";
+                }
+                else
+                {
+                    TempData["Mensaje"] = "Cantidad actualizada.";
+                    TempData["TipoMensaje"] = "success";
+                }
+
+                if (cantidad <= 0)
+                {
+                    carrito.Remove(item);
+                }
+                else
+                {
+                    item.Cantidad = cantidad;
+                    item.Stock = producto.Stock;
+                    item.Precio = producto.Precio;
+                }
+            }
+
+            Session["Carrito"] = carrito;
+            return RedirectToAction("VerCarrito");
         }
 
         [HttpPost]
@@ -88,7 +203,8 @@ namespace WebApplication1.Controllers
                         Nombre = producto.Nombre,
                         Precio = producto.Precio,
                         Cantidad = cantidad,
-                        Imagen = producto.Imagen
+                        Imagen = producto.Imagen,
+                        Stock = producto.Stock
                     });
                 }
 
