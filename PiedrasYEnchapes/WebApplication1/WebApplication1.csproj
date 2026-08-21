@@ -222,6 +222,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CarritoController .cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\CompraController.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\DetalleOrdenCompraController.cs" />
     <Compile Include="Controllers\OrdenesCompraController .cs" />
@@ -301,6 +302,7 @@
     <Compile Include="Models\CarritoItem.cs" />
     <Compile Include="Models\DetalleCompraModel.cs" />
     <Compile Include="Models\HistorialCompra.cs" />
+    <Compile Include="Models\CompraAdmin.cs" />
     <Compile Include="Models\FacturaCompra.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cotizacion.cs" />
@@ -376,6 +378,7 @@
     <Content Include="StaticFiles\images\hero-bg.jpg" />
     <Content Include="StaticFiles\images\mollejon.jpg" />
     <Content Include="StaticFiles\images\navGeneral.jpg" />
+    <Content Include="StaticFiles\images\no-image.png" />
     <Content Include="StaticFiles\images\piedraSanchezSemiRusticaFachaleta.jpg" />
     <Content Include="StaticFiles\images\piedraSanchezSemiRusticoIrregular.jpg" />
     <Content Include="StaticFiles\images\quintaAmarilla.jpg" />
@@ -429,6 +432,7 @@
     <Content Include="Views\Proveedor\VerProveedores.cshtml" />
     <Content Include="Views\Inventario\VerInventario.cshtml" />
     <Content Include="Views\Productos\VerProductos.cshtml" />
+    <Content Include="Views\Productos\_ListaProductos.cshtml" />
     <Content Include="Views\SobreNosotros\VerNosotros.cshtml" />
     <Content Include="Views\Empleado\VerEmpleados.cshtml" />
     <Content Include="Views\Home\RecuperarAcceso.cshtml" />
@@ -453,6 +457,8 @@
     <Content Include="Views\Cotizacion\AgregarDetalleCotizacion.cshtml" />
     <Content Include="Views\Cotizacion\VerCotizaciones.cshtml" />
     <Content Include="Views\OrdenesCompra\VerOrdenesCompra.cshtml" />
+    <Content Include="Views\Compra\VerCompras.cshtml" />
+    <Content Include="Views\Compra\DetalleCompraAdmin.cshtml" />
     <Content Include="VerOrdenesCompra.cshtml" />
     <Content Include="Views\OrdenesCompra\AgregarOrdenCompra.cshtml" />
     <Content Include="Views\OrdenesCompra\ActualizarOrdenCompra.cshtml" />

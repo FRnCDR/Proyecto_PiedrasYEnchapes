@@ -3,6 +3,8 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var terminoBusqueda = ViewBag.Buscar as string;
 }
 
 
@@ -192,173 +194,138 @@
                 <p class="catalog-subtitle">Piedras y enchapes seleccionados para interiores y exteriores.</p>
             </div>
 
-            <div class="catalog-search">
-                <i class="fa fa-search"></i>
-                <input type="text" id="buscarProducto" placeholder="Buscar producto..." />
-            </div>
+            @* Form real para que funcione sin JS; con JS el filtrado es en vivo. *@
+            @using (Html.BeginForm("VerProductos", "Productos", FormMethod.Get, new { @class = "catalog-search-form" }))
+            {
+                <div class="catalog-search">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="buscarProducto" name="buscar"
+                           value="@terminoBusqueda"
+                           placeholder="Buscar producto..."
+                           autocomplete="off" />
+                    <span class="catalog-search-spinner" id="buscarSpinner" aria-hidden="true"></span>
+                    <button type="button" class="catalog-search-clear" id="buscarLimpiar"
+                            title="Limpiar búsqueda"
+                            style="@(string.IsNullOrEmpty(terminoBusqueda) ? "display:none;" : "")">&times;</button>
+                </div>
+                <noscript>
+                    <button type="submit" class="catalog-search-btn">Buscar</button>
+                </noscript>
+            }
         </div>
 
         <ul class="filters_menu filters-minimal">
             <li class="active" data-filter="*">Todos</li>
         </ul>
 
-        <div class="filters-content">
-            <div class="row grid">
-
-                @if (Model != null && Model.Any())
-                {
-                    var contador = 1;
-
-                    foreach (var item in Model)
-                    {
-                        var numero = contador.ToString("D2");
-                        var rutaImagen = !string.IsNullOrEmpty(item.Imagen)
-                            ? Url.Content("~/StaticFiles/images/" + item.Imagen)
-                            : Url.Content("~/StaticFiles/images/no-image.png");
-
-                        <div class="col-sm-6 col-lg-4 all producto-item">
-                            <article class="catalog-card">
-                                <a class="catalog-img" href="@Url.Action("DetalleProducto", "Productos", new { id = item.ProductoID })">
-                                    <img src="@rutaImagen" alt="@item.Nombre" />
-                                </a>
-
-                                <div class="catalog-body">
-                                    <div class="catalog-topline">
-                                        <span class="catalog-num">@numero</span>
-                                        <div class="catalog-meta">
-                                            <h5 class="catalog-name">@item.Nombre</h5>
-                                            @if (!item.Estado)
-                                            {
-                                                <p class="out-of-stock">Sin stock</p>
-                                            }
-                                            <p class="catalog-desc">@item.Descripcion</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="catalog-bottom">
-                                        <span class="catalog-price">₡@item.Precio</span>
-                                        <a class="catalog-link" href="@Url.Action("DetalleProducto", "Productos", new { id = item.ProductoID })">
-                                            Ver detalle <span class="arrow">→</span>
-                                        </a>
-                                        
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-
-                        contador++;
-                    }
-                }
-                else
-                {
-                    <div class="col-12">
-                        <div class="alert alert-info text-center">
-                            No hay productos disponibles en este momento.
-                        </div>
-                    </div>
-                }
-
-                <div id="sinResultadosProducto" class="col-12" style="display:none;">
-                    <div class="alert alert-info text-center">
-                        No se encontraron productos que coincidan con tu búsqueda.
-                    </div>
-                </div>
-
-            </div>
+        @* Contenedor que el buscador refresca por AJAX mientras se escribe. *@
+        <div id="resultadosProductos">
+            @Html.Partial("_ListaProductos", Model)
         </div>
-
-        @{
-            var paginaActual = ViewBag.PaginaActual != null ? (int)ViewBag.PaginaActual : 1;
-            var totalPaginas = ViewBag.TotalPaginas != null ? (int)ViewBag.TotalPaginas : 0;
-        }
-
-        @if (totalPaginas > 1)
-        {
-            var paginasAMostrar = new List<int?>();
-            var rangoInicio = Math.Max(1, paginaActual - 2);
-            var rangoFin = Math.Min(totalPaginas, paginaActual + 2);
-
-            if (rangoInicio > 1)
-            {
-                paginasAMostrar.Add(1);
-                if (rangoInicio > 2) { paginasAMostrar.Add(null); }
-            }
-
-            for (var i = rangoInicio; i <= rangoFin; i++)
-            {
-                paginasAMostrar.Add(i);
-            }
-
-            if (rangoFin < totalPaginas)
-            {
-                if (rangoFin < totalPaginas - 1) { paginasAMostrar.Add(null); }
-                paginasAMostrar.Add(totalPaginas);
-            }
-
-            <nav class="catalog-pagination" aria-label="Paginación de productos">
-                @if (paginaActual > 1)
-                {
-                    <a class="page-btn page-nav" href="@Url.Action("VerProductos", new { pagina = paginaActual - 1 })">← Anterior</a>
-                }
-
-                @foreach (var p in paginasAMostrar)
-                {
-                    if (p == null)
-                    {
-                        <span class="page-ellipsis">…</span>
-                    }
-                    else if (p == paginaActual)
-                    {
-                        <span class="page-btn current">@p</span>
-                    }
-                    else
-                    {
-                        <a class="page-btn" href="@Url.Action("VerProductos", new { pagina = p })">@p</a>
-                    }
-                }
-
-                @if (paginaActual < totalPaginas)
-                {
-                    <a class="page-btn page-nav" href="@Url.Action("VerProductos", new { pagina = paginaActual + 1 })">Siguiente →</a>
-                }
-            </nav>
-        }
 
     </div>
 </section>
 
 @section Scripts {
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const input = document.getElementById("buscarProducto");
-            const productos = document.querySelectorAll(".producto-item");
-            const mensajeSinResultados = document.getElementById("sinResultadosProducto");
-            const paginacion = document.querySelector(".catalog-pagination");
+        (function () {
+            var input = document.getElementById("buscarProducto");
+            var form = document.querySelector(".catalog-search-form");
+            var contenedor = document.getElementById("resultadosProductos");
+            var limpiar = document.getElementById("buscarLimpiar");
+            var spinner = document.getElementById("buscarSpinner");
 
-            input.addEventListener("keyup", function () {
-                const texto = input.value.toLowerCase().trim();
-                let visibles = 0;
+            if (!input || !form || !contenedor) { return; }
 
-                productos.forEach(function (producto) {
-                    const nombre = producto.querySelector(".catalog-name")?.textContent.toLowerCase() || "";
-                    const descripcion = producto.querySelector(".catalog-desc")?.textContent.toLowerCase() || "";
+            var urlBase = form.getAttribute("action");
+            var temporizador = null;
+            var peticion = null;
+            var ultimoTermino = input.value;
 
-                    if (nombre.includes(texto) || descripcion.includes(texto)) {
-                        producto.style.display = "";
-                        visibles++;
-                    } else {
-                        producto.style.display = "none";
+            function construirUrl(termino, pagina) {
+                var url = urlBase + "?buscar=" + encodeURIComponent(termino);
+                if (pagina && pagina > 1) { url += "&pagina=" + pagina; }
+                return url;
+            }
+
+            function cargar(termino, pagina, empujarHistorial) {
+                // Solo una petición viva a la vez: la anterior deja de importar.
+                if (peticion) { peticion.abort(); }
+
+                spinner.classList.add("activo");
+
+                peticion = new XMLHttpRequest();
+                peticion.open("GET", construirUrl(termino, pagina), true);
+                peticion.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+                peticion.onload = function () {
+                    spinner.classList.remove("activo");
+                    peticion = null;
+
+                    if (this.status !== 200) { return; }
+
+                    contenedor.innerHTML = this.responseText;
+
+                    if (empujarHistorial) {
+                        var visible = termino ? construirUrl(termino, pagina) : urlBase;
+                        history.replaceState(null, "", visible);
                     }
-                });
+                };
 
-                if (mensajeSinResultados) {
-                    mensajeSinResultados.style.display = (visibles === 0 && texto !== "") ? "" : "none";
-                }
+                peticion.onerror = function () {
+                    spinner.classList.remove("activo");
+                    peticion = null;
+                };
 
-                if (paginacion) {
-                    paginacion.style.display = (texto !== "") ? "none" : "";
-                }
+                peticion.send();
+            }
+
+            function alEscribir() {
+                var termino = input.value.trim();
+
+                limpiar.style.display = termino ? "" : "none";
+
+                if (termino === ultimoTermino) { return; }
+                ultimoTermino = termino;
+
+                // Se espera a que deje de escribir para no pedir en cada tecla.
+                clearTimeout(temporizador);
+                temporizador = setTimeout(function () {
+                    cargar(termino, 1, true);
+                }, 300);
+            }
+
+            input.addEventListener("input", alEscribir);
+
+            // Enter no debe recargar la página: ya se está filtrando en vivo.
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                clearTimeout(temporizador);
+                cargar(input.value.trim(), 1, true);
             });
-        });
+
+            limpiar.addEventListener("click", function () {
+                input.value = "";
+                ultimoTermino = "";
+                limpiar.style.display = "none";
+                clearTimeout(temporizador);
+                cargar("", 1, true);
+                input.focus();
+            });
+
+            // La paginación vive dentro del contenedor que se reemplaza,
+            // así que se escucha desde el contenedor.
+            contenedor.addEventListener("click", function (e) {
+                var enlace = e.target.closest(".catalog-pagination a.page-btn");
+                if (!enlace) { return; }
+
+                e.preventDefault();
+
+                var pagina = new URL(enlace.href, location.origin).searchParams.get("pagina");
+                cargar(input.value.trim(), parseInt(pagina, 10) || 1, true);
+
+                document.querySelector(".catalog_section").scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+        })();
     </script>
 }

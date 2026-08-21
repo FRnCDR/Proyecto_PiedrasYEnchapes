@@ -1,0 +1,435 @@
+﻿@model List<WebApplication1.Models.CompraAdmin>
+
+@{
+    ViewBag.Title = "Compras de clientes";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var totalCompras = Model != null ? Model.Count : 0;
+    var comprasPendientes = Model != null ? Model.Count(x => x.Estado == "Pendiente") : 0;
+    var comprasCompletadas = Model != null ? Model.Count(x => x.Estado == "Completada") : 0;
+    var montoTotal = Model != null ? Model.Where(x => x.Estado != "Cancelada").Sum(x => x.Total) : 0;
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+    .compras-section {
+        padding: 30px 0 40px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .compras-container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .compras-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+    }
+
+    .compras-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .compras-subtitle {
+        color: #6b7280;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .compras-alert {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+        padding: 12px 16px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+        .compras-alert.tipo-error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .compras-alert.tipo-warning {
+            background: #fffbeb;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+    .compras-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .compras-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 18px 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        border-left: 4px solid #111827;
+    }
+
+        .compras-card.card-pendientes {
+            border-left-color: #f59e0b;
+        }
+
+        .compras-card.card-completadas {
+            border-left-color: #10b981;
+        }
+
+        .compras-card.card-monto {
+            border-left-color: #6366f1;
+        }
+
+    .compras-label {
+        font-size: 13px;
+        color: #6b7280;
+        font-weight: 600;
+    }
+
+    .compras-value {
+        font-size: 26px;
+        font-weight: 700;
+        color: #111827;
+        margin: 4px 0 2px;
+    }
+
+    .compras-extra {
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    .compras-filtros {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+        .compras-filtros input,
+        .compras-filtros select {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+    .compras-table-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 22px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .compras-table-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 16px;
+    }
+
+    table.dataTable thead th {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        color: #6b7280;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    table.dataTable tbody td {
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    .estado-pendiente,
+    .estado-completada,
+    .estado-cancelada {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .estado-pendiente {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .estado-completada {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .estado-cancelada {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .acciones-compras {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .btn-accion-compra {
+        border: none;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: transform .15s ease, filter .15s ease;
+    }
+
+        .btn-accion-compra:hover {
+            transform: translateY(-1px);
+            filter: brightness(.95);
+            text-decoration: none;
+        }
+
+    .btn-detalle-compra {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .btn-completar-compra {
+        background: #10b981;
+        color: #fff;
+    }
+
+    .btn-pendiente-compra {
+        background: #f59e0b;
+        color: #fff;
+    }
+
+    .btn-cancelar-compra {
+        background: #ef4444;
+        color: #fff;
+    }
+</style>
+
+<section class="compras-section">
+    <div class="compras-container">
+
+        <div class="compras-head">
+            <div>
+                <h2 class="compras-title">Compras de clientes</h2>
+                <p class="compras-subtitle">
+                    Las compras entran como <strong>Pendiente</strong>. Confirmalas o cancelalas desde aqu&iacute;.
+                </p>
+            </div>
+        </div>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            var tipo = TempData["TipoMensaje"] as string;
+            <div class="compras-alert @(tipo == "error" ? "tipo-error" : tipo == "warning" ? "tipo-warning" : "")">
+                @TempData["Mensaje"]
+            </div>
+        }
+
+        <div class="compras-grid">
+            <div class="compras-card card-total">
+                <div class="compras-label">Total de compras</div>
+                <div class="compras-value">@totalCompras</div>
+                <div class="compras-extra">Compras registradas por clientes</div>
+            </div>
+
+            <div class="compras-card card-pendientes">
+                <div class="compras-label">Pendientes</div>
+                <div class="compras-value">@comprasPendientes</div>
+                <div class="compras-extra">Esperan confirmaci&oacute;n del administrador</div>
+            </div>
+
+            <div class="compras-card card-completadas">
+                <div class="compras-label">Completadas</div>
+                <div class="compras-value">@comprasCompletadas</div>
+                <div class="compras-extra">Compras ya confirmadas</div>
+            </div>
+
+            <div class="compras-card card-monto">
+                <div class="compras-label">Monto total</div>
+                <div class="compras-value">₡ @montoTotal.ToString("N2")</div>
+                <div class="compras-extra">Sin contar las canceladas</div>
+            </div>
+        </div>
+
+        <div class="compras-filtros">
+            <input type="text" id="filtroCliente" placeholder="Buscar cliente..." />
+
+            <select id="filtroEstadoCompra">
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Completada">Completada</option>
+                <option value="Cancelada">Cancelada</option>
+            </select>
+        </div>
+
+        <div class="compras-table-card">
+            <h3 class="compras-table-title">Listado de compras</h3>
+
+            <div class="table-responsive" style="overflow: visible;">
+                <table id="tablaCompras" class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th style="width: 320px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.CompraID</td>
+                                    <td>
+                                        @item.NombreCliente
+                                        <div style="font-size:12px;color:#9ca3af;">@item.CorreoCliente</div>
+                                    </td>
+                                    <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.CantidadProductos</td>
+                                    <td>₡ @item.Total.ToString("N2")</td>
+
+                                    <td>
+                                        @if (item.Estado == "Completada")
+                                        {
+                                            <span class="estado-completada">Completada</span>
+                                        }
+                                        else if (item.Estado == "Cancelada")
+                                        {
+                                            <span class="estado-cancelada">Cancelada</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="estado-pendiente">Pendiente</span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="acciones-compras">
+                                            <a href="@Url.Action("DetalleCompraAdmin", "Compra", new { id = item.CompraID })"
+                                               class="btn-accion-compra btn-detalle-compra">
+                                                Detalle
+                                            </a>
+
+                                            @if (item.Estado != "Completada")
+                                            {
+                                                using (Html.BeginForm("CambiarEstadoCompra", "Compra", FormMethod.Post, new { style = "display:inline;" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("q", item.CompraID)
+                                                    @Html.Hidden("estado", "Completada")
+
+                                                    <button type="submit" class="btn-accion-compra btn-completar-compra"
+                                                            onclick="return confirm('Marcar la compra #@item.CompraID como Completada?')">
+                                                        Completar
+                                                    </button>
+                                                }
+                                            }
+
+                                            @if (item.Estado != "Pendiente")
+                                            {
+                                                using (Html.BeginForm("CambiarEstadoCompra", "Compra", FormMethod.Post, new { style = "display:inline;" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("q", item.CompraID)
+                                                    @Html.Hidden("estado", "Pendiente")
+
+                                                    <button type="submit" class="btn-accion-compra btn-pendiente-compra"
+                                                            onclick="return confirm('Devolver la compra #@item.CompraID a Pendiente?')">
+                                                        Pendiente
+                                                    </button>
+                                                }
+                                            }
+
+                                            @if (item.Estado != "Cancelada")
+                                            {
+                                                using (Html.BeginForm("CambiarEstadoCompra", "Compra", FormMethod.Post, new { style = "display:inline;" }))
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("q", item.CompraID)
+                                                    @Html.Hidden("estado", "Cancelada")
+
+                                                    <button type="submit" class="btn-accion-compra btn-cancelar-compra"
+                                                            onclick="return confirm('Cancelar la compra #@item.CompraID? El stock se devolvera al inventario.')">
+                                                        Cancelar
+                                                    </button>
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            if ($.fn.DataTable.isDataTable('#tablaCompras')) {
+                return;
+            }
+
+            var table = $('#tablaCompras').DataTable({
+                destroy: true,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+                pageLength: 10,
+                order: [[0, 'desc']],
+                columnDefs: [
+                    { orderable: false, targets: [6] }
+                ],
+                dom: 't<"bottom"ip>'
+            });
+
+            $('#filtroCliente').on('keyup', function () {
+                table.column(1).search(this.value).draw();
+            });
+
+            $('#filtroEstadoCompra').on('change', function () {
+                var valor = this.value;
+                table.column(5).search(valor ? '^' + valor + '$' : '', true, false).draw();
+            });
+        });
+    </script>
+}

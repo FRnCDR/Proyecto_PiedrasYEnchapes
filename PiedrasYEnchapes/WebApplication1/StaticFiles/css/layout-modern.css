@@ -79,7 +79,15 @@
     font-size: 20px;
     margin-bottom: 12px;
     letter-spacing: 0.4px;
+    transition: color .2s ease;
 }
+
+    /* Sin esto hereda el hover oscuro global y se pierde contra el fondo negro. */
+    .footer_brand:hover,
+    .footer_brand:focus {
+        color: #ffc107;
+        text-decoration: none;
+    }
 
 .footer_text {
     color: rgba(255,255,255,0.70);
@@ -170,26 +178,12 @@
     border-top: 1px solid rgba(255,255,255,0.10);
     padding-top: 18px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
     font-size: 13px;
     color: rgba(255,255,255,0.65);
-}
-
-.footer_bottom_right a {
-    color: rgba(255,255,255,0.65);
-    transition: color .2s ease;
-}
-
-    .footer_bottom_right a:hover {
-        color: #fff;
-    }
-
-.footer_bottom_right .dot {
-    margin: 0 8px;
-    opacity: 0.5;
 }
 
 /* Responsive */

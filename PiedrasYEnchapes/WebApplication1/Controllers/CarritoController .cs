@@ -172,12 +172,14 @@ namespace WebApplication1.Controllers
 
                 decimal totalCompra = carrito.Sum(x => x.Subtotal);
 
+                // La compra nace Pendiente: solo el administrador la marca como
+                // Completada (o Cancelada) desde Administración -> Compras.
                 var nuevaCompra = new tbCompras
                 {
                     IdUsuario = idUsuario,
                     FechaCompra = DateTime.Now,
                     Total = totalCompra,
-                    Estado = "Completada"
+                    Estado = "Pendiente"
                 };
 
                 context.tbCompras.Add(nuevaCompra);
@@ -210,7 +212,7 @@ namespace WebApplication1.Controllers
 
             Session["Carrito"] = new List<CarritoItem>();
 
-            TempData["Mensaje"] = "Compra registrada correctamente. Coordina la entrega por WhatsApp.";
+            TempData["Mensaje"] = "Compra registrada y pendiente de confirmación. Coordina la entrega por WhatsApp.";
             TempData["TipoMensaje"] = "success";
 
             // Redirige al comprobante de la compra recién registrada, donde está el botón de WhatsApp.

@@ -127,6 +127,12 @@ nav.navbar {
 /* ===============================
    BUSCADOR
 ================================ */
+.catalog-search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .catalog-search {
     display: flex;
     align-items: center;
@@ -141,16 +147,83 @@ nav.navbar {
         border: none;
         outline: none;
         font-size: 14px;
+        min-width: 200px;
+        flex: 1;
+        background: transparent;
     }
 
     .catalog-search i {
         color: #999;
     }
 
-@media (max-width: 768px) {
-    .catalog-search {
-        display: none;
+/* Limpia el término y vuelve al catálogo completo */
+.catalog-search-clear {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #b0b0b0;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .2s ease;
+}
+
+    .catalog-search-clear:hover {
+        color: #111;
     }
+
+/* Late mientras se consulta el catálogo */
+.catalog-search-spinner {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    border-radius: 50%;
+    border: 2px solid #e5e7eb;
+    border-top-color: #111;
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+
+    .catalog-search-spinner.activo {
+        opacity: 1;
+        animation: catalog-spin .6s linear infinite;
+    }
+
+@keyframes catalog-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Solo aparece si el navegador no ejecuta el filtrado en vivo */
+.catalog-search-btn {
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .catalog-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .catalog-search-form {
+        width: 100%;
+    }
+
+    .catalog-search {
+        flex: 1;
+    }
+
+        .catalog-search input {
+            width: 100%;
+        }
 }
 
 /* ===============================

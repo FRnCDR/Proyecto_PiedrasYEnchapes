@@ -15,11 +15,21 @@ namespace WebApplication1.Controllers
     {
         private const int ProductosPorPagina = 12;
 
-        public ActionResult VerProductos(int pagina = 1)
+        public ActionResult VerProductos(int pagina = 1, string buscar = null)
         {
             using (var context = new DATABASE_PYEEntities())
             {
-                var query = context.tbProductos.AsNoTracking();
+                IQueryable<tbProductos> query = context.tbProductos.AsNoTracking();
+
+                // La búsqueda se aplica en la base de datos (sobre todo el catálogo),
+                // no sobre las tarjetas ya renderizadas de la página actual.
+                var termino = (buscar ?? string.Empty).Trim();
+
+                if (termino.Length > 0)
+                {
+                    query = query.Where(p => p.Nombre.Contains(termino)
+                                          || p.Descripcion.Contains(termino));
+                }
 
                 var totalProductos = query.Count();
                 var totalPaginas = (int)Math.Ceiling(totalProductos / (double)ProductosPorPagina);
@@ -48,6 +58,12 @@ namespace WebApplication1.Controllers
 
                 ViewBag.PaginaActual = pagina;
                 ViewBag.TotalPaginas = totalPaginas;
+                ViewBag.Buscar = termino;
+                ViewBag.TotalProductos = totalProductos;
+
+                // El buscador en vivo pide solo el bloque de resultados.
+                if (Request.IsAjaxRequest())
+                    return PartialView("_ListaProductos", lista);
 
                 return View(lista);
             }

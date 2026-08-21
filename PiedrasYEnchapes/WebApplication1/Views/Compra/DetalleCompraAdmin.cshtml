@@ -1,0 +1,235 @@
+﻿@model List<WebApplication1.Models.DetalleCompraModel>
+
+@{
+    ViewBag.Title = "Detalle de compra";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+
+    var compra = ViewBag.Compra as WebApplication1.Models.CompraAdmin;
+}
+
+<div class="hero_general">
+    <div class="bg-box">
+        <img src="~/StaticFiles/images/navGeneral.jpg" />
+    </div>
+</div>
+
+<style>
+    .detalle-admin-section {
+        padding: 30px 0 50px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .detalle-admin-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .detalle-admin-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 26px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .detalle-admin-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .info-box {
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 12px 16px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .info-value {
+        font-size: 15px;
+        color: #111827;
+        font-weight: 600;
+        margin-top: 4px;
+    }
+
+    .estado-pendiente,
+    .estado-completada,
+    .estado-cancelada {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .estado-pendiente {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .estado-completada {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .estado-cancelada {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .tabla-detalle {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-detalle th {
+            text-align: left;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #6b7280;
+            border-bottom: 2px solid #e5e7eb;
+            padding: 10px 8px;
+        }
+
+        .tabla-detalle td {
+            font-size: 14px;
+            border-bottom: 1px solid #f3f4f6;
+            padding: 12px 8px;
+        }
+
+    .total-row {
+        text-align: right;
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-top: 18px;
+    }
+
+    .detalle-admin-acciones {
+        margin-top: 26px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-volver {
+        background: #e5e7eb;
+        color: #374151;
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-volver:hover {
+            background: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+</style>
+
+<section class="detalle-admin-section">
+    <div class="detalle-admin-container">
+        <div class="detalle-admin-card">
+
+            @if (compra != null)
+            {
+                <h2 class="detalle-admin-title">Compra #@compra.CompraID</h2>
+
+                <div class="info-grid">
+                    <div class="info-box">
+                        <div class="info-label">Cliente</div>
+                        <div class="info-value">@compra.NombreCliente</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-label">Correo</div>
+                        <div class="info-value">@compra.CorreoCliente</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-label">Fecha</div>
+                        <div class="info-value">@compra.FechaCompra.ToString("dd/MM/yyyy")</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-label">Estado</div>
+                        <div class="info-value">
+                            @if (compra.Estado == "Completada")
+                            {
+                                <span class="estado-completada">Completada</span>
+                            }
+                            else if (compra.Estado == "Cancelada")
+                            {
+                                <span class="estado-cancelada">Cancelada</span>
+                            }
+                            else
+                            {
+                                <span class="estado-pendiente">Pendiente</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <table class="tabla-detalle">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.NombreProducto</td>
+                                <td>@item.Cantidad</td>
+                                <td>₡ @item.PrecioUnitario.ToString("N2")</td>
+                                <td>₡ @item.Subtotal.ToString("N2")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Esta compra no tiene productos registrados.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (compra != null)
+            {
+                <div class="total-row">Total: ₡ @compra.Total.ToString("N2")</div>
+            }
+
+            <div class="detalle-admin-acciones">
+                <a href="@Url.Action("VerCompras", "Compra")" class="btn-volver">Volver a compras</a>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -18,6 +18,24 @@ namespace WebApplication1.Controllers
             return perfil != null && perfil.ToString() == "1";
         }
 
+        // El nombre mostrado como "Cliente" es el del usuario dueño de la cotización.
+        // Si por algún motivo no se encuentra, se cae al nombre de la sesión.
+        private string ObtenerNombreUsuario(DATABASE_PYEEntities context, int? idUsuario)
+        {
+            if (idUsuario.HasValue)
+            {
+                var nombre = context.tbUsuario
+                    .Where(u => u.IdUsuario == idUsuario.Value)
+                    .Select(u => u.Nombre)
+                    .FirstOrDefault();
+
+                if (!string.IsNullOrWhiteSpace(nombre))
+                    return nombre;
+            }
+
+            return Session["Nombre"] != null ? Session["Nombre"].ToString() : "—";
+        }
+
         // ---------------------------------------------------------
         // VER COTIZACIONES
         // ---------------------------------------------------------
@@ -136,7 +154,7 @@ namespace WebApplication1.Controllers
                     Estado = entidad.Estado,
                     Observaciones = entidad.Observaciones
                 };
-                ViewBag.NombreUsuario = Session["Nombre"]?.ToString();
+                ViewBag.NombreUsuario = ObtenerNombreUsuario(context, entidad.IdUsuario);
 
                 CargarProductosDisponibles();
                 CargarDetalleCotizacion(q.Value);
@@ -200,7 +218,7 @@ namespace WebApplication1.Controllers
                             Estado = cotizacion.Estado,
                             Observaciones = cotizacion.Observaciones
                         };
-                        ViewBag.NombreUsuario = Session["Nombre"]?.ToString();
+                        ViewBag.NombreUsuario = ObtenerNombreUsuario(context, cotizacion.IdUsuario);
                         CargarProductosDisponibles(detalle.ProductoID);
                         CargarDetalleCotizacion(detalle.CotizacionID);
                         return View(detalle);
@@ -286,13 +304,7 @@ namespace WebApplication1.Controllers
                     Observaciones = entidad.Observaciones
                 };
 
-                using (var ctx2 = new DATABASE_PYEEntities())
-                {
-                    ViewBag.NombreUsuario = ctx2.tbUsuario
-                        .Where(u => u.IdUsuario == entidad.IdUsuario)
-                        .Select(u => u.Nombre)
-                        .FirstOrDefault() ?? Session["Nombre"]?.ToString();
-                }
+                ViewBag.NombreUsuario = ObtenerNombreUsuario(context, entidad.IdUsuario);
 
                 CargarDetalleCotizacion(q.Value);
                 return View();
