@@ -306,15 +306,6 @@
             background: #d97706;
         }
 
-    .btn-action-facturas {
-        background: #0ea5e9;
-        color: #fff;
-    }
-
-        .btn-action-facturas:hover {
-            background: #0284c7;
-        }
-
     .btn-action-disable {
         background: #dc2626;
         color: #fff;
@@ -482,11 +473,6 @@
                                             <a href="@Url.Action("CambiarEstadoProveedor", "Proveedor", new { id = item.ProveedorID })"
                                                class="btn-action-table @(item.Estado ? "btn-action-disable" : "btn-action-enable")">
                                                 @(item.Estado ? "Desactivar" : "Activar")
-                                            </a>
-
-                                            <a href="@Url.Action("FacturaPendientes", "Proveedor", new { proveedorId = item.ProveedorID })"
-                                               class="btn-action-table btn-action-facturas">
-                                                Facturas
                                             </a>
                                         </div>
                                     </td>
